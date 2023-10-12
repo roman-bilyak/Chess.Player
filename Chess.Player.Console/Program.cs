@@ -14,7 +14,9 @@ try
     {
         new SearchCriteria("Мосесов", "Даниїл"),
         new SearchCriteria("Мосесов", "Даниил"),
+        new SearchCriteria("Мосесов", "Данило"),
         new SearchCriteria("Mosesov", "Danyil"),
+        new SearchCriteria("Mosesov", "Danylo"),
     };
 
     IChessDataManager chessDataManager = serviceProvider.GetRequiredService<IChessDataManager>();

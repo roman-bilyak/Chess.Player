@@ -50,22 +50,25 @@
     {
         public int Compare(PlayerTournamentInfo? x, PlayerTournamentInfo? y)
         {
-            if (x?.Tournament.EndDate is null && y?.Tournament.EndDate is null)
+            int result = Nullable.Compare(x?.Tournament.EndDate, y?.Tournament.EndDate);
+            if (result != 0)
             {
-                return 0;
+                return result * -1;
             }
-            else if (x?.Tournament.EndDate is null)
+
+            result = Nullable.Compare(x?.Tournament.Id, y?.Tournament.Id);
+            if (result != 0)
             {
-                return 1;
+                return result * -1;
             }
-            else if (y?.Tournament.EndDate is null)
+
+            result = Nullable.Compare(x?.Player.StartingRank, y?.Player.StartingRank);
+            if (result != 0)
             {
-                return -1;
+                return result * -1;
             }
-            else
-            {
-                return DateTime.Compare(y.Tournament.EndDate.Value, x.Tournament.EndDate.Value);
-            }
+
+            return string.Compare(x?.Player.Name, y?.Player.Name)  * -1;
         }
     }
 }
