@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:vm="clr-namespace:Chess.Player.MAUI.ViewModels"
+             x:Class="Chess.Player.MAUI.Views.PlayerView"
+             x:Subclass="Chess.Player.MAUI.Views.BaseView"
+             x:DataType="vm:PlayerViewModel"
+             Title="{Binding FullName}">
+    <VerticalStackLayout>
+        <Label 
+            Text="{Binding LastName}"
+            VerticalOptions="Center" 
+            HorizontalOptions="Center" />
+        <Label 
+            Text="{Binding FirstName}"
+            VerticalOptions="Center" 
+            HorizontalOptions="Center" />
+        <Button Text="Cancel" Command="{Binding CancelCommand}"></Button>
+    </VerticalStackLayout>
+</ContentPage>
