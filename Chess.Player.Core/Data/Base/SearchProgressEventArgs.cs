@@ -1,6 +1,6 @@
 ﻿namespace Chess.Player.Data
 {
-    internal class SearchProgressEventArgs : EventArgs
+    public class SearchProgressEventArgs : EventArgs
     {
         public int ProgressPercentage { get; private set; }
 

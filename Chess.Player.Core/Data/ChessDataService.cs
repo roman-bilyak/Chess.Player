@@ -1,6 +1,6 @@
 ﻿namespace Chess.Player.Data
 {
-    internal class ChessDataService : IChessDataService
+    public class ChessDataService : IChessDataService
     {
         private readonly IChessDataFetcher _dataFetcher;
         private readonly ICacheManager _cacheManager;
@@ -16,7 +16,7 @@
             _cacheManager = cacheManager;
         }
 
-        public async Task<SearchResult> SearchAsync(params SearchCriteria[] searchCriterias)
+        public async Task<SearchResult> SearchAsync(SearchCriteria[] searchCriterias, CancellationToken cancellationToken)
         {
             OnProgressChanged(0);
 
@@ -25,7 +25,7 @@
             List<PlayerTournament> playerTournaments = new();
             foreach (SearchCriteria searchCriteria in searchCriterias)
             {
-                List<PlayerTournament>? tournaments = await _dataFetcher.GetPlayerTournamentsAsync(searchCriteria.LastName, searchCriteria.FirstName);
+                List<PlayerTournament>? tournaments = await _dataFetcher.GetPlayerTournamentsAsync(searchCriteria.LastName, searchCriteria.FirstName, cancellationToken);
                 if (tournaments is not null)
                 {
                     playerTournaments.AddRange(tournaments);            
@@ -36,11 +36,11 @@
             foreach (PlayerTournament playerTournament in playerTournaments)
             {
                 TournamentInfo? tournamentInfo = await _cacheManager.GetOrAddAsync(nameof(TournamentInfo), $"{playerTournament.TournamentId}",
-                    () => _dataFetcher.GetTournamentInfoAsync(playerTournament.TournamentId)
+                    () => _dataFetcher.GetTournamentInfoAsync(playerTournament.TournamentId, cancellationToken)
                 );
 
                 PlayerInfo? playerInfo = await _cacheManager.GetOrAddAsync(nameof(PlayerInfo), $"{playerTournament.TournamentId}_{playerTournament.PlayerStartingRank}",
-                    () => _dataFetcher.GetPlayerInfoAsync(playerTournament.TournamentId, playerTournament.PlayerStartingRank)
+                    () => _dataFetcher.GetPlayerInfoAsync(playerTournament.TournamentId, playerTournament.PlayerStartingRank, cancellationToken)
                 );
 
                 if (tournamentInfo is not null && playerInfo is not null)

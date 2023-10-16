@@ -1,11 +1,10 @@
 ﻿using Newtonsoft.Json;
-using System.Security.AccessControl;
 
 namespace Chess.Player.Data
 {
-    internal class FileCacheManager : ICacheManager
+    public abstract class FileCacheManager : ICacheManager
     {
-        private readonly string _cacheRootFolder = "Cache";
+        protected abstract string RootPath { get; }
 
         public async Task<T?> GetOrAddAsync<T>(string cacheType, string key, Func<Task<T?>> valueFactory)
         {
@@ -63,11 +62,12 @@ namespace Chess.Player.Data
 
         private string GetCacheFolderPath(string? cacheType = null)
         {
+            string? result = RootPath;
             if (cacheType is null)
             {
-                return _cacheRootFolder;
+                return result;
             }
-            return Path.Combine(_cacheRootFolder, cacheType);
+            return Path.Combine(result, cacheType);
         }
 
         private string GetCacheFilePath(string cacheType, string key)

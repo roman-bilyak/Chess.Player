@@ -1,9 +1,13 @@
-﻿namespace Chess.Player.MAUI.ViewModels
-{
-    public class RecentPlayerViewModel
-    {
-        public string LastName { get; set; }
+﻿using CommunityToolkit.Mvvm.ComponentModel;
 
-        public string FirstName { get; set; }
+namespace Chess.Player.MAUI.ViewModels
+{
+    public partial class RecentPlayerViewModel: ObservableObject
+    {
+        [ObservableProperty]
+        private string _lastName;
+
+        [ObservableProperty]
+        private string _firstName;
     }
 }

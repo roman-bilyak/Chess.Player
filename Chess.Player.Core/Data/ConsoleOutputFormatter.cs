@@ -2,7 +2,7 @@
 
 namespace Chess.Player.Data
 {
-    internal class ConsoleOutputFormatter : IOutputFormatter
+    public class ConsoleOutputFormatter : IOutputFormatter
     {
         public void DisplayProgress(int progressPercentage)
         {

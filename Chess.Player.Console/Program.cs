@@ -5,7 +5,7 @@ ServiceProvider serviceProvider = new ServiceCollection()
             .AddTransient<IChessDataManager, ChessDataManager>()
             .AddTransient<IChessDataService, ChessDataService>()
             .AddTransient<IChessDataFetcher, ChessResultsDataFetcher>()
-            .AddTransient<ICacheManager, FileCacheManager>()
+            .AddTransient<ICacheManager, ConsoleFileCacheManager>()
             .AddTransient<IOutputFormatter, ConsoleOutputFormatter>()
             .BuildServiceProvider();
 try
@@ -20,7 +20,7 @@ try
     };
 
     IChessDataManager chessDataManager = serviceProvider.GetRequiredService<IChessDataManager>();
-    await chessDataManager.SearchAsync(searchCriterias);
+    await chessDataManager.SearchAsync(searchCriterias, CancellationToken.None);
 }
 finally
 {

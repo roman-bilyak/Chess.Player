@@ -1,6 +1,6 @@
 ﻿namespace Chess.Player.Data
 {
-    internal interface IOutputFormatter
+    public interface IOutputFormatter
     {
         void DisplayProgress(int progressPercentage);
 

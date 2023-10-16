@@ -1,6 +1,6 @@
 ﻿namespace Chess.Player.Data
 {
-    internal enum TimeControlType
+    public enum TimeControlType
     {
         Blitz,
         Rapid,

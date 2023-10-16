@@ -1,6 +1,6 @@
 ﻿namespace Chess.Player.Data
 {
-    internal interface ICacheManager
+    public interface ICacheManager
     {
         Task<T?> GetOrAddAsync<T>(string cacheType, string key, Func<Task<T?>> valueFactory);
 

@@ -9,11 +9,10 @@ namespace Chess.Player.MAUI
         {
             InitializeComponent();
 
-            searchViewModel.RecentPlayers.Add(new RecentPlayerViewModel { LastName = "Poroshenko", FirstName = "Mykola" });
-            searchViewModel.RecentPlayers.Add(new RecentPlayerViewModel { LastName = "Stehniy", FirstName = "Oleg" });
-            searchViewModel.RecentPlayers.Add(new RecentPlayerViewModel { LastName = "Prystay", FirstName = "Olena" });
-            searchViewModel.RecentPlayers.Add(new RecentPlayerViewModel { LastName = "Novak", FirstName = "Iryna" });
-            searchViewModel.RecentPlayers.Add(new RecentPlayerViewModel { LastName = "Furta", FirstName = "Mykola" });
+            searchViewModel.RecentPlayers.Add(new RecentPlayerViewModel { LastName = "Kravtsiv", FirstName = "Martyn" });
+            searchViewModel.RecentPlayers.Add(new RecentPlayerViewModel { LastName = "Кравців", FirstName = "Мартин" });
+            searchViewModel.RecentPlayers.Add(new RecentPlayerViewModel { LastName = "Dubnevych", FirstName = "Maksym" });
+            searchViewModel.RecentPlayers.Add(new RecentPlayerViewModel { LastName = "Коць", FirstName = "Святослав" });
 
             MainPage = new NavigationPage(new SearchView { BindingContext = searchViewModel });
         }

@@ -1,6 +1,6 @@
 ﻿namespace Chess.Player.Data
 {
-    internal class SearchCriteria
+    public class SearchCriteria
     {
         public string LastName { get; private set; }
 

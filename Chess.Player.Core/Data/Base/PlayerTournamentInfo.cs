@@ -1,6 +1,6 @@
 ﻿namespace Chess.Player.Data
 {
-    internal class PlayerTournamentInfo
+    public class PlayerTournamentInfo
     {
         public TournamentInfo Tournament { get; private set; }
 

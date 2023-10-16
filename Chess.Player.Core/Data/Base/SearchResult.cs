@@ -1,6 +1,6 @@
 ﻿namespace Chess.Player.Data
 {
-    internal class SearchResult : SortedSet<PlayerTournamentInfo>
+    public class SearchResult : SortedSet<PlayerTournamentInfo>
     {
         public string? LastName { get; set; }
 

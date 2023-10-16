@@ -2,16 +2,14 @@
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using System.Collections.ObjectModel;
-using System.ComponentModel.DataAnnotations;
 
 namespace Chess.Player.MAUI.ViewModels
 {
-    public partial class SearchViewModel : ObservableValidator
+    public partial class SearchViewModel : ObservableObject
     {
         private readonly IServiceProvider _serviceProvider;
 
         [ObservableProperty]
-        [Required]
         private string _searchText;
 
         [ObservableProperty]
@@ -29,10 +27,7 @@ namespace Chess.Player.MAUI.ViewModels
         private async Task GoAsync()
         {
             string[] searchParts = SearchText.Split(" ", StringSplitOptions.RemoveEmptyEntries);
-            if (searchParts.Length > 1)
-            {
-                await NavigateToPlayerViewAsync(searchParts[0], string.Join(" ", searchParts.Skip(1)));
-            }
+            await NavigateToPlayerViewAsync(searchParts[0], string.Join(" ", searchParts.Skip(1)));
         }
 
         [RelayCommand]

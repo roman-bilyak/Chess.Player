@@ -1,6 +1,8 @@
-﻿namespace Chess.Player.Data
+﻿using System.Threading;
+
+namespace Chess.Player.Data
 {
-    internal class ChessDataManager : IChessDataManager
+    public class ChessDataManager : IChessDataManager
     {
         private readonly IChessDataService _dataService;
         private readonly IOutputFormatter _outputFormatter;
@@ -19,9 +21,9 @@
             };
         }
 
-        public async Task SearchAsync(SearchCriteria[] searchCriterias)
+        public async Task SearchAsync(SearchCriteria[] searchCriterias, CancellationToken cancellationToken)
         {
-            SearchResult searchResult = await _dataService.SearchAsync(searchCriterias);
+            SearchResult searchResult = await _dataService.SearchAsync(searchCriterias, cancellationToken);
             _outputFormatter.DisplayResult(searchResult);
         }
     }
