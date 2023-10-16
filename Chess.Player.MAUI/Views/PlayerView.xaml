@@ -1,20 +1,30 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:mct="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
              xmlns:vm="clr-namespace:Chess.Player.MAUI.ViewModels"
              x:Class="Chess.Player.MAUI.Views.PlayerView"
              x:Subclass="Chess.Player.MAUI.Views.BaseView"
              x:DataType="vm:PlayerViewModel"
              Title="{Binding FullName}">
-    <VerticalStackLayout>
-        <Label 
-            Text="{Binding LastName}"
-            VerticalOptions="Center" 
-            HorizontalOptions="Center" />
-        <Label 
-            Text="{Binding FirstName}"
-            VerticalOptions="Center" 
-            HorizontalOptions="Center" />
-        <Button Text="Cancel" Command="{Binding CancelCommand}"></Button>
-    </VerticalStackLayout>
+    <ContentPage.Behaviors>
+        <mct:EventToCommandBehavior Command="{Binding StartCommand}" EventName="Appearing" />
+        <mct:EventToCommandBehavior Command="{Binding LoadCancelCommand}" EventName="Disappearing" />
+    </ContentPage.Behaviors>
+    <RefreshView
+        IsRefreshing="{Binding IsLoading}"
+        Command="{Binding LoadCommand}"
+        RefreshColor="DarkGreen">
+        <ScrollView>
+            <Grid
+                RowDefinitions="Auto, Auto, Auto, *, Auto"
+                ColumnDefinitions="*">
+                <Label 
+                    Text="{Binding Data}"
+                    Grid.Row="2"
+                    Grid.Column="0"
+                    VerticalOptions="Center" />
+            </Grid>
+        </ScrollView>
+    </RefreshView>
 </ContentPage>

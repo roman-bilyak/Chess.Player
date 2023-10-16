@@ -1,4 +1,6 @@
-﻿using Microsoft.Extensions.Logging;
+﻿using Chess.Player.MAUI.ViewModels;
+using CommunityToolkit.Maui;
+using Microsoft.Extensions.Logging;
 
 namespace Chess.Player.MAUI
 {
@@ -9,6 +11,7 @@ namespace Chess.Player.MAUI
             var builder = MauiApp.CreateBuilder();
             builder
                 .UseMauiApp<App>()
+                .UseMauiCommunityToolkit()
                 .ConfigureFonts(fonts =>
                 {
                     fonts.AddFont("OpenSans-Regular.ttf", "OpenSansRegular");
@@ -18,6 +21,8 @@ namespace Chess.Player.MAUI
 #if DEBUG
 		builder.Logging.AddDebug();
 #endif
+            builder.Services.AddTransient<SearchViewModel>();
+            builder.Services.AddTransient<PlayerViewModel>();
 
             return builder.Build();
         }

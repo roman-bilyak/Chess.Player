@@ -16,10 +16,34 @@ namespace Chess.Player.MAUI.ViewModels
 
         public string FullName => $"{LastName} {FirstName}";
 
+        [ObservableProperty]
+        private string _data;
+
+        [ObservableProperty]
+        private bool _isLoading = false;
+
         [RelayCommand]
-        public async Task CancelAsync()
+        private void Start()
         {
-            await App.Current.MainPage.Navigation.PopAsync();
+            IsLoading = true;
+        }
+
+        [RelayCommand(IncludeCancelCommand = true)]
+        private async Task LoadAsync(CancellationToken cancellationToken)
+        {
+            try
+            {
+                await Task.Delay(2 * 1000, cancellationToken);
+
+                Data = Guid.NewGuid().ToString();
+            }
+            catch
+            {
+            }
+            finally
+            {
+                IsLoading = false;
+            }
         }
     }
 }

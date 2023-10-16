@@ -1,6 +1,6 @@
 ﻿namespace Chess.Player.MAUI.ViewModels
 {
-    internal class RecentPlayerViewModel
+    public class RecentPlayerViewModel
     {
         public string LastName { get; set; }
 

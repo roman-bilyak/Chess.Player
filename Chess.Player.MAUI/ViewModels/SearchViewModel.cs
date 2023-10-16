@@ -6,15 +6,13 @@ using System.ComponentModel.DataAnnotations;
 
 namespace Chess.Player.MAUI.ViewModels
 {
-    internal partial class SearchViewModel : ObservableValidator
+    public partial class SearchViewModel : ObservableValidator
     {
-        [ObservableProperty]
-        [Required]
-        private string _lastName;
+        private readonly IServiceProvider _serviceProvider;
 
         [ObservableProperty]
         [Required]
-        private string _firstName;
+        private string _searchText;
 
         [ObservableProperty]
         private ObservableCollection<RecentPlayerViewModel> _recentPlayers = new();
@@ -22,16 +20,19 @@ namespace Chess.Player.MAUI.ViewModels
         [ObservableProperty]
         private RecentPlayerViewModel _selectedPlayer;
 
+        public SearchViewModel(IServiceProvider serviceProvider)
+        {
+            _serviceProvider = serviceProvider;
+        }
+
         [RelayCommand]
         private async Task GoAsync()
         {
-            await NavigateToPlayerViewAsync(LastName, FirstName);
-
-            RecentPlayers.Insert(0, new RecentPlayerViewModel
+            string[] searchParts = SearchText.Split(" ", StringSplitOptions.RemoveEmptyEntries);
+            if (searchParts.Length > 1)
             {
-                LastName = LastName,
-                FirstName = FirstName
-            });
+                await NavigateToPlayerViewAsync(searchParts[0], string.Join(" ", searchParts.Skip(1)));
+            }
         }
 
         [RelayCommand]
@@ -46,11 +47,10 @@ namespace Chess.Player.MAUI.ViewModels
 
         private async Task NavigateToPlayerViewAsync(string lastName, string firstName)
         {
-            PlayerViewModel playerViewModel = new()
-            {
-                LastName = lastName,
-                FirstName = firstName,
-            };
+            PlayerViewModel playerViewModel = _serviceProvider.GetService<PlayerViewModel>();
+            playerViewModel.LastName = lastName;
+            playerViewModel.FirstName = firstName;
+
             PlayerView playerView = new() { BindingContext = playerViewModel };
 
             await App.Current.MainPage.Navigation.PushAsync(playerView);

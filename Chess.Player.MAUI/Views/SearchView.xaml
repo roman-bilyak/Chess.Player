@@ -5,11 +5,9 @@
              x:Class="Chess.Player.MAUI.Views.SearchView"
              x:DataType="vm:SearchViewModel"
              Title="Search">
-    <VerticalStackLayout Spacing="20">
-        <Entry Text="{Binding LastName}"></Entry>
-        <Entry Text="{Binding FirstName}"></Entry>
-        <Button Text="Go" Command="{Binding GoCommand}"></Button>
-
+    <VerticalStackLayout>
+        <SearchBar Text="{Binding SearchText}" SearchCommand="{Binding GoCommand}" />
+        
         <CollectionView ItemsSource="{Binding RecentPlayers}"
                         SelectionMode="Single"
                         SelectedItem="{Binding SelectedPlayer}"
@@ -21,7 +19,7 @@
                 </DataTemplate>
             </CollectionView.GroupHeaderTemplate>
             <CollectionView.ItemTemplate>
-                <DataTemplate>
+                <DataTemplate x:DataType="vm:RecentPlayerViewModel">
                     <Grid Padding="5" VerticalOptions="Center">
                         <Grid.RowDefinitions>
                             <RowDefinition Height="Auto" />
@@ -33,8 +31,8 @@
                             <ColumnDefinition Width="Auto" />
                         </Grid.ColumnDefinitions>
 
-                        <Label Grid.Row="0" Grid.Column="1" Text="{Binding FirstName}" />
-                        <Label Grid.Row="1" Grid.Column="1" Text="{Binding LastName}" />
+                        <Label Grid.Row="0" Grid.Column="1" Text="{Binding LastName}" />
+                        <Label Grid.Row="1" Grid.Column="1" Text="{Binding FirstName}" />
                     </Grid>
                 </DataTemplate>
             </CollectionView.ItemTemplate>
