@@ -13,7 +13,8 @@
     </ContentPage.Behaviors>
     <StackLayout Padding="10">
         <RefreshView IsRefreshing="{Binding IsLoading}"
-                     Command="{Binding LoadCommand}">
+                     Command="{Binding LoadCommand}"
+                     RefreshColor="Blue">
             <ScrollView>
                 <Grid RowSpacing="10" Margin="10">
                     <Grid.RowDefinitions>
@@ -38,20 +39,19 @@
                     <Label Grid.Row="1" Grid.Column="2" Text="Fide ID" FontSize="14" FontAttributes="Bold" IsVisible="{Binding HasFideId}" />
                     <Label Grid.Row="1" Grid.Column="3" Text="{Binding FideId}" FontSize="14" IsVisible="{Binding HasFideId}" />
 
-                    <Label Grid.Row="2" Grid.Column="0" Text="Year of Birth" FontSize="14" FontAttributes="Bold" IsVisible="{Binding HasYearOfBirth}" />
-                    <Label Grid.Row="2" Grid.Column="1" Text="{Binding YearOfBirth}" FontSize="14" IsVisible="{Binding HasYearOfBirth}" />
-                    <Label Grid.Row="2" Grid.Column="2" Text="Years" FontSize="14" FontAttributes="Bold" IsVisible="{Binding HasYearOfBirth}" />
-                    <Label Grid.Row="2" Grid.Column="3" Text="{Binding Years}" FontSize="14" IsVisible="{Binding HasYearOfBirth}" />
-
-                    <Label Grid.Row="3" Grid.Column="0" Text="Club/City" FontSize="14" FontAttributes="Bold" IsVisible="{Binding HasClubCity}" />
-                    <Label Grid.Row="3" Grid.Column="1" Grid.ColumnSpan="3" Text="{Binding ClubCity}" FontSize="14" IsVisible="{Binding HasClubCity}" />
+                    <Label Grid.Row="2" Grid.Column="0" Text="Club/City" FontSize="14" FontAttributes="Bold" IsVisible="{Binding HasClubCity}" />
+                    <Label Grid.Row="2" Grid.Column="1" Grid.ColumnSpan="3" Text="{Binding ClubCity}" FontSize="14" IsVisible="{Binding HasClubCity}" />
+                    
+                    <Label Grid.Row="3" Grid.Column="0" Text="Year of Birth" FontSize="14" FontAttributes="Bold" IsVisible="{Binding HasYearOfBirth}" />
+                    <Label Grid.Row="3" Grid.Column="1" Text="{Binding YearOfBirth}" FontSize="14" IsVisible="{Binding HasYearOfBirth}" />
+                    <Label Grid.Row="3" Grid.Column="2" Text="Years" FontSize="14" FontAttributes="Bold" IsVisible="{Binding HasYearOfBirth}" />
+                    <Label Grid.Row="3" Grid.Column="3" Text="{Binding Years}" FontSize="14" IsVisible="{Binding HasYearOfBirth}" />
 
                     <CollectionView ItemsSource="{Binding Tournaments}"
-                                    IsGrouped="true"
+                                    IsGrouped="True"
                                     Grid.Row="4"
                                     Grid.Column="0"
-                                    Grid.ColumnSpan="4"
-                                    CanMixGroups="True">
+                                    Grid.ColumnSpan="4">
                         <CollectionView.GroupHeaderTemplate>
                             <DataTemplate x:DataType="vm:PlayerTournamentYearViewModel">
                                 <Grid>
@@ -84,10 +84,26 @@
                         </CollectionView.GroupHeaderTemplate>
                         <CollectionView.ItemTemplate>
                             <DataTemplate x:DataType="vm:PlayerTournamentViewModel">
-                                <Frame BackgroundColor="#f8f9fa"
-                                       CornerRadius="10"
-                                       Margin="0, 10"
-                                       HasShadow="True">
+                                <Border Stroke="LightGray"
+                                        StrokeThickness="1"
+                                        StrokeShape="RoundRectangle 10"
+                                        Margin="0, 5"
+                                        Padding="15"
+                                        BackgroundColor="#f8f9fa">
+                                    <Border.Shadow>
+                                        <Shadow Opacity="0.3" Offset="3,3" Radius="3"/>
+                                    </Border.Shadow>
+                                    <VisualStateManager.VisualStateGroups>
+                                        <VisualStateGroup Name="CommonStates">
+                                            <VisualState Name="Normal"></VisualState>
+                                            <VisualState Name="Selected">
+                                                <VisualState.Setters>
+                                                    <Setter Property="BackgroundColor" Value="LightGray"></Setter>
+                                                </VisualState.Setters>
+                                            </VisualState>
+
+                                        </VisualStateGroup>
+                                    </VisualStateManager.VisualStateGroups>
                                     <Grid RowSpacing="5">
                                         <Grid.RowDefinitions>
                                             <RowDefinition Height="Auto" />
@@ -107,7 +123,7 @@
                                         <Label Grid.Row="1" Grid.Column="0" Text="{Binding RankAndPlayers}" FontSize="14" TextColor="#333333" VerticalOptions="Center" HorizontalOptions="Start" />
                                         <Label Grid.Row="1" Grid.Column="1" Text="{Binding PointsAndRounds}" FontSize="14" TextColor="#333333" VerticalOptions="Center" HorizontalOptions="End" />
                                     </Grid>
-                                </Frame>
+                                </Border>
                             </DataTemplate>
                         </CollectionView.ItemTemplate>
                     </CollectionView>

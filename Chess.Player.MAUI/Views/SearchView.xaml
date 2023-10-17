@@ -5,9 +5,10 @@
              x:Class="Chess.Player.MAUI.Views.SearchView"
              x:DataType="vm:SearchViewModel"
              Title="Search">
-    <VerticalStackLayout>
-        <SearchBar Text="{Binding SearchText}" SearchCommand="{Binding GoCommand}" />
-        
+
+    <VerticalStackLayout Padding="20">
+        <SearchBar Text="{Binding SearchText}" SearchCommand="{Binding GoCommand}" Placeholder="Example: Smith John" HorizontalOptions="Start" />
+
         <CollectionView ItemsSource="{Binding RecentPlayers}"
                         SelectionMode="Single"
                         SelectedItem="{Binding SelectedPlayer}"
@@ -15,25 +16,52 @@
                         SelectionChangedCommandParameter="{Binding SelectedItem, Source={RelativeSource Self}}">
             <CollectionView.GroupHeaderTemplate>
                 <DataTemplate>
-                    <Label Text="Recent Players" />
+                    <Label Text="Recent Players" FontSize="16" FontAttributes="Bold" Margin="5,10" />
                 </DataTemplate>
             </CollectionView.GroupHeaderTemplate>
             <CollectionView.ItemTemplate>
                 <DataTemplate x:DataType="vm:RecentPlayerViewModel">
-                    <Grid Padding="5" VerticalOptions="Center">
-                        <Grid.RowDefinitions>
-                            <RowDefinition Height="Auto" />
-                            <RowDefinition Height="Auto" />
-                        </Grid.RowDefinitions>
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="Auto" />
-                            <ColumnDefinition Width="*" />
-                            <ColumnDefinition Width="Auto" />
-                        </Grid.ColumnDefinitions>
+                    <Border Stroke="LightGray"
+                            StrokeThickness="1"
+                            StrokeShape="RoundRectangle 10"
+                            Margin="0, 5"
+                            Padding="15"
+                            BackgroundColor="#f8f9fa">
+                        <Border.Shadow>
+                            <Shadow Opacity="0.3" Offset="3,3" Radius="3"/>
+                        </Border.Shadow>
+                        <VisualStateManager.VisualStateGroups>
+                            <VisualStateGroup Name="CommonStates">
+                                <VisualState Name="Normal"></VisualState>
+                                <VisualState Name="Selected">
+                                    <VisualState.Setters>
+                                        <Setter Property="BackgroundColor" Value="LightGray"></Setter>
+                                    </VisualState.Setters>
+                                </VisualState>
 
-                        <Label Grid.Row="0" Grid.Column="1" Text="{Binding LastName}" />
-                        <Label Grid.Row="1" Grid.Column="1" Text="{Binding FirstName}" />
-                    </Grid>
+                            </VisualStateGroup>
+                        </VisualStateManager.VisualStateGroups>
+                        <Grid RowSpacing="5">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="Auto" />
+                            </Grid.RowDefinitions>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition Width="*" />
+                            </Grid.ColumnDefinitions>
+
+                            <StackLayout Grid.Row="0" Grid.Column="0">
+                                <Label Text="{Binding FullName}" FontSize="16" FontAttributes="Bold" TextColor="#007bff" />
+                                <Label Text="{Binding ClubCity}" FontSize="14" TextColor="#888888" IsVisible="{Binding HasClubCity}" />
+                            </StackLayout>
+                            <Label Grid.Row="0" Grid.Column="1" Text="{Binding Title}" FontSize="14" FontAttributes="Bold" TextColor="#333333" Margin="5,0,0,0" VerticalOptions="Start" HorizontalOptions="End" />
+
+                            <Label Grid.Row="1" Grid.Column="0" Text="{Binding YearOfBirth}" FontSize="14" IsVisible="{Binding HasYearOfBirth}" />
+                            <Label Grid.Row="1" Grid.Column="1" Text="{Binding Years}" FontSize="14" IsVisible="{Binding HasYearOfBirth}" VerticalOptions="Start" HorizontalOptions="End" />
+                        </Grid>
+                    </Border>
                 </DataTemplate>
             </CollectionView.ItemTemplate>
         </CollectionView>

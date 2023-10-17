@@ -26,7 +26,7 @@ namespace Chess.Player.MAUI.ViewModels
         [RelayCommand]
         private async Task GoAsync()
         {
-            string[] searchParts = SearchText.Split(" ", StringSplitOptions.RemoveEmptyEntries);
+            string[] searchParts = SearchText.Split(new[] { " ", "," }, StringSplitOptions.RemoveEmptyEntries);
             await NavigateToPlayerViewAsync(searchParts[0], string.Join(" ", searchParts.Skip(1)));
         }
 
