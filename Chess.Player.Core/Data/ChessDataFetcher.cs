@@ -308,12 +308,12 @@ namespace Chess.Player.Data
         {
             return title switch
             {
-                "МС" => "МС",
-                "КМС" => "КМС",
-                "1" or "І" or "I" or "1900" => "1",
-                "2" or "II" or "ІІ" or "1800" => "2",
-                "3" or "III" or "ІІІ" or "1700" => "3",
-                "4" or "IV" or "ІV" or "1600" => "4",
+                "МС" => "NM",
+                "КМС" => "CM",
+                "1" or "І" or "I" or "1900" => "I",
+                "2" or "II" or "ІІ" or "1800" => "II",
+                "3" or "III" or "ІІІ" or "1700" => "III",
+                "4" or "IV" or "ІV" or "1600" => "IV",
                 "БР" or "Б/Р" or "поч" or "1500" => null,
                 _ => title,
             };
@@ -328,10 +328,10 @@ namespace Chess.Player.Data
         {
             return rating switch
             {
-                1900 => "1",
-                1800 => "2",
-                1700 => "3",
-                1600 => "4",
+                1900 => "I",
+                1800 => "II",
+                1700 => "III",
+                1600 => "IV",
                 1500 => null,
                 _ => null,
             };
