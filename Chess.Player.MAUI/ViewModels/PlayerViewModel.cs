@@ -4,7 +4,7 @@ using CommunityToolkit.Mvvm.Input;
 
 namespace Chess.Player.MAUI.ViewModels
 {
-    internal partial class PlayerViewModel : ObservableValidator
+    internal partial class PlayerViewModel : ObservableObject
     {
         private readonly IChessDataService _chessDataService;
 
@@ -46,13 +46,13 @@ namespace Chess.Player.MAUI.ViewModels
 
 
         [ObservableProperty]
-        private List<int?> _tournamentYears;
+        private List<TournamentYearViewModel> _tournamentYears;
 
         [ObservableProperty]
         [NotifyPropertyChangedFor(nameof(Tournaments))]
-        private int? _tournamentYear;
+        private TournamentYearViewModel _tournamentYear;
 
-        private Dictionary<int?, List<PlayerTournamentViewModel>> _allTournaments;
+        private Dictionary<TournamentYearViewModel, List<PlayerTournamentViewModel>> _allTournaments;
 
         public List<PlayerTournamentViewModel> Tournaments => _allTournaments?.GetValueOrDefault(TournamentYear) ?? new List<PlayerTournamentViewModel>();
 
@@ -86,7 +86,12 @@ namespace Chess.Player.MAUI.ViewModels
 
                 int index = searchResult.Count;
                 _allTournaments = searchResult.GroupBy(x => x.Tournament.EndDate?.Year)
-                    .ToDictionary(x => x.Key, x => x.Select(y => new PlayerTournamentViewModel
+                    .ToDictionary(x => new TournamentYearViewModel
+                    {
+                        Year = x.Key,
+                        Count = x.Count()
+                    },
+                    x => x.Select(y => new PlayerTournamentViewModel
                     {
                         TournamentNo = index--,
                         TournamentName = y.Tournament.Name,
@@ -102,7 +107,7 @@ namespace Chess.Player.MAUI.ViewModels
                     }).ToList());
 
                 TournamentYears = _allTournaments.Keys.ToList();
-                TournamentYear ??= TournamentYears.FirstOrDefault();
+                TournamentYear = TournamentYears.FirstOrDefault(x => TournamentYear is null || x.Year == TournamentYear.Year);
             }
             catch
             {

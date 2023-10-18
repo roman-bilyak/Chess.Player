@@ -48,7 +48,7 @@
                     <Label Grid.Row="3" Grid.Column="2" Text="Years" FontSize="14" FontAttributes="Bold" IsVisible="{Binding HasYearOfBirth, Mode=OneWay}" />
                     <Label Grid.Row="3" Grid.Column="3" Text="{Binding Years, Mode=OneWay}" FontSize="14" IsVisible="{Binding HasYearOfBirth, Mode=OneWay}" />
 
-                    <CollectionView ItemsSource="{Binding TournamentYears, Mode=OneWay}"
+                    <CollectionView ItemsSource="{Binding TournamentYears}"
                                     SelectedItem="{Binding TournamentYear}"
                                     Grid.Row="4"
                                     Grid.Column="0"
@@ -58,9 +58,9 @@
                             <LinearItemsLayout Orientation="Horizontal" />
                         </CollectionView.ItemsLayout>
                         <CollectionView.ItemTemplate>
-                            <DataTemplate>
+                            <DataTemplate x:DataType="vm:TournamentYearViewModel">
                                 <Grid Padding="10">
-                                    <Label Text="{Binding ., Mode=OneWay}" HorizontalOptions="Center" VerticalOptions="Center" />
+                                    <Label Text="{Binding Year}" HorizontalOptions="Center" VerticalOptions="Center" />
                                 </Grid>
                             </DataTemplate>
                         </CollectionView.ItemTemplate>
