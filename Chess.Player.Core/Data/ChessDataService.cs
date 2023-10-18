@@ -1,4 +1,6 @@
-﻿namespace Chess.Player.Data
+﻿using System.Globalization;
+
+namespace Chess.Player.Data
 {
     public class ChessDataService : IChessDataService
     {
@@ -20,12 +22,26 @@
         {
             OnProgressChanged(0);
 
-            SearchResult result = new(searchCriterias.FirstOrDefault()?.LastName, searchCriterias.FirstOrDefault()?.FirstName);
+            SearchResult result = new();
 
             List<PlayerTournament> playerTournaments = new();
             foreach (SearchCriteria searchCriteria in searchCriterias)
             {
-                List<PlayerTournament>? tournaments = await _dataFetcher.GetPlayerTournamentsAsync(searchCriteria.LastName, searchCriteria.FirstName, cancellationToken);
+                string name = CultureInfo.InvariantCulture.TextInfo.ToTitleCase(searchCriteria.Name);
+                string[] nameParts = name.Split(new[] { " ", "," }, StringSplitOptions.RemoveEmptyEntries);
+
+                string? lastName = nameParts.FirstOrDefault();
+                string? firstName = string.Join(" ", nameParts.Skip(1));
+
+                name = string.Join(" ", lastName, firstName);
+                result.Names.Add(name);
+
+                if (lastName is null)
+                {
+                    continue;
+                }
+
+                List<PlayerTournament>? tournaments = await _dataFetcher.GetPlayerTournamentsAsync(lastName, firstName, cancellationToken);
                 if (tournaments is not null)
                 {
                     playerTournaments.AddRange(tournaments);            
@@ -33,6 +49,7 @@
             }
 
             int i = 0;
+            List<PlayerTournamentInfo> playerTournamentInfos = new();
             foreach (PlayerTournament playerTournament in playerTournaments)
             {
                 TournamentInfo? tournamentInfo = await _cacheManager.GetOrAddAsync(nameof(TournamentInfo), $"{playerTournament.TournamentId}",
@@ -45,12 +62,15 @@
 
                 if (tournamentInfo is not null && playerInfo is not null)
                 {
-                    result.Add(new PlayerTournamentInfo(tournamentInfo, playerInfo));
+                    playerTournamentInfos.Add(new PlayerTournamentInfo(tournamentInfo, playerInfo));
                 }
 
                 int progressPercentage = i++ * 100 / playerTournaments.Count;
                 OnProgressChanged(progressPercentage);
             }
+
+            playerTournamentInfos = playerTournamentInfos.OrderByDescending(x => x.Tournament.EndDate).ToList();
+            result.AddRange(playerTournamentInfos);
 
             OnProgressChanged(100);
             return result;

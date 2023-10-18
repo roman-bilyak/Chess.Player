@@ -1,5 +1,6 @@
 ﻿using Chess.Player.Data;
 using Chess.Player.MAUI.ViewModels;
+using Chess.Player.Services;
 using CommunityToolkit.Maui;
 using Microsoft.Extensions.Logging;
 
@@ -20,8 +21,10 @@ namespace Chess.Player.MAUI
                 });
 
 #if DEBUG
-		builder.Logging.AddDebug();
+            builder.Logging.AddDebug();
 #endif
+            builder.Services.AddTransient<IPopupService, MAUIPopupService>();
+
             builder.Services.AddTransient<IChessDataManager, ChessDataManager>();
             builder.Services.AddTransient<IChessDataService, ChessDataService>();
             builder.Services.AddTransient<IChessDataFetcher, ChessResultsDataFetcher>();

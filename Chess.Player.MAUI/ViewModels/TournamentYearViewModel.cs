@@ -8,6 +8,9 @@ namespace Chess.Player.MAUI.ViewModels
         private int? _year;
 
         [ObservableProperty]
+        private int _years;
+
+        [ObservableProperty]
         private int _count;
     }
 }

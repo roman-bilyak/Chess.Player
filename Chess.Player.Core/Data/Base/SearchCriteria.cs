@@ -2,14 +2,11 @@
 {
     public class SearchCriteria
     {
-        public string LastName { get; private set; }
+        public string Name { get; private set; }
 
-        public string FirstName { get; private set; }
-
-        public SearchCriteria(string lastName, string firstName)
+        public SearchCriteria(string name)
         {
-            LastName = lastName;
-            FirstName = firstName;
+            Name = name;
         }
     }
 }

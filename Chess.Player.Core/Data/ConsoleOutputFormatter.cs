@@ -17,8 +17,7 @@ namespace Chess.Player.Data
         {
             Console.OutputEncoding = Encoding.UTF8;
 
-            Console.WriteLine($"Last Name: {searchResult.LastName}");
-            Console.WriteLine($"First Name: {searchResult.FirstName}");
+            Console.WriteLine($"Name(s): {string.Join(",", searchResult.Names)}");
             Console.WriteLine($"Title: {searchResult.Title}");
             Console.WriteLine($"FIDE ID: {searchResult.FideId}");
             Console.WriteLine($"Club/City: {searchResult.ClubCity}");
@@ -29,14 +28,14 @@ namespace Chess.Player.Data
             foreach (var group in searchResult.GroupBy(x => x.Tournament.EndDate?.Year))
             {
                 Console.WriteLine();
-                Console.WriteLine($"{group.Key} ({group.Key - searchResult.YearOfBirth} years) - {group.Count()} game(s)");
+                Console.WriteLine($"{group.Key} ({group.Key - searchResult.YearOfBirth} years) - {group.Count()} tournament(s)");
 
                 foreach (PlayerTournamentInfo playerTournament in group)
                 {
                     TournamentInfo tournament = playerTournament.Tournament;
                     PlayerInfo player = playerTournament.Player;
 
-                    Console.WriteLine($"{index--,-3} {player.Title,-3} {tournament.EndDate:dd.MM.yy} {(tournament.IsTeamTournament ? null : player.Rank),4} {tournament.NumberOfPlayers,4} {player.Points,4} {tournament.NumberOfRounds,2}  {tournament.Name}");
+                    Console.WriteLine($"{index--,-3} {player.Title,-3} {tournament.EndDate:dd.MM} {(tournament.IsTeamTournament ? null : player.Rank),4} {tournament.NumberOfPlayers,4} {player.Points,4} {tournament.NumberOfRounds,2}  {tournament.Name}");
                 }
             }
         }

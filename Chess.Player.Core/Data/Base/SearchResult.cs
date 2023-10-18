@@ -1,10 +1,8 @@
 ﻿namespace Chess.Player.Data
 {
-    public class SearchResult : SortedSet<PlayerTournamentInfo>
+    public class SearchResult : List<PlayerTournamentInfo>
     {
-        public string? LastName { get; set; }
-
-        public string? FirstName { get; set; }
+        public List<string> Names { get; protected set; } = new List<string>();
 
         public string? Title
         {
@@ -36,39 +34,6 @@
             {
                 return this.FirstOrDefault(x => x.Player.YearOfBirth is not null)?.Player.YearOfBirth;
             }
-        }
-
-        public SearchResult(string? lastName, string? firstName)
-            : base(new SearchResultComparer())
-        {
-            LastName = lastName;
-            FirstName = firstName;
-        }
-    }
-
-    internal class SearchResultComparer : IComparer<PlayerTournamentInfo>
-    {
-        public int Compare(PlayerTournamentInfo? x, PlayerTournamentInfo? y)
-        {
-            int result = Nullable.Compare(x?.Tournament.EndDate, y?.Tournament.EndDate);
-            if (result != 0)
-            {
-                return result * -1;
-            }
-
-            result = Nullable.Compare(x?.Tournament.Id, y?.Tournament.Id);
-            if (result != 0)
-            {
-                return result * -1;
-            }
-
-            result = Nullable.Compare(x?.Player.StartingRank, y?.Player.StartingRank);
-            if (result != 0)
-            {
-                return result * -1;
-            }
-
-            return string.Compare(x?.Player.Name, y?.Player.Name)  * -1;
         }
     }
 }

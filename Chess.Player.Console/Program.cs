@@ -12,11 +12,11 @@ try
 {
     SearchCriteria[] searchCriterias = new SearchCriteria[]
     {
-        new SearchCriteria("Мосесов", "Даниїл"),
-        new SearchCriteria("Мосесов", "Даниил"),
-        new SearchCriteria("Мосесов", "Данило"),
-        new SearchCriteria("Mosesov", "Danyil"),
-        new SearchCriteria("Mosesov", "Danylo"),
+        new SearchCriteria("Мосесов Даниїл"),
+        new SearchCriteria("Мосесов Даниил"),
+        new SearchCriteria("Мосесов Данило"),
+        new SearchCriteria("Mosesov Danyil"),
+        new SearchCriteria("Mosesov Danylo"),
     };
 
     IChessDataManager chessDataManager = serviceProvider.GetRequiredService<IChessDataManager>();

@@ -26,8 +26,7 @@ namespace Chess.Player.MAUI.ViewModels
         [RelayCommand]
         private async Task GoAsync()
         {
-            string[] searchParts = SearchText.Split(new[] { " ", "," }, StringSplitOptions.RemoveEmptyEntries);
-            await NavigateToPlayerViewAsync(searchParts[0], string.Join(" ", searchParts.Skip(1)));
+            await NavigateToPlayerViewAsync(SearchText);
         }
 
         [RelayCommand]
@@ -37,14 +36,13 @@ namespace Chess.Player.MAUI.ViewModels
             {
                 return;
             }
-            await NavigateToPlayerViewAsync(selectedPlayer.LastName, selectedPlayer.FirstName);
+            await NavigateToPlayerViewAsync($"{selectedPlayer.LastName} {selectedPlayer.FirstName}");
         }
 
-        private async Task NavigateToPlayerViewAsync(string lastName, string firstName)
+        private async Task NavigateToPlayerViewAsync(string name)
         {
             PlayerViewModel playerViewModel = _serviceProvider.GetService<PlayerViewModel>();
-            playerViewModel.LastName = lastName;
-            playerViewModel.FirstName = firstName;
+            playerViewModel.Names.Add(name);
 
             PlayerView playerView = new() { BindingContext = playerViewModel };
 

@@ -1,22 +1,21 @@
 ﻿using Chess.Player.Data;
+using Chess.Player.Services;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using System.Collections.ObjectModel;
 
 namespace Chess.Player.MAUI.ViewModels
 {
     internal partial class PlayerViewModel : ObservableObject
     {
         private readonly IChessDataService _chessDataService;
+        private readonly IPopupService _popupService;
+
+        public string Name => Names?.FirstOrDefault();
 
         [ObservableProperty]
-        [NotifyPropertyChangedFor(nameof(FullName))]
-        private string _lastName;
-
-        [ObservableProperty]
-        [NotifyPropertyChangedFor(nameof(FullName))]
-        private string _firstName;
-
-        public string FullName => $"{LastName} {FirstName}";
+        [NotifyPropertyChangedFor(nameof(Name))]
+        private ObservableCollection<string> _names = new();
 
         [ObservableProperty]
         [NotifyPropertyChangedFor(nameof(HasTitle))]
@@ -44,7 +43,6 @@ namespace Chess.Player.MAUI.ViewModels
 
         public int Years => DateTime.UtcNow.Year - YearOfBirth ?? 0;
 
-
         [ObservableProperty]
         private List<TournamentYearViewModel> _tournamentYears;
 
@@ -59,11 +57,17 @@ namespace Chess.Player.MAUI.ViewModels
         [ObservableProperty]
         private bool _isLoading = false;
 
-        public PlayerViewModel(IChessDataService chessDataService)
+        public PlayerViewModel
+        (
+            IChessDataService chessDataService,
+            IPopupService popupService
+        )
         {
             ArgumentNullException.ThrowIfNull(chessDataService);
+            ArgumentNullException.ThrowIfNull(popupService);
 
             _chessDataService = chessDataService;
+            _popupService = popupService;
         }
 
         [RelayCommand]
@@ -77,7 +81,14 @@ namespace Chess.Player.MAUI.ViewModels
         {
             try
             {
-                SearchResult searchResult = await _chessDataService.SearchAsync(new[] { new SearchCriteria(LastName, FirstName) }, cancellationToken);
+                SearchCriteria[] searchCriterias = Names.Select(x => new SearchCriteria(x)).ToArray();
+                SearchResult searchResult = await _chessDataService.SearchAsync(searchCriterias, cancellationToken);
+
+                Names.Clear();
+                foreach(var name in searchResult.Names)
+                {
+                    Names.Add(name);
+                }
 
                 Title = searchResult.Title;
                 FideId = searchResult.FideId;
@@ -89,6 +100,7 @@ namespace Chess.Player.MAUI.ViewModels
                     .ToDictionary(x => new TournamentYearViewModel
                     {
                         Year = x.Key,
+                        Years = x.Key - YearOfBirth ?? 0,
                         Count = x.Count()
                     },
                     x => x.Select(y => new PlayerTournamentViewModel
@@ -115,6 +127,19 @@ namespace Chess.Player.MAUI.ViewModels
             {
                 IsLoading = false;
             }
+        }
+
+        [RelayCommand]
+        private async Task AddNameAsync()
+        {
+            string name = await _popupService.DisplayPromptAsync("Add Name", placeholder: "Example: Smith John");
+            if (string.IsNullOrEmpty(name?.Trim()))
+            {
+                return;
+            }
+
+            Names.Add(name);
+            IsLoading = true;
         }
     }
 }
