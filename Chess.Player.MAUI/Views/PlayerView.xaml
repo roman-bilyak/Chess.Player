@@ -23,6 +23,7 @@
                         <RowDefinition Height="Auto" />
                         <RowDefinition Height="Auto" />
                         <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
                     </Grid.RowDefinitions>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="*" />
@@ -32,56 +33,44 @@
                     </Grid.ColumnDefinitions>
 
                     <Label Grid.Row="0" Grid.Column="0" Text="Name" FontSize="14" FontAttributes="Bold" />
-                    <Label Grid.Row="0" Grid.Column="1" Grid.ColumnSpan="3" Text="{Binding FullName}" FontSize="14" />
+                    <Label Grid.Row="0" Grid.Column="1" Grid.ColumnSpan="3" Text="{Binding FullName, Mode=OneWay}" FontSize="14" />
 
-                    <Label Grid.Row="1" Grid.Column="0" Text="Title" FontSize="14" FontAttributes="Bold" IsVisible="{Binding HasTitle}" />
-                    <Label Grid.Row="1" Grid.Column="1" Text="{Binding Title}" FontSize="14" IsVisible="{Binding HasTitle}" />
-                    <Label Grid.Row="1" Grid.Column="2" Text="Fide ID" FontSize="14" FontAttributes="Bold" IsVisible="{Binding HasFideId}" />
-                    <Label Grid.Row="1" Grid.Column="3" Text="{Binding FideId}" FontSize="14" IsVisible="{Binding HasFideId}" />
+                    <Label Grid.Row="1" Grid.Column="0" Text="Title" FontSize="14" FontAttributes="Bold" IsVisible="{Binding HasTitle, Mode=OneWay}" />
+                    <Label Grid.Row="1" Grid.Column="1" Text="{Binding Title, Mode=OneWay}" FontSize="14" IsVisible="{Binding HasTitle, Mode=OneWay}" />
+                    <Label Grid.Row="1" Grid.Column="2" Text="Fide ID" FontSize="14" FontAttributes="Bold" IsVisible="{Binding HasFideId, Mode=OneWay}" />
+                    <Label Grid.Row="1" Grid.Column="3" Text="{Binding FideId, Mode=OneWay}" FontSize="14" IsVisible="{Binding HasFideId, Mode=OneWay}" />
 
-                    <Label Grid.Row="2" Grid.Column="0" Text="Club/City" FontSize="14" FontAttributes="Bold" IsVisible="{Binding HasClubCity}" />
-                    <Label Grid.Row="2" Grid.Column="1" Grid.ColumnSpan="3" Text="{Binding ClubCity}" FontSize="14" IsVisible="{Binding HasClubCity}" />
-                    
-                    <Label Grid.Row="3" Grid.Column="0" Text="Year of Birth" FontSize="14" FontAttributes="Bold" IsVisible="{Binding HasYearOfBirth}" />
-                    <Label Grid.Row="3" Grid.Column="1" Text="{Binding YearOfBirth}" FontSize="14" IsVisible="{Binding HasYearOfBirth}" />
-                    <Label Grid.Row="3" Grid.Column="2" Text="Years" FontSize="14" FontAttributes="Bold" IsVisible="{Binding HasYearOfBirth}" />
-                    <Label Grid.Row="3" Grid.Column="3" Text="{Binding Years}" FontSize="14" IsVisible="{Binding HasYearOfBirth}" />
+                    <Label Grid.Row="2" Grid.Column="0" Text="Club/City" FontSize="14" FontAttributes="Bold" IsVisible="{Binding HasClubCity, Mode=OneWay}" />
+                    <Label Grid.Row="2" Grid.Column="1" Grid.ColumnSpan="3" Text="{Binding ClubCity, Mode=OneWay}" FontSize="14" IsVisible="{Binding HasClubCity, Mode=OneWay}" />
 
-                    <CollectionView ItemsSource="{Binding Tournaments}"
-                                    IsGrouped="True"
+                    <Label Grid.Row="3" Grid.Column="0" Text="Year of Birth" FontSize="14" FontAttributes="Bold" IsVisible="{Binding HasYearOfBirth, Mode=OneWay}" />
+                    <Label Grid.Row="3" Grid.Column="1" Text="{Binding YearOfBirth, Mode=OneWay}" FontSize="14" IsVisible="{Binding HasYearOfBirth, Mode=OneWay}" />
+                    <Label Grid.Row="3" Grid.Column="2" Text="Years" FontSize="14" FontAttributes="Bold" IsVisible="{Binding HasYearOfBirth, Mode=OneWay}" />
+                    <Label Grid.Row="3" Grid.Column="3" Text="{Binding Years, Mode=OneWay}" FontSize="14" IsVisible="{Binding HasYearOfBirth, Mode=OneWay}" />
+
+                    <CollectionView ItemsSource="{Binding TournamentYears, Mode=OneWay}"
+                                    SelectedItem="{Binding TournamentYear}"
                                     Grid.Row="4"
                                     Grid.Column="0"
-                                    Grid.ColumnSpan="4">
-                        <CollectionView.GroupHeaderTemplate>
-                            <DataTemplate x:DataType="vm:PlayerTournamentYearViewModel">
-                                <Grid>
-                                    <Grid.RowDefinitions>
-                                        <RowDefinition Height="Auto" />
-                                    </Grid.RowDefinitions>
-                                    <Grid.ColumnDefinitions>
-                                        <ColumnDefinition Width="*" />
-                                        <ColumnDefinition Width="*" />
-                                    </Grid.ColumnDefinitions>
-
-                                    <Label Text="{Binding YearGroup}"
-                                           Grid.Row="0"
-                                           Grid.Column="0"
-                                           BackgroundColor="Transparent"
-                                           FontSize="14"
-                                           FontAttributes="Bold" />
-                                    <HorizontalStackLayout Grid.Row="0"
-                                                           Grid.Column="1">
-                                        <Label Text="{Binding Count}"
-                                               BackgroundColor="Transparent"
-                                               FontSize="14"
-                                               FontAttributes="Bold" />
-                                        <Label Text=" tournament(s)"
-                                               BackgroundColor="Transparent"
-                                               FontSize="14" />
-                                    </HorizontalStackLayout>
+                                    Grid.ColumnSpan="4"
+                                    SelectionMode="Single">
+                        <CollectionView.ItemsLayout>
+                            <LinearItemsLayout Orientation="Horizontal" />
+                        </CollectionView.ItemsLayout>
+                        <CollectionView.ItemTemplate>
+                            <DataTemplate>
+                                <Grid Padding="10">
+                                    <Label Text="{Binding ., Mode=OneWay}" HorizontalOptions="Center" VerticalOptions="Center" />
                                 </Grid>
                             </DataTemplate>
-                        </CollectionView.GroupHeaderTemplate>
+                        </CollectionView.ItemTemplate>
+                    </CollectionView>
+
+                    <CollectionView ItemsSource="{Binding Tournaments, Mode=OneWay}"
+                                    Grid.Row="5"
+                                    Grid.Column="0"
+                                    Grid.ColumnSpan="4"
+                                    SelectionMode="Single">
                         <CollectionView.ItemTemplate>
                             <DataTemplate x:DataType="vm:PlayerTournamentViewModel">
                                 <Border Stroke="LightGray"
@@ -101,7 +90,6 @@
                                                     <Setter Property="BackgroundColor" Value="LightGray"></Setter>
                                                 </VisualState.Setters>
                                             </VisualState>
-
                                         </VisualStateGroup>
                                     </VisualStateManager.VisualStateGroups>
                                     <Grid RowSpacing="5">
@@ -113,15 +101,15 @@
                                             <ColumnDefinition Width="*" />
                                             <ColumnDefinition Width="Auto" />
                                         </Grid.ColumnDefinitions>
-                                        
-                                        <StackLayout Grid.Row="0" Grid.Column="0">
-                                            <Label Text="{Binding NoAndTournamentName}" FontSize="14" FontAttributes="Bold" TextColor="#007bff" />
-                                            <Label Text="{Binding TournamentDateAndLocation}" FontSize="14" TextColor="#888888" />
-                                        </StackLayout>
-                                        <Label Grid.Row="0" Grid.Column="1" Text="{Binding Title}" FontSize="14" FontAttributes="Bold" TextColor="#333333" Margin="5,0,0,0" VerticalOptions="Start" HorizontalOptions="End" />
 
-                                        <Label Grid.Row="1" Grid.Column="0" Text="{Binding RankAndPlayers}" FontSize="14" TextColor="#333333" VerticalOptions="Center" HorizontalOptions="Start" />
-                                        <Label Grid.Row="1" Grid.Column="1" Text="{Binding PointsAndRounds}" FontSize="14" TextColor="#333333" VerticalOptions="Center" HorizontalOptions="End" />
+                                        <StackLayout Grid.Row="0" Grid.Column="0">
+                                            <Label Text="{Binding NoAndTournamentName, Mode=OneWay}" FontSize="14" FontAttributes="Bold" TextColor="#007bff" />
+                                            <Label Text="{Binding TournamentDateAndLocation, Mode=OneWay}" FontSize="14" TextColor="#888888" />
+                                        </StackLayout>
+                                        <Label Grid.Row="0" Grid.Column="1" Text="{Binding Title, Mode=OneWay}" FontSize="14" FontAttributes="Bold" TextColor="#333333" Margin="5,0,0,0" VerticalOptions="Start" HorizontalOptions="End" />
+
+                                        <Label Grid.Row="1" Grid.Column="0" Text="{Binding RankAndPlayers, Mode=OneWay}" FontSize="14" TextColor="#333333" VerticalOptions="Center" HorizontalOptions="Start" />
+                                        <Label Grid.Row="1" Grid.Column="1" Text="{Binding PointsAndRounds, Mode=OneWay}" FontSize="14" TextColor="#333333" VerticalOptions="Center" HorizontalOptions="End" />
                                     </Grid>
                                 </Border>
                             </DataTemplate>

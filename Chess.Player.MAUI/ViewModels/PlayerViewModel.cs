@@ -1,7 +1,6 @@
 ﻿using Chess.Player.Data;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
-using System.Collections.ObjectModel;
 
 namespace Chess.Player.MAUI.ViewModels
 {
@@ -45,8 +44,17 @@ namespace Chess.Player.MAUI.ViewModels
 
         public int Years => DateTime.UtcNow.Year - YearOfBirth ?? 0;
 
+
         [ObservableProperty]
-        private ObservableCollection<PlayerTournamentYearViewModel> _tournaments = new();
+        private List<int?> _tournamentYears;
+
+        [ObservableProperty]
+        [NotifyPropertyChangedFor(nameof(Tournaments))]
+        private int? _tournamentYear;
+
+        private Dictionary<int?, List<PlayerTournamentViewModel>> _allTournaments;
+
+        public List<PlayerTournamentViewModel> Tournaments => _allTournaments?.GetValueOrDefault(TournamentYear) ?? new List<PlayerTournamentViewModel>();
 
         [ObservableProperty]
         private bool _isLoading = false;
@@ -70,59 +78,31 @@ namespace Chess.Player.MAUI.ViewModels
             try
             {
                 SearchResult searchResult = await _chessDataService.SearchAsync(new[] { new SearchCriteria(LastName, FirstName) }, cancellationToken);
+
                 Title = searchResult.Title;
                 FideId = searchResult.FideId;
                 ClubCity = searchResult.ClubCity;
                 YearOfBirth = searchResult.YearOfBirth;
 
-                Tournaments.Clear();
-
                 int index = searchResult.Count;
-                foreach (var yearGroup in searchResult.GroupBy(x => x.Tournament.EndDate?.Year))
-                {
-                    PlayerTournamentYearViewModel yearGroupViewModel = new()
+                _allTournaments = searchResult.GroupBy(x => x.Tournament.EndDate?.Year)
+                    .ToDictionary(x => x.Key, x => x.Select(y => new PlayerTournamentViewModel
                     {
-                        Year = yearGroup.Key,
-                        YearOfBirth = searchResult.YearOfBirth
-                    };
+                        TournamentNo = index--,
+                        TournamentName = y.Tournament.Name,
+                        TournamentLocation = y.Tournament.Location,
+                        TournamentStartDate = y.Tournament.StartDate,
+                        TournamentEndDate = y.Tournament.EndDate,
+                        ClubCity = y.Player.ClubCity,
+                        Title = y.Player.Title,
+                        Points = y.Player.Points,
+                        NumberOfRounds = y.Tournament.NumberOfRounds,
+                        Rank = y.Player.Rank,
+                        NumberOfPlayers = y.Tournament.NumberOfPlayers,
+                    }).ToList());
 
-                    foreach (var item in yearGroup)
-                    {
-                        yearGroupViewModel.Add(new PlayerTournamentViewModel
-                        {
-                            No = index--,
-                            TournamentName = item.Tournament.Name,
-                            TournamentLocation = item.Tournament.Location,
-                            TournamentStartDate = item.Tournament.StartDate,
-                            TournamentEndDate = item.Tournament.EndDate,
-                            ClubCity = item.Player.ClubCity,
-                            Title = item.Player.Title,
-                            Points = item.Player.Points,
-                            NumberOfRounds = item.Tournament.NumberOfRounds,
-                            Rank = item.Player.Rank,
-                            NumberOfPlayers = item.Tournament.NumberOfPlayers,
-                        });
-                    }
-                    Tournaments.Add(yearGroupViewModel);
-                }
-                
-
-                //foreach (PlayerTournamentInfo playerTournamentInfo in searchResult)
-                //{
-                //    Tournaments.Add(new PlayerTournamentViewModel
-                //    {
-                //        No = index--,
-                //        TournamentName = playerTournamentInfo.Tournament.Name,
-                //        TournamentStartDate = playerTournamentInfo.Tournament.StartDate,
-                //        TournamentEndDate = playerTournamentInfo.Tournament.EndDate,
-                //        ClubCity = playerTournamentInfo.Player.ClubCity,
-                //        Title = playerTournamentInfo.Player.Title,
-                //        Points = playerTournamentInfo.Player.Points,
-                //        NumberOfRounds = playerTournamentInfo.Tournament.NumberOfRounds,
-                //        Rank = playerTournamentInfo.Player.Rank,
-                //        NumberOfPlayers = playerTournamentInfo.Tournament.NumberOfPlayers,
-                //    });
-                //}
+                TournamentYears = _allTournaments.Keys.ToList();
+                TournamentYear ??= TournamentYears.FirstOrDefault();
             }
             catch
             {

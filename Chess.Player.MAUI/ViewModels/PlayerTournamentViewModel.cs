@@ -6,13 +6,13 @@ namespace Chess.Player.MAUI.ViewModels
     {
         [ObservableProperty]
         [NotifyPropertyChangedFor(nameof(NoAndTournamentName))]
-        private int _no;
+        private int _tournamentNo;
 
         [ObservableProperty]
         [NotifyPropertyChangedFor(nameof(NoAndTournamentName))]
         private string _tournamentName;
 
-        public string NoAndTournamentName => $"{No}. {TournamentName}";
+        public string NoAndTournamentName => $"{TournamentNo}. {TournamentName}";
 
         [ObservableProperty]
         [NotifyPropertyChangedFor(nameof(TournamentDateAndLocation))]

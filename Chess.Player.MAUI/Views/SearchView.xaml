@@ -6,7 +6,7 @@
              x:DataType="vm:SearchViewModel"
              Title="Search">
 
-    <VerticalStackLayout Padding="20">
+    <VerticalStackLayout Padding="20, 10">
         <SearchBar Text="{Binding SearchText}" SearchCommand="{Binding GoCommand}" Placeholder="Example: Smith John" HorizontalOptions="Start" />
 
         <CollectionView ItemsSource="{Binding RecentPlayers}"
