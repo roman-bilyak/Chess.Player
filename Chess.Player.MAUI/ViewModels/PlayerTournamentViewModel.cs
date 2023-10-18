@@ -31,32 +31,18 @@ namespace Chess.Player.MAUI.ViewModels
             : $"{TournamentStartDate:dd.MM} - {TournamentEndDate:dd.MM} - {TournamentLocation}";
 
         [ObservableProperty]
-        [NotifyPropertyChangedFor(nameof(HasClubCity))]
-        private string _clubCity;
+        private int? _numberOfPlayers;
 
-        public bool HasClubCity => !string.IsNullOrEmpty(ClubCity);
+        [ObservableProperty]
+        private int? _numberOfRounds;
 
         [ObservableProperty]
         private string _title;
 
         [ObservableProperty]
-        [NotifyPropertyChangedFor(nameof(PointsAndRounds))]
-        private double? _points;
-
-        [ObservableProperty]
-        [NotifyPropertyChangedFor(nameof(PointsAndRounds))]
-        private int? _numberOfRounds;
-
-        public string PointsAndRounds => $"{Points}/{NumberOfRounds}";
-
-        [ObservableProperty]
-        [NotifyPropertyChangedFor(nameof(RankAndPlayers))]
         private int? _rank;
 
         [ObservableProperty]
-        [NotifyPropertyChangedFor(nameof(RankAndPlayers))]
-        private int? _numberOfPlayers;
-
-        public string RankAndPlayers => $"{Rank}/{NumberOfPlayers}";
+        private double? _points;
     }
 }

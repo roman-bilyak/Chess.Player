@@ -98,12 +98,11 @@ namespace Chess.Player.MAUI.ViewModels
                         TournamentLocation = y.Tournament.Location,
                         TournamentStartDate = y.Tournament.StartDate,
                         TournamentEndDate = y.Tournament.EndDate,
-                        ClubCity = y.Player.ClubCity,
-                        Title = y.Player.Title,
-                        Points = y.Player.Points,
-                        NumberOfRounds = y.Tournament.NumberOfRounds,
-                        Rank = y.Player.Rank,
                         NumberOfPlayers = y.Tournament.NumberOfPlayers,
+                        NumberOfRounds = y.Tournament.NumberOfRounds,
+                        Title = y.Player.Title,
+                        Rank = y.Player.Rank,
+                        Points = y.Player.Points,
                     }).ToList());
 
                 TournamentYears = _allTournaments.Keys.ToList();

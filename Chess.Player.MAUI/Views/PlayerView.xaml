@@ -43,7 +43,7 @@
                     <Label Grid.Row="2" Grid.Column="0" Text="Club/City" FontSize="14" FontAttributes="Bold" IsVisible="{Binding HasClubCity, Mode=OneWay}" />
                     <Label Grid.Row="2" Grid.Column="1" Grid.ColumnSpan="3" Text="{Binding ClubCity, Mode=OneWay}" FontSize="14" IsVisible="{Binding HasClubCity, Mode=OneWay}" />
 
-                    <Label Grid.Row="3" Grid.Column="0" Text="Year of Birth" FontSize="14" FontAttributes="Bold" IsVisible="{Binding HasYearOfBirth, Mode=OneWay}" />
+                    <Label Grid.Row="3" Grid.Column="0" Text="YOB" FontSize="14" FontAttributes="Bold" IsVisible="{Binding HasYearOfBirth, Mode=OneWay}" />
                     <Label Grid.Row="3" Grid.Column="1" Text="{Binding YearOfBirth, Mode=OneWay}" FontSize="14" IsVisible="{Binding HasYearOfBirth, Mode=OneWay}" />
                     <Label Grid.Row="3" Grid.Column="2" Text="Years" FontSize="14" FontAttributes="Bold" IsVisible="{Binding HasYearOfBirth, Mode=OneWay}" />
                     <Label Grid.Row="3" Grid.Column="3" Text="{Binding Years, Mode=OneWay}" FontSize="14" IsVisible="{Binding HasYearOfBirth, Mode=OneWay}" />
@@ -76,8 +76,8 @@
                                 <Border Stroke="LightGray"
                                         StrokeThickness="1"
                                         StrokeShape="RoundRectangle 10"
-                                        Margin="0, 5"
-                                        Padding="15"
+                                        Margin="0,5"
+                                        Padding="10"
                                         BackgroundColor="#f8f9fa">
                                     <Border.Shadow>
                                         <Shadow Opacity="0.3" Offset="3,3" Radius="3"/>
@@ -92,24 +92,42 @@
                                             </VisualState>
                                         </VisualStateGroup>
                                     </VisualStateManager.VisualStateGroups>
-                                    <Grid RowSpacing="5">
+                                    <Grid ColumnSpacing="10">
                                         <Grid.RowDefinitions>
-                                            <RowDefinition Height="Auto" />
                                             <RowDefinition Height="Auto" />
                                         </Grid.RowDefinitions>
                                         <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="25" />
                                             <ColumnDefinition Width="*" />
-                                            <ColumnDefinition Width="Auto" />
+                                            <ColumnDefinition Width="30" />
                                         </Grid.ColumnDefinitions>
 
-                                        <StackLayout Grid.Row="0" Grid.Column="0">
-                                            <Label Text="{Binding NoAndTournamentName, Mode=OneWay}" FontSize="14" FontAttributes="Bold" TextColor="#007bff" />
+                                        <Label Grid.Row="0" Grid.Column="0" Text="{Binding TournamentNo, Mode=OneWay}" FontSize="10" TextColor="#888888" VerticalOptions="Start" HorizontalOptions="Center" />
+                                        <Label Grid.Row="0" Grid.Column="0" Text="{Binding Rank, Mode=OneWay}" FontSize="14" FontAttributes="Bold" TextColor="#333333" VerticalOptions="Center" HorizontalOptions="Center" />
+                                        <VerticalStackLayout Grid.Row="0" Grid.Column="1">
+                                            <Label Text="{Binding TournamentName, Mode=OneWay}" FontSize="14" FontAttributes="Bold" TextColor="#007bff" />
                                             <Label Text="{Binding TournamentDateAndLocation, Mode=OneWay}" FontSize="14" TextColor="#888888" />
-                                        </StackLayout>
-                                        <Label Grid.Row="0" Grid.Column="1" Text="{Binding Title, Mode=OneWay}" FontSize="14" FontAttributes="Bold" TextColor="#333333" Margin="5,0,0,0" VerticalOptions="Start" HorizontalOptions="End" />
-
-                                        <Label Grid.Row="1" Grid.Column="0" Text="{Binding RankAndPlayers, Mode=OneWay}" FontSize="14" TextColor="#333333" VerticalOptions="Center" HorizontalOptions="Start" />
-                                        <Label Grid.Row="1" Grid.Column="1" Text="{Binding PointsAndRounds, Mode=OneWay}" FontSize="14" TextColor="#333333" VerticalOptions="Center" HorizontalOptions="End" />
+                                            <HorizontalStackLayout Spacing="20">
+                                                <HorizontalStackLayout Spacing="5">
+                                                    <Image Source="players.svg">
+                                                        <Image.Behaviors>
+                                                            <mct:IconTintColorBehavior TintColor="LightSlateGray" />
+                                                        </Image.Behaviors>
+                                                    </Image>
+                                                    <Label Text="{Binding NumberOfPlayers, Mode=OneWay}" FontSize="14" TextColor="#888888" />
+                                                </HorizontalStackLayout>
+                                                <HorizontalStackLayout Spacing="5">
+                                                    <Image Source="rounds.svg">
+                                                        <Image.Behaviors>
+                                                            <mct:IconTintColorBehavior TintColor="LightSlateGray" />
+                                                        </Image.Behaviors>
+                                                    </Image>
+                                                    <Label Text="{Binding NumberOfRounds, Mode=OneWay}" FontSize="14" TextColor="#888888" />
+                                                </HorizontalStackLayout>
+                                            </HorizontalStackLayout>
+                                        </VerticalStackLayout>
+                                        <Label Grid.Row="0" Grid.Column="2" Text="{Binding Points, Mode=OneWay}" FontSize="14" FontAttributes="Bold" TextColor="#333333" VerticalOptions="Center" HorizontalOptions="Center" />
+                                        <Label Grid.Row="0" Grid.Column="2" Text="{Binding Title, Mode=OneWay}" FontSize="12" TextColor="#888888" VerticalOptions="End" HorizontalOptions="Center" />
                                     </Grid>
                                 </Border>
                             </DataTemplate>
