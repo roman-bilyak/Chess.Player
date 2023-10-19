@@ -44,7 +44,10 @@ namespace Chess.Player.MAUI.ViewModels
         public int Years => DateTime.UtcNow.Year - YearOfBirth ?? 0;
 
         [ObservableProperty]
+        [NotifyPropertyChangedFor(nameof(HasTournamentYears))]
         private List<TournamentYearViewModel> _tournamentYears;
+
+        public bool HasTournamentYears => TournamentYears?.Any() ?? false;
 
         [ObservableProperty]
         [NotifyPropertyChangedFor(nameof(Tournaments))]
