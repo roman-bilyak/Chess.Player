@@ -15,6 +15,9 @@
         <ToolbarItem Priority="0" Command="{Binding AddNameCommand}" IconImageSource="add_icon.svg" />
     </ContentPage.ToolbarItems>
     <StackLayout Padding="10">
+        <Frame IsVisible="{Binding HasError}" BorderColor="MediumVioletRed" BackgroundColor="PaleVioletRed" CornerRadius="5" Padding="10" Margin="10">
+            <Label Text="{Binding Error}" HorizontalOptions="Center" VerticalOptions="Start" />
+        </Frame>
         <RefreshView IsRefreshing="{Binding IsLoading}"
                      Command="{Binding LoadCommand}"
                      RefreshColor="Orange">

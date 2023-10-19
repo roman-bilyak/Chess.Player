@@ -63,6 +63,12 @@ namespace Chess.Player.MAUI.ViewModels
         [ObservableProperty]
         private double _progress;
 
+        [ObservableProperty]
+        [NotifyPropertyChangedFor(nameof(HasError))]
+        private string _error;
+
+        public bool HasError => !string.IsNullOrWhiteSpace(Error);
+
         public PlayerViewModel
         (
             IChessDataService chessDataService,
@@ -130,9 +136,12 @@ namespace Chess.Player.MAUI.ViewModels
 
                 TournamentYears = _allTournaments.Keys.ToList();
                 TournamentYear = TournamentYears.FirstOrDefault(x => TournamentYear is null || x.Year == TournamentYear.Year);
+
+                Error = null;
             }
             catch
             {
+                Error = "Something went wrong. Please try again later.";
             }
             finally
             {
