@@ -3,12 +3,18 @@
     x:Class="Chess.Player.MAUI.AppShell"
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-    xmlns:local="clr-namespace:Chess.Player.MAUI"
+    xmlns:views="clr-namespace:Chess.Player.MAUI.Views"
     Shell.FlyoutBehavior="Disabled">
 
-    <!--<ShellContent
-        Title="Home"
-        ContentTemplate="{DataTemplate local:MainPage}"
-        Route="MainPage" />-->
-
+    <TabBar x:Name="PhoneTabs">
+        <Tab Title="Home" Icon="tab_home.png">
+            <ShellContent ContentTemplate="{DataTemplate views:SearchView}"/>
+        </Tab>
+        <Tab Title="Favorites" Icon="tab_favorites.png">
+            <ShellContent ContentTemplate="{DataTemplate views:FavoritesView}"/>
+        </Tab>
+        <Tab Title="Settings" Icon="tab_settings.png">
+            <ShellContent ContentTemplate="{DataTemplate views:SettingsView}"/>
+        </Tab>
+    </TabBar>
 </Shell>

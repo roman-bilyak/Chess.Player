@@ -6,7 +6,7 @@
 		<!-- Uncomment to also build the tizen app. You will need to install tizen by following this: https://github.com/Samsung/Tizen.NET -->
 		<!-- <TargetFrameworks>$(TargetFrameworks);net7.0-tizen</TargetFrameworks> -->
 		<OutputType>Exe</OutputType>
-		<RootNamespace>$(MSBuildProjectName.Replace(" ", "_").Replace(".MAUI", ""))</RootNamespace>
+		<RootNamespace>Chess.Player.MAUI</RootNamespace>
 		<UseMaui>true</UseMaui>
 		<SingleProject>true</SingleProject>
 		<ImplicitUsings>enable</ImplicitUsings>
@@ -52,6 +52,9 @@
 		<None Remove="Resources\Images\add_icon.svg" />
 		<None Remove="Resources\Images\players.svg" />
 		<None Remove="Resources\Images\rounds.svg" />
+		<None Remove="Resources\Images\tab_favorites.svg" />
+		<None Remove="Resources\Images\tab_home.svg" />
+		<None Remove="Resources\Images\tab_settings.svg" />
 	</ItemGroup>
 
 	<ItemGroup>
@@ -65,10 +68,16 @@
 	</ItemGroup>
 
 	<ItemGroup>
+	  <MauiXaml Update="Views\FavoritesView.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
 	  <MauiXaml Update="Views\PlayerView.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
 	  <MauiXaml Update="Views\SearchView.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	  <MauiXaml Update="Views\SettingsView.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
 	</ItemGroup>

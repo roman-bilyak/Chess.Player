@@ -20,14 +20,13 @@ namespace Chess.Player.Services
         public async Task PushAsync<TPage, TViewModel>(Action<TViewModel> initViewModel)
             where TPage : Page
         {
-            TViewModel viewModel = _serviceProvider.GetRequiredService<TViewModel>();
-            if (initViewModel is not null)
+            TPage page = _serviceProvider.GetRequiredService<TPage>();
+
+            TViewModel viewModel = (TViewModel)page.BindingContext;
+            if (initViewModel is not null && viewModel is not null)
             {
                 initViewModel(viewModel);
             }
-
-            TPage page = _serviceProvider.GetRequiredService<TPage>();
-            page.BindingContext = viewModel;
 
             await App.Current.MainPage.Navigation.PushAsync(page);
         }

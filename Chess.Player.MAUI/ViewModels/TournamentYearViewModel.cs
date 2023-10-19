@@ -1,16 +1,16 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 
-namespace Chess.Player.MAUI.ViewModels
+namespace Chess.Player.MAUI.ViewModels;
+
+[INotifyPropertyChanged]
+public partial class TournamentYearViewModel : BaseViewModel
 {
-    internal partial class TournamentYearViewModel : ObservableObject
-    {
-        [ObservableProperty]
-        private int? _year;
+    [ObservableProperty]
+    private int? _year;
 
-        [ObservableProperty]
-        private int _years;
+    [ObservableProperty]
+    private int _years;
 
-        [ObservableProperty]
-        private int _count;
-    }
+    [ObservableProperty]
+    private int _count;
 }

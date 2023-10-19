@@ -1,48 +1,48 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 
-namespace Chess.Player.MAUI.ViewModels
+namespace Chess.Player.MAUI.ViewModels;
+
+[INotifyPropertyChanged]
+public partial class PlayerTournamentViewModel : BaseViewModel
 {
-    internal partial class PlayerTournamentViewModel : ObservableObject
-    {
-        [ObservableProperty]
-        [NotifyPropertyChangedFor(nameof(NoAndTournamentName))]
-        private int _tournamentNo;
+    [ObservableProperty]
+    [NotifyPropertyChangedFor(nameof(NoAndTournamentName))]
+    private int _tournamentNo;
 
-        [ObservableProperty]
-        [NotifyPropertyChangedFor(nameof(NoAndTournamentName))]
-        private string _tournamentName;
+    [ObservableProperty]
+    [NotifyPropertyChangedFor(nameof(NoAndTournamentName))]
+    private string _tournamentName;
 
-        public string NoAndTournamentName => $"{TournamentNo}. {TournamentName}";
+    public string NoAndTournamentName => $"{TournamentNo}. {TournamentName}";
 
-        [ObservableProperty]
-        [NotifyPropertyChangedFor(nameof(TournamentDateAndLocation))]
-        private DateTime? _tournamentStartDate;
+    [ObservableProperty]
+    [NotifyPropertyChangedFor(nameof(TournamentDateAndLocation))]
+    private DateTime? _tournamentStartDate;
 
-        [ObservableProperty]
-        [NotifyPropertyChangedFor(nameof(TournamentDateAndLocation))]
-        private DateTime? _tournamentEndDate;
+    [ObservableProperty]
+    [NotifyPropertyChangedFor(nameof(TournamentDateAndLocation))]
+    private DateTime? _tournamentEndDate;
 
-        [ObservableProperty]
-        [NotifyPropertyChangedFor(nameof(TournamentDateAndLocation))]
-        private string _tournamentLocation;
+    [ObservableProperty]
+    [NotifyPropertyChangedFor(nameof(TournamentDateAndLocation))]
+    private string _tournamentLocation;
 
-        public string TournamentDateAndLocation => TournamentStartDate == TournamentEndDate
-            ? $"{TournamentEndDate:dd.MM} - {TournamentLocation}"
-            : $"{TournamentStartDate:dd.MM} - {TournamentEndDate:dd.MM} - {TournamentLocation}";
+    public string TournamentDateAndLocation => TournamentStartDate == TournamentEndDate
+        ? $"{TournamentEndDate:dd.MM} - {TournamentLocation}"
+        : $"{TournamentStartDate:dd.MM} - {TournamentEndDate:dd.MM} - {TournamentLocation}";
 
-        [ObservableProperty]
-        private int? _numberOfPlayers;
+    [ObservableProperty]
+    private int? _numberOfPlayers;
 
-        [ObservableProperty]
-        private int? _numberOfRounds;
+    [ObservableProperty]
+    private int? _numberOfRounds;
 
-        [ObservableProperty]
-        private string _title;
+    [ObservableProperty]
+    private string _title;
 
-        [ObservableProperty]
-        private int? _rank;
+    [ObservableProperty]
+    private int? _rank;
 
-        [ObservableProperty]
-        private double? _points;
-    }
+    [ObservableProperty]
+    private double? _points;
 }

@@ -1,6 +1,4 @@
-﻿using Microsoft.Maui;
-
-namespace Chess.Player.Services
+﻿namespace Chess.Player.Services
 {
     internal class MAUIPopupService : IPopupService
     {
