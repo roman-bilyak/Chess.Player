@@ -60,6 +60,9 @@ namespace Chess.Player.MAUI.ViewModels
         [ObservableProperty]
         private bool _isLoading = false;
 
+        [ObservableProperty]
+        private double _progress;
+
         public PlayerViewModel
         (
             IChessDataService chessDataService,
@@ -71,6 +74,11 @@ namespace Chess.Player.MAUI.ViewModels
 
             _chessDataService = chessDataService;
             _popupService = popupService;
+
+            _chessDataService.ProgressChanged += (sender, e) =>
+            {
+                Progress = (double)e.ProgressPercentage / 100;
+            };
         }
 
         [RelayCommand]

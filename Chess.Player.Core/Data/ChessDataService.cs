@@ -20,7 +20,7 @@ namespace Chess.Player.Data
 
         public async Task<SearchResult> SearchAsync(SearchCriteria[] searchCriterias, CancellationToken cancellationToken)
         {
-            OnProgressChanged(0);
+            OnProgressChanged(1);
 
             SearchResult result = new();
 
