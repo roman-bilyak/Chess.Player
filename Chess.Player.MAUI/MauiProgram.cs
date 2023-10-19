@@ -1,6 +1,6 @@
 ﻿using Chess.Player.Data;
 using Chess.Player.MAUI.ViewModels;
-using Chess.Player.MAUI.Views;
+using Chess.Player.MAUI.Pages;
 using Chess.Player.Services;
 using CommunityToolkit.Maui;
 using Microsoft.Extensions.Logging;
@@ -36,8 +36,10 @@ namespace Chess.Player.MAUI
             builder.Services.AddTransient<SearchViewModel>();
             builder.Services.AddTransient<PlayerViewModel>();
 
-            builder.Services.AddTransient<SearchView>();
-            builder.Services.AddTransient<PlayerView>();
+            builder.Services.AddTransient<SearchPage>();
+            builder.Services.AddTransient<PlayerPage>();
+            builder.Services.AddTransient<FavoritesPage>();
+            builder.Services.AddTransient<SettingsPage>();
 
             return builder.Build();
         }

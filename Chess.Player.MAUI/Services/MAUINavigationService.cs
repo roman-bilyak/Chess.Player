@@ -4,7 +4,6 @@ namespace Chess.Player.Services
 {
     internal class MAUINavigationService : INavigationService
     {
-
         private readonly IServiceProvider _serviceProvider;
 
         public MAUINavigationService
@@ -17,15 +16,15 @@ namespace Chess.Player.Services
             _serviceProvider = serviceProvider;
         }
 
-        public async Task PushAsync<TPage, TViewModel>(Action<TViewModel> initViewModel)
+        public async Task PushAsync<TPage, TViewModel>(Action<TViewModel> init)
             where TPage : Page
         {
             TPage page = _serviceProvider.GetRequiredService<TPage>();
 
             TViewModel viewModel = (TViewModel)page.BindingContext;
-            if (initViewModel is not null && viewModel is not null)
+            if (init is not null && viewModel is not null)
             {
-                initViewModel(viewModel);
+                init(viewModel);
             }
 
             await App.Current.MainPage.Navigation.PushAsync(page);

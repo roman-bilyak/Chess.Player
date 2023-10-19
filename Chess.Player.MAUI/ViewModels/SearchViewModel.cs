@@ -1,4 +1,4 @@
-﻿using Chess.Player.MAUI.Views;
+﻿using Chess.Player.MAUI.Pages;
 using Chess.Player.Services;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
@@ -58,7 +58,7 @@ public partial class SearchViewModel : BaseViewModel
 
     private async Task NavigateToPlayerViewAsync(string name)
     {
-        await _navigationService.PushAsync<PlayerView, PlayerViewModel>(x =>
+        await _navigationService.PushAsync<PlayerPage, PlayerViewModel>(x =>
         {
             x.SearchCriterias.Add(name);
         });
