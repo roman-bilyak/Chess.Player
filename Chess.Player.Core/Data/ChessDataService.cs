@@ -31,20 +31,19 @@ namespace Chess.Player.Data
                 string[] nameParts = name.Split(new[] { " ", "," }, StringSplitOptions.RemoveEmptyEntries);
 
                 string? lastName = nameParts.FirstOrDefault();
-                string? firstName = string.Join(" ", nameParts.Skip(1));
-
-                name = string.Join(" ", lastName, firstName);
-                result.Names.Add(name);
-
                 if (lastName is null)
                 {
                     continue;
                 }
+                string? firstName = string.Join(" ", nameParts.Skip(1));
 
                 List<PlayerTournament>? tournaments = await _dataFetcher.GetPlayerTournamentsAsync(lastName, firstName, cancellationToken);
-                if (tournaments is not null)
+                if (tournaments is not null && tournaments.Any())
                 {
-                    playerTournaments.AddRange(tournaments);            
+                    name = string.Join(" ", lastName, firstName);
+                    result.Names.Add(name);
+
+                    playerTournaments.AddRange(tournaments);
                 }
             }
 

@@ -11,11 +11,17 @@ namespace Chess.Player.MAUI.ViewModels
         private readonly IChessDataService _chessDataService;
         private readonly IPopupService _popupService;
 
-        public string Name => Names?.FirstOrDefault();
+        public string Name => Names.FirstOrDefault() ?? SearchCriterias.FirstOrDefault();
 
         [ObservableProperty]
         [NotifyPropertyChangedFor(nameof(Name))]
+        private ObservableCollection<string> _searchCriterias = new();
+
+        [ObservableProperty]
+        [NotifyPropertyChangedFor(nameof(Name), nameof(HasNames))]
         private ObservableCollection<string> _names = new();
+
+        public bool HasNames => Names.Any();
 
         [ObservableProperty]
         [NotifyPropertyChangedFor(nameof(HasTitle))]
@@ -98,14 +104,16 @@ namespace Chess.Player.MAUI.ViewModels
         {
             try
             {
-                SearchCriteria[] searchCriterias = Names.Select(x => new SearchCriteria(x)).ToArray();
+                SearchCriteria[] searchCriterias = SearchCriterias.Select(x => new SearchCriteria(x)).ToArray();
                 SearchResult searchResult = await _chessDataService.SearchAsync(searchCriterias, cancellationToken);
 
                 Names.Clear();
-                foreach(var name in searchResult.Names)
+                foreach (string name in searchResult.Names)
                 {
                     Names.Add(name);
                 }
+                OnPropertyChanged(nameof(Name));
+                OnPropertyChanged(nameof(HasNames));
 
                 Title = searchResult.Title;
                 FideId = searchResult.FideId;
@@ -141,7 +149,7 @@ namespace Chess.Player.MAUI.ViewModels
             }
             catch
             {
-                Error = "Something went wrong. Please try again later.";
+                Error = string.Join("Oops! Something went wrong.", Environment.NewLine, "Please try again later.");
             }
             finally
             {
@@ -150,15 +158,15 @@ namespace Chess.Player.MAUI.ViewModels
         }
 
         [RelayCommand]
-        private async Task AddNameAsync()
+        private async Task AddSearchCriteriaAsync()
         {
-            string name = await _popupService.DisplayPromptAsync("Add Name", placeholder: "Example: Smith John");
-            if (string.IsNullOrEmpty(name?.Trim()))
+            string searchCriteria = await _popupService.DisplayPromptAsync("Add Search Criteria", placeholder: "Example: Smith John");
+            if (string.IsNullOrEmpty(searchCriteria?.Trim()))
             {
                 return;
             }
 
-            Names.Add(name);
+            SearchCriterias.Add(searchCriteria);
             IsLoading = true;
         }
     }

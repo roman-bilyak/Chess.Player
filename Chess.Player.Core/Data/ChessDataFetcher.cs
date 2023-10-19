@@ -126,7 +126,7 @@ namespace Chess.Player.Data
                     { "cb_alleDetails", "Show tounament details" }
                 };
 
-            response = await httpClient.PostAsync(tournamentInfoUrl, new FormUrlEncodedContent(postData));
+            response = await httpClient.PostAsync(tournamentInfoUrl, new FormUrlEncodedContent(postData), cancellationToken);
             if (!response.IsSuccessStatusCode)
             {
                 return null;

@@ -1,4 +1,5 @@
 ﻿using Chess.Player.MAUI.Views;
+using Chess.Player.Services;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using System.Collections.ObjectModel;
@@ -7,7 +8,7 @@ namespace Chess.Player.MAUI.ViewModels
 {
     public partial class SearchViewModel : ObservableObject
     {
-        private readonly IServiceProvider _serviceProvider;
+        private readonly INavigationService _navigationService;
 
         [ObservableProperty]
         private string _searchText;
@@ -18,9 +19,14 @@ namespace Chess.Player.MAUI.ViewModels
         [ObservableProperty]
         private RecentPlayerViewModel _selectedPlayer;
 
-        public SearchViewModel(IServiceProvider serviceProvider)
+        public SearchViewModel
+        (
+            INavigationService navigationService
+        )
         {
-            _serviceProvider = serviceProvider;
+            ArgumentNullException.ThrowIfNull(navigationService);
+
+            _navigationService = navigationService;
         }
 
         [RelayCommand]
@@ -41,12 +47,10 @@ namespace Chess.Player.MAUI.ViewModels
 
         private async Task NavigateToPlayerViewAsync(string name)
         {
-            PlayerViewModel playerViewModel = _serviceProvider.GetService<PlayerViewModel>();
-            playerViewModel.Names.Add(name);
-
-            PlayerView playerView = new() { BindingContext = playerViewModel };
-
-            await App.Current.MainPage.Navigation.PushAsync(playerView);
+            await _navigationService.PushAsync<PlayerView, PlayerViewModel>(x =>
+            {
+                x.SearchCriterias.Add(name);
+            });
 
             SelectedPlayer = null;
         }
