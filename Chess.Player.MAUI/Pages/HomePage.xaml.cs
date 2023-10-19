@@ -2,9 +2,9 @@ using Chess.Player.MAUI.ViewModels;
 
 namespace Chess.Player.MAUI.Pages;
 
-public partial class SearchPage : ContentPage
+public partial class HomePage : ContentPage
 {
-	public SearchPage(SearchViewModel searchViewModel)
+	public HomePage(HomeViewModel searchViewModel)
 	{
 		InitializeComponent();
 

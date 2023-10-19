@@ -7,7 +7,7 @@ using System.Collections.ObjectModel;
 namespace Chess.Player.MAUI.ViewModels;
 
 [INotifyPropertyChanged]
-public partial class SearchViewModel : BaseViewModel
+public partial class HomeViewModel : BaseViewModel
 {
     private readonly INavigationService _navigationService;
 
@@ -20,7 +20,7 @@ public partial class SearchViewModel : BaseViewModel
     [ObservableProperty]
     private RecentPlayerViewModel _selectedPlayer;
 
-    public SearchViewModel
+    public HomeViewModel
     (
         INavigationService navigationService
     )

@@ -33,10 +33,10 @@ namespace Chess.Player.MAUI
             builder.Services.AddTransient<ICacheManager, MAUIFileCacheManager>();
             builder.Services.AddTransient<IOutputFormatter, ConsoleOutputFormatter>();
 
-            builder.Services.AddTransient<SearchViewModel>();
+            builder.Services.AddTransient<HomeViewModel>();
             builder.Services.AddTransient<PlayerViewModel>();
 
-            builder.Services.AddTransient<SearchPage>();
+            builder.Services.AddTransient<HomePage>();
             builder.Services.AddTransient<PlayerPage>();
             builder.Services.AddTransient<FavoritesPage>();
             builder.Services.AddTransient<SettingsPage>();

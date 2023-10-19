@@ -8,7 +8,7 @@
 
     <TabBar x:Name="PhoneTabs">
         <Tab Title="Home" Icon="tab_home.png">
-            <ShellContent ContentTemplate="{DataTemplate pages:SearchPage}"/>
+            <ShellContent ContentTemplate="{DataTemplate pages:HomePage}"/>
         </Tab>
         <Tab Title="Favorites" Icon="tab_favorites.png">
             <ShellContent ContentTemplate="{DataTemplate pages:FavoritesPage}"/>
