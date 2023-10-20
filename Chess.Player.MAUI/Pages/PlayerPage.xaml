@@ -11,7 +11,7 @@
         <mct:EventToCommandBehavior Command="{Binding LoadCancelCommand}" EventName="Disappearing" />
     </ContentPage.Behaviors>
     <ContentPage.ToolbarItems>
-        <ToolbarItem Text="Add To Favorites" Order="Secondary" />
+        <ToolbarItem Text="{Binding ToggleFavoriteButtonName}" Order="Secondary" Command="{Binding ToggleFavoriteCommand}" />
         <ToolbarItem Text="Add Search Criteria" Order="Secondary" Command="{Binding AddSearchCriteriaCommand}" />
         <ToolbarItem Text="Refresh" Order="Secondary" Command="{Binding RefreshCommand}" />
     </ContentPage.ToolbarItems>

@@ -1,9 +1,11 @@
 ﻿using Chess.Player.Data;
+using Chess.Player.MAUI.Services;
 using Chess.Player.Services;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using System.Collections.ObjectModel;
 using System.Net;
+using System.Threading;
 
 namespace Chess.Player.MAUI.ViewModels;
 
@@ -11,6 +13,7 @@ namespace Chess.Player.MAUI.ViewModels;
 public partial class PlayerViewModel : BaseViewModel
 {
     private readonly IChessDataService _chessDataService;
+    private readonly IFavoritePlayerService _favoritePlayerService;
     private readonly ICacheManager _cacheManager;
     private readonly IPopupService _popupService;
 
@@ -81,18 +84,27 @@ public partial class PlayerViewModel : BaseViewModel
     [ObservableProperty]
     private bool _forceRefresh;
 
+    [ObservableProperty]
+    [NotifyPropertyChangedFor(nameof(ToggleFavoriteButtonName))]
+    private bool _isFavorite;
+
+    public string ToggleFavoriteButtonName => !IsFavorite ? "Add To Favorites" : "Remove From Favorites";
+
     public PlayerViewModel
     (
         IChessDataService chessDataService,
+        IFavoritePlayerService favoritePlayerService,
         ICacheManager cacheManager,
         IPopupService popupService
     )
     {
         ArgumentNullException.ThrowIfNull(chessDataService);
+        ArgumentNullException.ThrowIfNull(favoritePlayerService);
         ArgumentNullException.ThrowIfNull(cacheManager);
         ArgumentNullException.ThrowIfNull(popupService);
 
         _chessDataService = chessDataService;
+        _favoritePlayerService = favoritePlayerService;
         _cacheManager = cacheManager;
         _popupService = popupService;
 
@@ -122,16 +134,18 @@ public partial class PlayerViewModel : BaseViewModel
         try
         {
             SearchCriteria[] searchCriterias = SearchCriterias.Select(x => new SearchCriteria(x)).ToArray();
-            SearchResult searchResult = await _cacheManager.GetOrAddAsync("PlayerProfile", 
-                string.Join("_", searchCriterias.Select(x => x.Name)), 
+            SearchResult searchResult = await _cacheManager.GetOrAddAsync("PlayerProfile",
+                string.Join("_", searchCriterias.Select(x => x.Name)),
                 async () => await _chessDataService.SearchAsync(searchCriterias, cancellationToken),
-                ForceRefresh);
+                ForceRefresh,
+                cancellationToken);
 
             Names.Clear();
             foreach (string name in searchResult.Names)
             {
                 Names.Add(name);
             }
+            IsFavorite = await _favoritePlayerService.ContainsAsync(Name, CancellationToken.None);
             OnPropertyChanged(nameof(Name));
             OnPropertyChanged(nameof(HasNames));
 
@@ -197,5 +211,11 @@ public partial class PlayerViewModel : BaseViewModel
 
         SearchCriterias.Add(searchCriteria);
         IsLoading = true;
+    }
+
+    [RelayCommand]
+    private async Task ToggleFavoriteAsync(CancellationToken cancellationToken)
+    {
+        IsFavorite = await _favoritePlayerService.ToggleAsync(Name, cancellationToken);
     }
 }
