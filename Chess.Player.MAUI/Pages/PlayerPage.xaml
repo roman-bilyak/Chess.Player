@@ -11,9 +11,9 @@
         <mct:EventToCommandBehavior Command="{Binding LoadCancelCommand}" EventName="Disappearing" />
     </ContentPage.Behaviors>
     <ContentPage.ToolbarItems>
-        <ToolbarItem IconImageSource="tab_favorites.svg" Text="Add To Favorites" Order="Default" />
-        <ToolbarItem IconImageSource="add_icon.svg" Text="Add Search Criteria" Order="Secondary" Command="{Binding AddSearchCriteriaCommand}" />
-        <ToolbarItem IconImageSource="refresh.svg" Text="Reload" Order="Secondary" Command="{Binding StartCommand}" />
+        <ToolbarItem Text="Add To Favorites" Order="Secondary" />
+        <ToolbarItem Text="Add Search Criteria" Order="Secondary" Command="{Binding AddSearchCriteriaCommand}" />
+        <ToolbarItem Text="Refresh" Order="Secondary" Command="{Binding RefreshCommand}" />
     </ContentPage.ToolbarItems>
     <StackLayout Padding="10">
         <Frame BorderColor="HotPink" BackgroundColor="LightPink" CornerRadius="5" Padding="10" Margin="10" IsVisible="{Binding HasError}">

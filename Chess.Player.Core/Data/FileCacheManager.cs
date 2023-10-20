@@ -6,13 +6,16 @@ namespace Chess.Player.Data
     {
         protected abstract string RootPath { get; }
 
-        public async Task<T?> GetOrAddAsync<T>(string cacheType, string key, Func<Task<T?>> valueFactory)
+        public async Task<T?> GetOrAddAsync<T>(string cacheType, string key, Func<Task<T?>> valueFactory, bool forceRefresh)
         {
             string cacheFilePath = GetCacheFilePath(cacheType, key);
-            if (File.Exists(cacheFilePath))
+            if (!forceRefresh)
             {
-                string json = File.ReadAllText(cacheFilePath);
-                return JsonConvert.DeserializeObject<T>(json);
+                if (File.Exists(cacheFilePath))
+                {
+                    string json = File.ReadAllText(cacheFilePath);
+                    return JsonConvert.DeserializeObject<T>(json);
+                }
             }
 
             T? value = await valueFactory();

@@ -3,6 +3,7 @@ using Chess.Player.Services;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using System.Collections.ObjectModel;
+using System.Net;
 
 namespace Chess.Player.MAUI.ViewModels;
 
@@ -10,6 +11,7 @@ namespace Chess.Player.MAUI.ViewModels;
 public partial class PlayerViewModel : BaseViewModel
 {
     private readonly IChessDataService _chessDataService;
+    private readonly ICacheManager _cacheManager;
     private readonly IPopupService _popupService;
 
     public string Name => Names.FirstOrDefault() ?? SearchCriterias.FirstOrDefault();
@@ -76,16 +78,22 @@ public partial class PlayerViewModel : BaseViewModel
 
     public bool HasError => !string.IsNullOrWhiteSpace(Error);
 
+    [ObservableProperty]
+    private bool _forceRefresh;
+
     public PlayerViewModel
     (
         IChessDataService chessDataService,
+        ICacheManager cacheManager,
         IPopupService popupService
     )
     {
         ArgumentNullException.ThrowIfNull(chessDataService);
+        ArgumentNullException.ThrowIfNull(cacheManager);
         ArgumentNullException.ThrowIfNull(popupService);
 
         _chessDataService = chessDataService;
+        _cacheManager = cacheManager;
         _popupService = popupService;
 
         _chessDataService.ProgressChanged += (sender, e) =>
@@ -97,6 +105,14 @@ public partial class PlayerViewModel : BaseViewModel
     [RelayCommand]
     private void Start()
     {
+        ForceRefresh = false;
+        IsLoading = true;
+    }
+
+    [RelayCommand]
+    private void Refresh()
+    {
+        ForceRefresh = true;
         IsLoading = true;
     }
 
@@ -106,7 +122,10 @@ public partial class PlayerViewModel : BaseViewModel
         try
         {
             SearchCriteria[] searchCriterias = SearchCriterias.Select(x => new SearchCriteria(x)).ToArray();
-            SearchResult searchResult = await _chessDataService.SearchAsync(searchCriterias, cancellationToken);
+            SearchResult searchResult = await _cacheManager.GetOrAddAsync("PlayerProfile", 
+                string.Join("_", searchCriterias.Select(x => x.Name)), 
+                async () => await _chessDataService.SearchAsync(searchCriterias, cancellationToken),
+                ForceRefresh);
 
             Names.Clear();
             foreach (string name in searchResult.Names)
@@ -148,6 +167,14 @@ public partial class PlayerViewModel : BaseViewModel
 
             Error = null;
         }
+        catch (OperationCanceledException)
+        {
+
+        }
+        catch (WebException)
+        {
+            Error = "No internet connection.";
+        }
         catch
         {
             Error = "Oops! Something went wrong.";
@@ -155,6 +182,7 @@ public partial class PlayerViewModel : BaseViewModel
         finally
         {
             IsLoading = false;
+            ForceRefresh = true;
         }
     }
 
