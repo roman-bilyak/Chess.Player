@@ -3,6 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:mct="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
              xmlns:vm="clr-namespace:Chess.Player.MAUI.ViewModels"
+             xmlns:views="clr-namespace:Chess.Player.MAUI.Views"
              x:Class="Chess.Player.MAUI.Pages.FavoritesPage"
              x:DataType="vm:FavoritesViewModel"
              Title="Favorites">
@@ -17,44 +18,7 @@
                     SelectionChangedCommandParameter="{Binding SelectedItem, Source={RelativeSource Self}}">
             <CollectionView.ItemTemplate>
                 <DataTemplate x:DataType="vm:PlayerCardViewModel">
-                    <Border Stroke="LightGray"
-                        StrokeThickness="1"
-                        StrokeShape="RoundRectangle 10"
-                        Margin="0, 5"
-                        Padding="15"
-                        BackgroundColor="#f8f9fa">
-                        <Border.Shadow>
-                            <Shadow Opacity="0.3" Offset="3,3" Radius="3"/>
-                        </Border.Shadow>
-                        <VisualStateManager.VisualStateGroups>
-                            <VisualStateGroup Name="CommonStates">
-                                <VisualState Name="Normal"></VisualState>
-                                <VisualState Name="Selected">
-                                    <VisualState.Setters>
-                                        <Setter Property="BackgroundColor" Value="LightGray"></Setter>
-                                    </VisualState.Setters>
-                                </VisualState>
-
-                            </VisualStateGroup>
-                        </VisualStateManager.VisualStateGroups>
-                        <Grid RowSpacing="5" ColumnSpacing="5">
-                            <Grid.RowDefinitions>
-                                <RowDefinition Height="Auto" />
-                            </Grid.RowDefinitions>
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="*" />
-                                <ColumnDefinition Width="Auto" />
-                            </Grid.ColumnDefinitions>
-
-                            <VerticalStackLayout Grid.Row="0" Grid.Column="0">
-                                <Label Text="{Binding FullName}" FontSize="16" FontAttributes="Bold" TextColor="#007bff" />
-                                <Label Text="{Binding ClubCity}" FontSize="14" TextColor="#888888" IsVisible="{Binding HasClubCity}" />
-                                <Label Text="{Binding YearOfBirth}" FontSize="14" TextColor="#888888" IsVisible="{Binding HasYearOfBirth}" />
-                            </VerticalStackLayout>
-                            <Label Grid.Row="0" Grid.Column="1" Text="{Binding Title}" FontSize="14" FontAttributes="Bold" TextColor="#333333" VerticalOptions="Start" HorizontalOptions="End" />
-                            <Label Grid.Row="0" Grid.Column="1" Text="{Binding Years}" FontSize="14" IsVisible="{Binding HasYearOfBirth}" VerticalOptions="End" HorizontalOptions="End" />
-                        </Grid>
-                    </Border>
+                    <views:PlayerCardView BindingContext="{Binding .}" />
                 </DataTemplate>
             </CollectionView.ItemTemplate>
         </CollectionView>
