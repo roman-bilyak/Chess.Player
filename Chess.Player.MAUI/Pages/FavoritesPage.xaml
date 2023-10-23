@@ -11,16 +11,6 @@
         <mct:EventToCommandBehavior Command="{Binding LoadCommand}" EventName="Appearing" />
     </ContentPage.Behaviors>
     <VerticalStackLayout Padding="20, 10" Spacing="20">
-        <CollectionView ItemsSource="{Binding Players}"
-                    SelectionMode="Single"
-                    SelectedItem="{Binding SelectedPlayer}"
-                    SelectionChangedCommand="{Binding ItemSelectedCommand}"
-                    SelectionChangedCommandParameter="{Binding SelectedItem, Source={RelativeSource Self}}">
-            <CollectionView.ItemTemplate>
-                <DataTemplate x:DataType="vm:PlayerCardViewModel">
-                    <views:PlayerCardView BindingContext="{Binding .}" />
-                </DataTemplate>
-            </CollectionView.ItemTemplate>
-        </CollectionView>
+        <views:PlayerCardListView BindingContext="{Binding PlayerCardList}" />
     </VerticalStackLayout>
 </ContentPage>

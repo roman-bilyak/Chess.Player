@@ -9,7 +9,7 @@ using System.Net;
 namespace Chess.Player.MAUI.ViewModels;
 
 [INotifyPropertyChanged]
-public partial class PlayerViewModel : BaseViewModel
+public partial class PlayerViewModel : BaseViewModel, IDisposable
 {
     private readonly IChessDataService _chessDataService;
     private readonly IPlayerHistoryService _playerHistoryService;
@@ -112,10 +112,7 @@ public partial class PlayerViewModel : BaseViewModel
         _cacheManager = cacheManager;
         _popupService = popupService;
 
-        _chessDataService.ProgressChanged += (sender, e) =>
-        {
-            Progress = (double)e.ProgressPercentage / 100;
-        };
+        _chessDataService.ProgressChanged += OnProgressChanged;
     }
 
     [RelayCommand]
@@ -223,5 +220,15 @@ public partial class PlayerViewModel : BaseViewModel
     private async Task ToggleFavoriteAsync(CancellationToken cancellationToken)
     {
         IsFavorite = await _favoritePlayerService.ToggleAsync(Name, cancellationToken);
+    }
+
+    private void OnProgressChanged(object sender, SearchProgressEventArgs e)
+    {
+        Progress = (double)e.ProgressPercentage / 100;
+    }
+
+    public void Dispose()
+    {
+        _chessDataService.ProgressChanged -= OnProgressChanged;
     }
 }

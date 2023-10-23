@@ -4,7 +4,18 @@
              xmlns:vm="clr-namespace:Chess.Player.MAUI.ViewModels"
              x:Class="Chess.Player.MAUI.Views.PlayerCardView"
              x:DataType="vm:PlayerCardViewModel">
-    <Border Stroke="LightGray"
+    <VisualStateManager.VisualStateGroups>
+        <VisualStateGroup Name="CommonStates">
+            <VisualState Name="Normal"></VisualState>
+            <VisualState Name="Selected">
+                <VisualState.Setters>
+                    <Setter TargetName="border" Property="Border.BackgroundColor" Value="LightGray" />
+                </VisualState.Setters>
+            </VisualState>
+        </VisualStateGroup>
+    </VisualStateManager.VisualStateGroups>
+    <Border x:Name="border" 
+            Stroke="LightGray"
             StrokeThickness="1"
             StrokeShape="RoundRectangle 10"
             Margin="0, 5"
@@ -13,16 +24,6 @@
         <Border.Shadow>
             <Shadow Opacity="0.3" Offset="3,3" Radius="3"/>
         </Border.Shadow>
-        <VisualStateManager.VisualStateGroups>
-            <VisualStateGroup Name="CommonStates">
-                <VisualState Name="Normal"></VisualState>
-                <VisualState Name="Selected">
-                    <VisualState.Setters>
-                        <Setter Property="BackgroundColor" Value="LightGray"></Setter>
-                    </VisualState.Setters>
-                </VisualState>
-            </VisualStateGroup>
-        </VisualStateManager.VisualStateGroups>
         <Grid RowSpacing="5" ColumnSpacing="5">
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto" />

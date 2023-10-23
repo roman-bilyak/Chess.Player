@@ -2,7 +2,7 @@
 {
     public class SearchResult : List<PlayerTournamentInfo>
     {
-        public List<string> Names { get; protected set; } = new List<string>();
+        public List<string> Names { get; set; } = new List<string>();
 
         public string? Title
         {

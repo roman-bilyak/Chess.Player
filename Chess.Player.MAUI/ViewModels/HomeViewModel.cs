@@ -3,7 +3,6 @@ using Chess.Player.MAUI.Services;
 using Chess.Player.Services;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
-using System.Collections.ObjectModel;
 
 namespace Chess.Player.MAUI.ViewModels;
 
@@ -17,10 +16,7 @@ public partial class HomeViewModel : BaseViewModel
     private string _searchText;
 
     [ObservableProperty]
-    private ObservableCollection<PlayerCardViewModel> _players = new();
-
-    [ObservableProperty]
-    private PlayerCardViewModel _selectedPlayer;
+    private PlayerCardListViewModel _playerCardList;
 
     public HomeViewModel
     (
@@ -33,42 +29,27 @@ public partial class HomeViewModel : BaseViewModel
 
         _playerHistoryService = playerHistoryService;
         _navigationService = navigationService;
+
+        PlayerCardList = new(_navigationService);
     }
 
     [RelayCommand]
     private async Task LoadAsync(CancellationToken cancellationToken)
     {
-        Players.Clear();
+        PlayerCardList.Players.Clear();
 
-        foreach(var player in await _playerHistoryService.GetAllAsync(cancellationToken))
+        foreach (var player in await _playerHistoryService.GetAllAsync(cancellationToken))
         {
-            Players.Add(new PlayerCardViewModel { LastName = player });
+            PlayerCardList.Players.Add(new PlayerCardViewModel { LastName = player });
         }
     }
 
     [RelayCommand]
     private async Task SearchAsync()
     {
-        await NavigateToPlayerViewAsync(SearchText);
-    }
-
-    [RelayCommand]
-    private async Task ItemSelectedAsync(PlayerCardViewModel selectedPlayer)
-    {
-        if (selectedPlayer == null)
-        {
-            return;
-        }
-        await NavigateToPlayerViewAsync($"{selectedPlayer.LastName} {selectedPlayer.FirstName}");
-    }
-
-    private async Task NavigateToPlayerViewAsync(string name)
-    {
         await _navigationService.PushAsync<PlayerPage, PlayerViewModel>(x =>
         {
-            x.SearchCriterias.Add(name);
+            x.SearchCriterias.Add(SearchText);
         });
-
-        SelectedPlayer = null;
     }
 }

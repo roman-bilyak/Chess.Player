@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentView xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:vm="clr-namespace:Chess.Player.MAUI.ViewModels"
+             xmlns:views="clr-namespace:Chess.Player.MAUI.Views"
+             x:Class="Chess.Player.MAUI.Views.PlayerCardListView"
+             x:DataType="vm:PlayerCardListViewModel">
+    <CollectionView ItemsSource="{Binding Players}"
+                        SelectionMode="Single"
+                        SelectedItem="{Binding SelectedPlayer}"
+                        SelectionChangedCommand="{Binding ItemSelectedCommand}"
+                        SelectionChangedCommandParameter="{Binding SelectedItem, Source={RelativeSource Self}}">
+        <CollectionView.ItemTemplate>
+            <DataTemplate x:DataType="vm:PlayerCardViewModel">
+                <views:PlayerCardView BindingContext="{Binding .}" />
+            </DataTemplate>
+        </CollectionView.ItemTemplate>
+    </CollectionView>
+</ContentView>
