@@ -1,10 +1,13 @@
 ﻿using Chess.Player.Data;
-using Chess.Player.MAUI.ViewModels;
 using Chess.Player.MAUI.Pages;
+using Chess.Player.MAUI.Services;
+using Chess.Player.MAUI.ViewModels;
 using Chess.Player.Services;
 using CommunityToolkit.Maui;
+
+#if DEBUG
 using Microsoft.Extensions.Logging;
-using Chess.Player.MAUI.Services;
+#endif
 
 namespace Chess.Player.MAUI
 {
@@ -27,6 +30,7 @@ namespace Chess.Player.MAUI
 #endif
             builder.Services.AddTransient<IPopupService, MAUIPopupService>();
             builder.Services.AddTransient<INavigationService, MAUINavigationService>();
+            builder.Services.AddSingleton<IPlayerHistoryService, PlayerHistoryService>();
             builder.Services.AddSingleton<IFavoritePlayerService, FavoritePlayerService>();
 
             builder.Services.AddTransient<IChessDataManager, ChessDataManager>();

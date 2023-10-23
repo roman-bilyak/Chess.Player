@@ -13,6 +13,7 @@ namespace Chess.Player.MAUI.ViewModels;
 public partial class PlayerViewModel : BaseViewModel
 {
     private readonly IChessDataService _chessDataService;
+    private readonly IPlayerHistoryService _playerHistoryService;
     private readonly IFavoritePlayerService _favoritePlayerService;
     private readonly ICacheManager _cacheManager;
     private readonly IPopupService _popupService;
@@ -93,17 +94,21 @@ public partial class PlayerViewModel : BaseViewModel
     public PlayerViewModel
     (
         IChessDataService chessDataService,
+        IPlayerHistoryService historyService,
         IFavoritePlayerService favoritePlayerService,
         ICacheManager cacheManager,
         IPopupService popupService
     )
     {
         ArgumentNullException.ThrowIfNull(chessDataService);
+        ArgumentNullException.ThrowIfNull(historyService);
         ArgumentNullException.ThrowIfNull(favoritePlayerService);
         ArgumentNullException.ThrowIfNull(cacheManager);
         ArgumentNullException.ThrowIfNull(popupService);
 
         _chessDataService = chessDataService;
+
+        _playerHistoryService = historyService;
         _favoritePlayerService = favoritePlayerService;
         _cacheManager = cacheManager;
         _popupService = popupService;
@@ -145,7 +150,9 @@ public partial class PlayerViewModel : BaseViewModel
             {
                 Names.Add(name);
             }
-            IsFavorite = await _favoritePlayerService.ContainsAsync(Name, CancellationToken.None);
+
+            await _playerHistoryService.AddAsync(Name, cancellationToken);
+            IsFavorite = await _favoritePlayerService.ContainsAsync(Name, cancellationToken);
             OnPropertyChanged(nameof(Name));
             OnPropertyChanged(nameof(HasNames));
 

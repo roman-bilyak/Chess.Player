@@ -37,9 +37,9 @@ public partial class FavoritesViewModel : BaseViewModel
     {
         RecentPlayers.Clear();
 
-        foreach (string name in await _favoritePlayerService.GetAllAsync(cancellationToken))
+        foreach (string player in await _favoritePlayerService.GetAllAsync(cancellationToken))
         {
-            RecentPlayers.Add(new RecentPlayerViewModel { LastName = name });
+            RecentPlayers.Add(new RecentPlayerViewModel { LastName = player });
         }
     }
 

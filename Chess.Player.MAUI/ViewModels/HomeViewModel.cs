@@ -1,4 +1,5 @@
 ﻿using Chess.Player.MAUI.Pages;
+using Chess.Player.MAUI.Services;
 using Chess.Player.Services;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
@@ -9,6 +10,7 @@ namespace Chess.Player.MAUI.ViewModels;
 [INotifyPropertyChanged]
 public partial class HomeViewModel : BaseViewModel
 {
+    private readonly IPlayerHistoryService _playerHistoryService;
     private readonly INavigationService _navigationService;
 
     [ObservableProperty]
@@ -22,26 +24,30 @@ public partial class HomeViewModel : BaseViewModel
 
     public HomeViewModel
     (
+        IPlayerHistoryService playerHistoryService,
         INavigationService navigationService
     )
     {
+        ArgumentNullException.ThrowIfNull(playerHistoryService);
         ArgumentNullException.ThrowIfNull(navigationService);
 
+        _playerHistoryService = playerHistoryService;
         _navigationService = navigationService;
     }
 
     [RelayCommand]
-    private void Load()
+    private async Task LoadAsync(CancellationToken cancellationToken)
     {
         RecentPlayers.Clear();
-        RecentPlayers.Add(new RecentPlayerViewModel { LastName = "Kravtsiv", FirstName = "Martyn", Title = "GM", ClubCity = "Ukraine, Львів", YearOfBirth = 1990 });
-        RecentPlayers.Add(new RecentPlayerViewModel { LastName = "Кравців", FirstName = "Мартин", Title = "GM", YearOfBirth = 1990 });
-        RecentPlayers.Add(new RecentPlayerViewModel { LastName = "Dubnevych", FirstName = "Maksym", Title = "FM", ClubCity = "КЗ ДЮСШ Дебют (Грабінський В.)", YearOfBirth = 2009 });
-        RecentPlayers.Add(new RecentPlayerViewModel { LastName = "Коць", FirstName = "Святослав", Title = "3", ClubCity = "Городоцька ДЮСШ (Мелешко В.)", YearOfBirth = 2016 });
+
+        foreach(var player in await _playerHistoryService.GetAllAsync(cancellationToken))
+        {
+            RecentPlayers.Add(new RecentPlayerViewModel { LastName = player });
+        }
     }
 
     [RelayCommand]
-    private async Task GoAsync()
+    private async Task SearchAsync()
     {
         await NavigateToPlayerViewAsync(SearchText);
     }

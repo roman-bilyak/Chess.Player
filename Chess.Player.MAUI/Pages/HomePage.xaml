@@ -10,7 +10,7 @@
         <mct:EventToCommandBehavior Command="{Binding LoadCommand}" EventName="Appearing" />
     </ContentPage.Behaviors>
     <VerticalStackLayout Padding="20, 10" Spacing="20">
-        <SearchBar Text="{Binding SearchText}" SearchCommand="{Binding GoCommand}" Placeholder="Example: Smith John" HorizontalOptions="StartAndExpand" />
+        <SearchBar Text="{Binding SearchText}" SearchCommand="{Binding SearchCommand}" Placeholder="Example: Smith John" HorizontalOptions="StartAndExpand" />
 
         <CollectionView ItemsSource="{Binding RecentPlayers}"
                         SelectionMode="Single"
