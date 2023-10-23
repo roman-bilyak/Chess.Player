@@ -52,11 +52,13 @@ namespace Chess.Player.Data
             foreach (PlayerTournament playerTournament in playerTournaments)
             {
                 TournamentInfo? tournamentInfo = await _cacheManager.GetOrAddAsync(nameof(TournamentInfo), $"{playerTournament.TournamentId}",
-                    () => _dataFetcher.GetTournamentInfoAsync(playerTournament.TournamentId, cancellationToken)
+                    () => _dataFetcher.GetTournamentInfoAsync(playerTournament.TournamentId, cancellationToken),
+                    false, cancellationToken
                 );
 
                 PlayerInfo? playerInfo = await _cacheManager.GetOrAddAsync(nameof(PlayerInfo), $"{playerTournament.TournamentId}_{playerTournament.PlayerStartingRank}",
-                    () => _dataFetcher.GetPlayerInfoAsync(playerTournament.TournamentId, playerTournament.PlayerStartingRank, cancellationToken)
+                    () => _dataFetcher.GetPlayerInfoAsync(playerTournament.TournamentId, playerTournament.PlayerStartingRank, cancellationToken),
+                    false, cancellationToken
                 );
 
                 if (tournamentInfo is not null && playerInfo is not null)

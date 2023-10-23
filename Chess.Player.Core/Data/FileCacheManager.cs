@@ -6,7 +6,7 @@ namespace Chess.Player.Data
     {
         protected abstract string RootPath { get; }
 
-        public async Task<T?> GetOrAddAsync<T>(string cacheType, string key, Func<Task<T?>> valueFactory, bool forceRefresh)
+        public async Task<T?> GetOrAddAsync<T>(string cacheType, string key, Func<Task<T?>> valueFactory, bool forceRefresh, CancellationToken cancellationToken)
         {
             string cacheFilePath = GetCacheFilePath(cacheType, key);
             if (!forceRefresh)
@@ -21,19 +21,17 @@ namespace Chess.Player.Data
             T? value = await valueFactory();
 
             string jsonToWrite = JsonConvert.SerializeObject(value);
-
             string? cacheFileDirectory = Path.GetDirectoryName(cacheFilePath);
             if (cacheFileDirectory is not null)
             {
                 Directory.CreateDirectory(cacheFileDirectory);
             }
 
-            File.WriteAllText(cacheFilePath, jsonToWrite);
-
+            await File.WriteAllTextAsync(cacheFilePath, jsonToWrite, cancellationToken);
             return value;
         }
 
-        public Task DeleteAsync(string cacheType, string key)
+        public Task DeleteAsync(string cacheType, string key, CancellationToken cancellationToken)
         {
             string cacheFilePath = GetCacheFilePath(key, cacheType);
 
@@ -45,7 +43,7 @@ namespace Chess.Player.Data
             return Task.CompletedTask;
         }
 
-        public Task DeleteAsync(string cacheType)
+        public Task DeleteAsync(string cacheType, CancellationToken cancellationToken)
         {
             string cacheFolderPath = GetCacheFolderPath(cacheType);
             DeleteFiles(cacheFolderPath);
@@ -53,7 +51,7 @@ namespace Chess.Player.Data
             return Task.CompletedTask;
         }
 
-        public Task DeleteAsync()
+        public Task DeleteAsync(CancellationToken cancellationToken)
         {
             string cacheFolderPath = GetCacheFolderPath();
             DeleteFiles(cacheFolderPath);

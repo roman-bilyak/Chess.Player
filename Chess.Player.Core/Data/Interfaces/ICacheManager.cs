@@ -2,12 +2,12 @@
 {
     public interface ICacheManager
     {
-        Task<T?> GetOrAddAsync<T>(string cacheType, string key, Func<Task<T?>> valueFactory, bool forceRefresh = false);
+        Task<T?> GetOrAddAsync<T>(string cacheType, string key, Func<Task<T?>> valueFactory, bool forceRefresh, CancellationToken cancellationToken);
 
-        Task DeleteAsync(string cacheType, string key);
+        Task DeleteAsync(string cacheType, string key, CancellationToken cancellationToken);
 
-        Task DeleteAsync(string cacheType);
+        Task DeleteAsync(string cacheType, CancellationToken cancellationToken);
 
-        Task DeleteAsync();
+        Task DeleteAsync(CancellationToken cancellationToken);
     }
 }
