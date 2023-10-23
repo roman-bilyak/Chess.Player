@@ -3,7 +3,7 @@
 namespace Chess.Player.MAUI.ViewModels;
 
 [INotifyPropertyChanged]
-public partial class RecentPlayerViewModel : BaseViewModel
+public partial class PlayerCardViewModel : BaseViewModel
 {
     [ObservableProperty]
     [NotifyPropertyChangedFor(nameof(FullName))]

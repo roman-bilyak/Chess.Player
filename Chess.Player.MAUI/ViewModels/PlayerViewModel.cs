@@ -5,7 +5,6 @@ using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using System.Collections.ObjectModel;
 using System.Net;
-using System.Threading;
 
 namespace Chess.Player.MAUI.ViewModels;
 

@@ -17,10 +17,10 @@ public partial class HomeViewModel : BaseViewModel
     private string _searchText;
 
     [ObservableProperty]
-    private ObservableCollection<RecentPlayerViewModel> _recentPlayers = new();
+    private ObservableCollection<PlayerCardViewModel> _players = new();
 
     [ObservableProperty]
-    private RecentPlayerViewModel _selectedPlayer;
+    private PlayerCardViewModel _selectedPlayer;
 
     public HomeViewModel
     (
@@ -38,11 +38,11 @@ public partial class HomeViewModel : BaseViewModel
     [RelayCommand]
     private async Task LoadAsync(CancellationToken cancellationToken)
     {
-        RecentPlayers.Clear();
+        Players.Clear();
 
         foreach(var player in await _playerHistoryService.GetAllAsync(cancellationToken))
         {
-            RecentPlayers.Add(new RecentPlayerViewModel { LastName = player });
+            Players.Add(new PlayerCardViewModel { LastName = player });
         }
     }
 
@@ -53,7 +53,7 @@ public partial class HomeViewModel : BaseViewModel
     }
 
     [RelayCommand]
-    private async Task ItemSelectedAsync(RecentPlayerViewModel selectedPlayer)
+    private async Task ItemSelectedAsync(PlayerCardViewModel selectedPlayer)
     {
         if (selectedPlayer == null)
         {

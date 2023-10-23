@@ -12,18 +12,13 @@
     <VerticalStackLayout Padding="20, 10" Spacing="20">
         <SearchBar Text="{Binding SearchText}" SearchCommand="{Binding SearchCommand}" Placeholder="Example: Smith John" HorizontalOptions="StartAndExpand" />
 
-        <CollectionView ItemsSource="{Binding RecentPlayers}"
+        <CollectionView ItemsSource="{Binding Players}"
                         SelectionMode="Single"
                         SelectedItem="{Binding SelectedPlayer}"
                         SelectionChangedCommand="{Binding ItemSelectedCommand}"
                         SelectionChangedCommandParameter="{Binding SelectedItem, Source={RelativeSource Self}}">
-            <CollectionView.GroupHeaderTemplate>
-                <DataTemplate>
-                    <Label Text="Recent Players" FontSize="16" FontAttributes="Bold" Margin="5,10" />
-                </DataTemplate>
-            </CollectionView.GroupHeaderTemplate>
             <CollectionView.ItemTemplate>
-                <DataTemplate x:DataType="vm:RecentPlayerViewModel">
+                <DataTemplate x:DataType="vm:PlayerCardViewModel">
                     <Border Stroke="LightGray"
                             StrokeThickness="1"
                             StrokeShape="RoundRectangle 10"

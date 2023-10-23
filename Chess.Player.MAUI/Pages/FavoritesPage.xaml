@@ -10,18 +10,13 @@
         <mct:EventToCommandBehavior Command="{Binding LoadCommand}" EventName="Appearing" />
     </ContentPage.Behaviors>
     <VerticalStackLayout Padding="20, 10" Spacing="20">
-        <CollectionView ItemsSource="{Binding RecentPlayers}"
+        <CollectionView ItemsSource="{Binding Players}"
                     SelectionMode="Single"
                     SelectedItem="{Binding SelectedPlayer}"
                     SelectionChangedCommand="{Binding ItemSelectedCommand}"
                     SelectionChangedCommandParameter="{Binding SelectedItem, Source={RelativeSource Self}}">
-            <CollectionView.GroupHeaderTemplate>
-                <DataTemplate>
-                    <Label Text="Recent Players" FontSize="16" FontAttributes="Bold" Margin="5,10" />
-                </DataTemplate>
-            </CollectionView.GroupHeaderTemplate>
             <CollectionView.ItemTemplate>
-                <DataTemplate x:DataType="vm:RecentPlayerViewModel">
+                <DataTemplate x:DataType="vm:PlayerCardViewModel">
                     <Border Stroke="LightGray"
                         StrokeThickness="1"
                         StrokeShape="RoundRectangle 10"

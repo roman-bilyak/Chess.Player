@@ -14,10 +14,10 @@ public partial class FavoritesViewModel : BaseViewModel
     private readonly INavigationService _navigationService;
 
     [ObservableProperty]
-    private ObservableCollection<RecentPlayerViewModel> _recentPlayers = new();
+    private ObservableCollection<PlayerCardViewModel> _players = new();
 
     [ObservableProperty]
-    private RecentPlayerViewModel _selectedPlayer;
+    private PlayerCardViewModel _selectedPlayer;
 
     public FavoritesViewModel
     (
@@ -35,16 +35,16 @@ public partial class FavoritesViewModel : BaseViewModel
     [RelayCommand]
     private async Task LoadAsync(CancellationToken cancellationToken)
     {
-        RecentPlayers.Clear();
+        Players.Clear();
 
         foreach (string player in await _favoritePlayerService.GetAllAsync(cancellationToken))
         {
-            RecentPlayers.Add(new RecentPlayerViewModel { LastName = player });
+            Players.Add(new PlayerCardViewModel { LastName = player });
         }
     }
 
     [RelayCommand]
-    private async Task ItemSelectedAsync(RecentPlayerViewModel selectedPlayer)
+    private async Task ItemSelectedAsync(PlayerCardViewModel selectedPlayer)
     {
         if (selectedPlayer == null)
         {
