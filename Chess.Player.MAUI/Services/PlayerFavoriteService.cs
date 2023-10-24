@@ -4,17 +4,21 @@ namespace Chess.Player.MAUI.Services;
 
 internal class PlayerFavoriteService : IPlayerFavoriteService
 {
+    private readonly IChessDataService _chessDataService;
     private readonly ICacheManager _cacheManager;
 
     private List<string> _players;
 
     public PlayerFavoriteService
     (
+        IChessDataService chessDataService,
         ICacheManager cacheManager
     )
     {
+        ArgumentNullException.ThrowIfNull(chessDataService);
         ArgumentNullException.ThrowIfNull(cacheManager);
 
+        _chessDataService = chessDataService;
         _cacheManager = cacheManager;
     }
 
@@ -58,13 +62,18 @@ internal class PlayerFavoriteService : IPlayerFavoriteService
         return _players.Contains(name);
     }
 
-    public async Task<IReadOnlyList<string>> GetAllAsync(CancellationToken cancellationToken)
+    public async Task<IReadOnlyList<PlayerShortInfo>> GetAllAsync(CancellationToken cancellationToken)
     {
         await EnsureLoadedAsync(cancellationToken);
 
-        return _players.OrderBy(x => x)
-            .ToList()
-            .AsReadOnly();
+        List<PlayerShortInfo> result = new();
+        foreach(var player in _players)
+        {
+            PlayerFullInfo playerInfo = await _chessDataService.GetFullPlayerInfoAsync(new[] { new SearchCriteria(player)}, false, cancellationToken);
+            result.Add(playerInfo);
+        }
+
+        return result.OrderBy(x => x.Names.FirstOrDefault()?.FullName).ToList();
     }
 
     #region helper methods

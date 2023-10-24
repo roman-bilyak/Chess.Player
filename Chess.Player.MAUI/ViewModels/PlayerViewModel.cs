@@ -16,7 +16,7 @@ public partial class PlayerViewModel : BaseViewModel, IDisposable
     private readonly IPlayerFavoriteService _playerFavoriteService;
     private readonly IPopupService _popupService;
 
-    public string Name => Names.FirstOrDefault() ?? SearchCriterias.FirstOrDefault();
+    public string Name => Names.Select(x => x.FullName).FirstOrDefault() ?? SearchCriterias.FirstOrDefault();
 
     [ObservableProperty]
     [NotifyPropertyChangedFor(nameof(Name))]
@@ -24,7 +24,7 @@ public partial class PlayerViewModel : BaseViewModel, IDisposable
 
     [ObservableProperty]
     [NotifyPropertyChangedFor(nameof(Name), nameof(HasNames))]
-    private ObservableCollection<string> _names = new();
+    private ObservableCollection<NameViewModel> _names = new();
 
     public bool HasNames => Names.Any();
 
@@ -131,12 +131,16 @@ public partial class PlayerViewModel : BaseViewModel, IDisposable
         try
         {
             SearchCriteria[] searchCriterias = SearchCriterias.Select(x => new SearchCriteria(x)).ToArray();
-            SearchResult searchResult = await _chessDataService.SearchAsync(searchCriterias, ForceRefresh, cancellationToken);
+            PlayerFullInfo playerFullInfo = await _chessDataService.GetFullPlayerInfoAsync(searchCriterias, ForceRefresh, cancellationToken);
 
             Names.Clear();
-            foreach (string name in searchResult.Names)
+            foreach (NameInfo name in playerFullInfo.Names)
             {
-                Names.Add(name);
+                Names.Add(new NameViewModel
+                {
+                    LastName = name.LastName,
+                    FirstName = name.FirstName
+                });
             }
 
             await _playerHistoryService.AddAsync(Name, cancellationToken);
@@ -144,13 +148,13 @@ public partial class PlayerViewModel : BaseViewModel, IDisposable
             OnPropertyChanged(nameof(Name));
             OnPropertyChanged(nameof(HasNames));
 
-            Title = searchResult.Title;
-            FideId = searchResult.FideId;
-            ClubCity = searchResult.ClubCity;
-            YearOfBirth = searchResult.YearOfBirth;
+            Title = playerFullInfo.Title;
+            FideId = playerFullInfo.FideId;
+            ClubCity = playerFullInfo.ClubCity;
+            YearOfBirth = playerFullInfo.YearOfBirth;
 
-            int index = searchResult.Data.Count;
-            _allTournaments = searchResult.Data.GroupBy(x => x.Tournament.EndDate?.Year)
+            int index = playerFullInfo.Tournaments.Count;
+            _allTournaments = playerFullInfo.Tournaments.GroupBy(x => x.Tournament.EndDate?.Year)
                 .ToDictionary(x => new TournamentYearViewModel
                 {
                     Year = x.Key,

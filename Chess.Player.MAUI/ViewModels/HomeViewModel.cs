@@ -1,4 +1,5 @@
-﻿using Chess.Player.MAUI.Pages;
+﻿using Chess.Player.Data;
+using Chess.Player.MAUI.Pages;
 using Chess.Player.MAUI.Services;
 using Chess.Player.Services;
 using CommunityToolkit.Mvvm.ComponentModel;
@@ -38,13 +39,23 @@ public partial class HomeViewModel : BaseViewModel
     {
         PlayerCardList.Players.Clear();
 
-        foreach (var player in await _playerHistoryService.GetAllAsync(cancellationToken))
+        foreach (PlayerShortInfo player in await _playerHistoryService.GetAllAsync(cancellationToken))
         {
-            PlayerCardList.Players.Add(new PlayerCardViewModel 
+            PlayerCardViewModel playerCardViewModel = new()
             {
-                LastName = player.Split(" ").FirstOrDefault(),
-                FirstName = player.Split(" ").Skip(1).FirstOrDefault(),
-            });
+                Title = player.Title,
+                ClubCity = player.ClubCity,
+                YearOfBirth = player.YearOfBirth,
+            };
+            foreach (NameInfo nameInfo in player.Names)
+            {
+                playerCardViewModel.Names.Add(new NameViewModel
+                {
+                    LastName = nameInfo.LastName,
+                    FirstName = nameInfo.FirstName
+                });
+            }
+            PlayerCardList.Players.Add(playerCardViewModel);
         }
     }
 
@@ -55,5 +66,6 @@ public partial class HomeViewModel : BaseViewModel
         {
             x.SearchCriterias.Add(SearchText);
         });
+        SearchText = null;
     }
 }

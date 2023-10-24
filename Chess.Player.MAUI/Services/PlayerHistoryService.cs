@@ -6,16 +6,21 @@ internal class PlayerHistoryService : IPlayerHistoryService
 {
     private const int MaxCount = 5;
 
+    private readonly IChessDataService _chessDataService;
     private readonly ICacheManager _cacheManager;
+
     private List<string> _players;
 
     public PlayerHistoryService
     (
+        IChessDataService chessDataService,
         ICacheManager cacheManager
     )
     {
+        ArgumentNullException.ThrowIfNull(chessDataService);
         ArgumentNullException.ThrowIfNull(cacheManager);
 
+        _chessDataService = chessDataService;
         _cacheManager = cacheManager;
     }
 
@@ -34,11 +39,18 @@ internal class PlayerHistoryService : IPlayerHistoryService
         await SaveAsync(cancellationToken);
     }
 
-    public async Task<IReadOnlyList<string>> GetAllAsync(CancellationToken cancellationToken)
+    public async Task<IReadOnlyList<PlayerShortInfo>> GetAllAsync(CancellationToken cancellationToken)
     {
         await EnsureLoadedAsync(cancellationToken);
 
-        return _players.AsReadOnly();
+        List<PlayerShortInfo> result = new();
+        foreach (var player in _players)
+        {
+            PlayerFullInfo playerInfo = await _chessDataService.GetFullPlayerInfoAsync(new[] { new SearchCriteria(player) }, false, cancellationToken);
+            result.Add(playerInfo);
+        }
+
+        return result;
     }
 
     #region helper methods

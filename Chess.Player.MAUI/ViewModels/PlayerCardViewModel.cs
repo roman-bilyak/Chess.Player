@@ -1,4 +1,6 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
+using System.Collections.ObjectModel;
+using System.Xml.Linq;
 
 namespace Chess.Player.MAUI.ViewModels;
 
@@ -6,14 +8,7 @@ namespace Chess.Player.MAUI.ViewModels;
 public partial class PlayerCardViewModel : BaseViewModel
 {
     [ObservableProperty]
-    [NotifyPropertyChangedFor(nameof(FullName))]
-    private string _lastName;
-
-    [ObservableProperty]
-    [NotifyPropertyChangedFor(nameof(FullName))]
-    private string _firstName;
-
-    public string FullName => $"{LastName} {FirstName}";
+    private ObservableCollection<NameViewModel> _names = new();
 
     [ObservableProperty]
     private string _title;

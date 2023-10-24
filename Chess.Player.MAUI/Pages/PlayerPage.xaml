@@ -40,10 +40,10 @@
                     </Grid.ColumnDefinitions>
 
                     <Label Grid.Row="0" Grid.Column="0" Text="Name" FontSize="14" FontAttributes="Bold" IsVisible="{Binding HasNames}" />
-                    <VerticalStackLayout Grid.Row="0" Grid.Column="1" Grid.ColumnSpan="3" BindableLayout.ItemsSource="{Binding Names, Mode=OneWay}">
+                    <VerticalStackLayout Grid.Row="0" Grid.Column="1" Grid.ColumnSpan="3" BindableLayout.ItemsSource="{Binding Names}">
                         <BindableLayout.ItemTemplate>
-                            <DataTemplate x:DataType="x:String">
-                                <Label Text="{Binding ., Mode=OneWay}" FontSize="14" />
+                            <DataTemplate x:DataType="vm:NameViewModel">
+                                <Label Text="{Binding FullName}" FontSize="14" />
                             </DataTemplate>
                         </BindableLayout.ItemTemplate>
                     </VerticalStackLayout>

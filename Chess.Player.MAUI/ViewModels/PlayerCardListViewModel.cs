@@ -37,7 +37,7 @@ public partial class PlayerCardListViewModel : BaseViewModel
 
         await _navigationService.PushAsync<PlayerPage, PlayerViewModel>(x =>
         {
-            x.SearchCriterias.Add(selectedPlayer.FullName);
+            x.SearchCriterias.Add(selectedPlayer.Names.FirstOrDefault()?.FullName);
         });
 
         SelectedPlayer = null;

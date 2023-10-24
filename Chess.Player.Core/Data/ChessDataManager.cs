@@ -16,11 +16,11 @@ internal class ChessDataManager : IChessDataManager
         _cacheManager = cacheManager;
     }
 
-    public async Task<SearchResult> SearchAsync(SearchCriteria[] searchCriterias, CancellationToken cancellationToken)
+    public async Task<PlayerFullInfo> SearchAsync(SearchCriteria[] searchCriterias, CancellationToken cancellationToken)
     {
         OnProgressChanged(1);
 
-        SearchResult result = new();
+        PlayerFullInfo playerFullInfo = new();
 
         List<PlayerTournament> playerTournaments = new();
         foreach (SearchCriteria searchCriteria in searchCriterias)
@@ -37,7 +37,7 @@ internal class ChessDataManager : IChessDataManager
             List<PlayerTournament>? tournaments = await _chessDataFetcher.GetPlayerTournamentsAsync(lastName, firstName, cancellationToken);
             if (tournaments is not null && tournaments.Any())
             {
-                result.Names.Add(string.Join(" ", lastName, firstName));
+                playerFullInfo.Names.Add(new NameInfo(lastName, firstName));
 
                 playerTournaments.AddRange(tournaments);
             }
@@ -67,10 +67,15 @@ internal class ChessDataManager : IChessDataManager
         }
 
         playerTournamentInfos = playerTournamentInfos.OrderByDescending(x => x.Tournament.EndDate).ToList();
-        result.Data.AddRange(playerTournamentInfos);
+        playerFullInfo.Tournaments.AddRange(playerTournamentInfos);
+
+        playerFullInfo.Title = playerFullInfo.Tournaments.FirstOrDefault(x => x.Player.Title is not null)?.Player.Title;
+        playerFullInfo.FideId = playerFullInfo.Tournaments.FirstOrDefault(x => x.Player.FideId is not null)?.Player.FideId;
+        playerFullInfo.ClubCity = playerFullInfo.Tournaments.FirstOrDefault(x => x.Player.ClubCity is not null)?.Player.ClubCity;
+        playerFullInfo.YearOfBirth = playerFullInfo.Tournaments.FirstOrDefault(x => x.Player.YearOfBirth is not null)?.Player.YearOfBirth;
 
         OnProgressChanged(100);
-        return result;
+        return playerFullInfo;
     }
 
     protected virtual void OnProgressChanged(int progressPercentage)

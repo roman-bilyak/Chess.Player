@@ -1,4 +1,6 @@
-﻿namespace Chess.Player.MAUI.Services;
+﻿using Chess.Player.Data;
+
+namespace Chess.Player.MAUI.Services;
 
 public interface IPlayerFavoriteService
 {
@@ -10,5 +12,5 @@ public interface IPlayerFavoriteService
 
     Task<bool> ContainsAsync(string name, CancellationToken cancellationToken);
 
-    Task<IReadOnlyList<string>> GetAllAsync(CancellationToken cancellationToken);
+    Task<IReadOnlyList<PlayerShortInfo>> GetAllAsync(CancellationToken cancellationToken);
 }
