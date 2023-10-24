@@ -6,6 +6,10 @@
              x:Class="Chess.Player.MAUI.Pages.SettingsPage"
              x:DataType="vm:SettingsViewModel"
              Title="Settings">
-    <VerticalStackLayout>
+    <VerticalStackLayout Padding="20, 10" Spacing="20">
+        <Grid ColumnDefinitions="*, Auto">
+            <Label Grid.Row="0" Grid.Column="0" Text="Cache" FontSize="14" FontAttributes="Bold"/>
+            <Button Grid.Row="0" Grid.Column="1" Text="Clear All" Command="{Binding ClearCacheCommand}"/>
+        </Grid>
     </VerticalStackLayout>
 </ContentPage>

@@ -85,7 +85,7 @@ public abstract class FileCacheManager : ICacheManager
     private void DeleteFiles(string folder)
     {
         DirectoryInfo directory = new(folder);
-        foreach (FileInfo file in directory.GetFiles())
+        foreach (FileInfo file in directory.GetFiles("*.json", SearchOption.AllDirectories))
         {
             file.Delete();
         }
