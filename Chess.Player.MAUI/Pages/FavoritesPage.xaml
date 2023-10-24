@@ -11,6 +11,8 @@
         <mct:EventToCommandBehavior Command="{Binding LoadCommand}" EventName="Appearing" />
     </ContentPage.Behaviors>
     <VerticalStackLayout Padding="20, 10" Spacing="20">
-        <views:PlayerCardListView BindingContext="{Binding PlayerCardList}" />
+        <ScrollView>
+            <views:PlayerCardListView BindingContext="{Binding PlayerCardList}" />
+        </ScrollView>
     </VerticalStackLayout>
 </ContentPage>

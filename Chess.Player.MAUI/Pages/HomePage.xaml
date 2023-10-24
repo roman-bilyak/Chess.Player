@@ -12,7 +12,9 @@
     </ContentPage.Behaviors>
     <VerticalStackLayout Padding="20, 10" Spacing="20">
         <SearchBar Text="{Binding SearchText}" SearchCommand="{Binding SearchCommand}" Placeholder="Example: Smith John" HorizontalOptions="StartAndExpand" />
-        
-        <views:PlayerCardListView BindingContext="{Binding PlayerCardList}" />
+
+        <ScrollView>
+            <views:PlayerCardListView BindingContext="{Binding PlayerCardList}" />
+        </ScrollView>
     </VerticalStackLayout>
 </ContentPage>
