@@ -112,17 +112,21 @@ public partial class PlayerViewModel : BaseViewModel, IDisposable
     }
 
     [RelayCommand]
-    private void Start()
+    private Task StartAsync(CancellationToken cancellationToken)
     {
         ForceRefresh = false;
         IsLoading = true;
+
+        return Task.CompletedTask;
     }
 
     [RelayCommand]
-    private void Refresh()
+    private Task RefreshAsync(CancellationToken cancellationToken)
     {
         ForceRefresh = true;
         IsLoading = true;
+
+        return Task.CompletedTask;
     }
 
     [RelayCommand(IncludeCancelCommand = true)]
@@ -200,7 +204,7 @@ public partial class PlayerViewModel : BaseViewModel, IDisposable
     }
 
     [RelayCommand]
-    private async Task AddSearchCriteriaAsync()
+    private async Task AddSearchCriteriaAsync(CancellationToken cancellationToken)
     {
         string searchCriteria = await _popupService.DisplayPromptAsync("Add Search Criteria", placeholder: "Example: Smith John");
         if (string.IsNullOrEmpty(searchCriteria?.Trim()))

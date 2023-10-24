@@ -14,6 +14,12 @@ public partial class FavoritesViewModel : BaseViewModel
     [ObservableProperty]
     private PlayerCardListViewModel _playerCardList;
 
+    [ObservableProperty]
+    private bool _isLoading = false;
+
+    [ObservableProperty]
+    private bool _forceRefresh;
+
     public FavoritesViewModel
     (
         IPlayerFavoriteService playerFavoriteService,
@@ -29,27 +35,53 @@ public partial class FavoritesViewModel : BaseViewModel
     }
 
     [RelayCommand]
+    private Task StartAsync(CancellationToken cancellationToken)
+    {
+        IsLoading = true;
+        ForceRefresh = false;
+
+        return Task.CompletedTask;
+    }
+
+    [RelayCommand]
+    private Task RefreshAsync(CancellationToken cancellationToken)
+    {
+        ForceRefresh = true;
+        IsLoading = true;
+
+        return Task.CompletedTask;
+    }
+
+    [RelayCommand(IncludeCancelCommand = true)]
     private async Task LoadAsync(CancellationToken cancellationToken)
     {
-        PlayerCardList.Players.Clear();
-
-        foreach (PlayerShortInfo player in await _playerFavoriteService.GetAllAsync(cancellationToken))
+        try
         {
-            PlayerCardViewModel playerCardViewModel = new()
+            PlayerCardList.Players.Clear();
+
+            foreach (PlayerShortInfo player in await _playerFavoriteService.GetAllAsync(ForceRefresh, cancellationToken))
             {
-                Title = player.Title,
-                ClubCity = player.ClubCity,
-                YearOfBirth = player.YearOfBirth,
-            };
-            foreach (NameInfo nameInfo in player.Names)
-            {
-                playerCardViewModel.Names.Add(new NameViewModel
+                PlayerCardViewModel playerCardViewModel = new()
                 {
-                    LastName = nameInfo.LastName,
-                    FirstName = nameInfo.FirstName
-                });
+                    Title = player.Title,
+                    ClubCity = player.ClubCity,
+                    YearOfBirth = player.YearOfBirth,
+                };
+                foreach (NameInfo nameInfo in player.Names)
+                {
+                    playerCardViewModel.Names.Add(new NameViewModel
+                    {
+                        LastName = nameInfo.LastName,
+                        FirstName = nameInfo.FirstName
+                    });
+                }
+                PlayerCardList.Players.Add(playerCardViewModel);
             }
-            PlayerCardList.Players.Add(playerCardViewModel);
+        }
+        finally
+        { 
+            IsLoading = false;
+            ForceRefresh = false;
         }
     }
 }

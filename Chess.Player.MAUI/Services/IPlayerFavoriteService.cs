@@ -12,5 +12,5 @@ public interface IPlayerFavoriteService
 
     Task<bool> ContainsAsync(string name, CancellationToken cancellationToken);
 
-    Task<IReadOnlyList<PlayerShortInfo>> GetAllAsync(CancellationToken cancellationToken);
+    Task<IReadOnlyList<PlayerShortInfo>> GetAllAsync(bool forceRefresh, CancellationToken cancellationToken);
 }
