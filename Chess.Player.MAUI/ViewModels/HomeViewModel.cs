@@ -19,6 +19,12 @@ public partial class HomeViewModel : BaseViewModel
     [ObservableProperty]
     private PlayerCardListViewModel _playerCardList;
 
+    [ObservableProperty]
+    private bool _isLoading = false;
+
+    [ObservableProperty]
+    private bool _forceRefresh;
+
     public HomeViewModel
     (
         IPlayerHistoryService playerHistoryService,
@@ -35,32 +41,49 @@ public partial class HomeViewModel : BaseViewModel
     }
 
     [RelayCommand]
+    private Task StartAsync(CancellationToken cancellationToken)
+    {
+        IsLoading = true;
+        ForceRefresh = false;
+
+        return Task.CompletedTask;
+    }
+
+    [RelayCommand]
     private async Task LoadAsync(CancellationToken cancellationToken)
     {
-        PlayerCardList.Players.Clear();
-
-        foreach (PlayerShortInfo player in await _playerHistoryService.GetAllAsync(cancellationToken))
+        try
         {
-            PlayerCardViewModel playerCardViewModel = new()
+            PlayerCardList.Players.Clear();
+
+            foreach (PlayerShortInfo player in await _playerHistoryService.GetAllAsync(ForceRefresh, cancellationToken))
             {
-                Title = player.Title,
-                ClubCity = player.ClubCity,
-                YearOfBirth = player.YearOfBirth,
-            };
-            foreach (NameInfo nameInfo in player.Names)
-            {
-                playerCardViewModel.Names.Add(new NameViewModel
+                PlayerCardViewModel playerCardViewModel = new()
                 {
-                    LastName = nameInfo.LastName,
-                    FirstName = nameInfo.FirstName
-                });
+                    Title = player.Title,
+                    ClubCity = player.ClubCity,
+                    YearOfBirth = player.YearOfBirth,
+                };
+                foreach (NameInfo nameInfo in player.Names)
+                {
+                    playerCardViewModel.Names.Add(new NameViewModel
+                    {
+                        LastName = nameInfo.LastName,
+                        FirstName = nameInfo.FirstName
+                    });
+                }
+                PlayerCardList.Players.Add(playerCardViewModel);
             }
-            PlayerCardList.Players.Add(playerCardViewModel);
+        }
+        finally
+        {
+            IsLoading = false;
+            ForceRefresh = false;
         }
     }
 
     [RelayCommand]
-    private async Task SearchAsync()
+    private async Task SearchAsync(CancellationToken cancellationToken)
     {
         await _navigationService.PushAsync<PlayerPage, PlayerViewModel>(x =>
         {

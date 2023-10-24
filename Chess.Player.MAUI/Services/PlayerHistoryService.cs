@@ -39,14 +39,14 @@ internal class PlayerHistoryService : IPlayerHistoryService
         await SaveAsync(cancellationToken);
     }
 
-    public async Task<IReadOnlyList<PlayerShortInfo>> GetAllAsync(CancellationToken cancellationToken)
+    public async Task<IReadOnlyList<PlayerShortInfo>> GetAllAsync(bool forceRefresh, CancellationToken cancellationToken)
     {
         await EnsureLoadedAsync(cancellationToken);
 
         List<PlayerShortInfo> result = new();
         foreach (var player in _players)
         {
-            PlayerFullInfo playerInfo = await _chessDataService.GetFullPlayerInfoAsync(new[] { new SearchCriteria(player) }, false, cancellationToken);
+            PlayerFullInfo playerInfo = await _chessDataService.GetFullPlayerInfoAsync(new[] { new SearchCriteria(player) }, forceRefresh, cancellationToken);
             result.Add(playerInfo);
         }
 

@@ -6,5 +6,5 @@ public interface IPlayerHistoryService
 {
     Task AddAsync(string name, CancellationToken cancellationToken);
 
-    Task<IReadOnlyList<PlayerShortInfo>> GetAllAsync(CancellationToken cancellationToken);
+    Task<IReadOnlyList<PlayerShortInfo>> GetAllAsync(bool forceRefresh, CancellationToken cancellationToken);
 }

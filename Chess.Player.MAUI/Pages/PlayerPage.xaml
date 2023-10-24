@@ -124,13 +124,13 @@
                                         <Label Grid.Row="0" Grid.Column="0" Text="{Binding TournamentNo, Mode=OneWay}" FontSize="10" TextColor="#888888" VerticalOptions="Start" HorizontalOptions="Center" />
                                         <Label Grid.Row="0" Grid.Column="0" Text="{Binding Rank, Mode=OneWay}" FontSize="14" FontAttributes="Bold" TextColor="#333333" VerticalOptions="Center" HorizontalOptions="Center" />
                                         <VerticalStackLayout Grid.Row="0" Grid.Column="1">
-                                            <Label Text="{Binding TournamentName, Mode=OneWay}" FontSize="14" FontAttributes="Bold" TextColor="#007bff" />
+                                            <Label Text="{Binding TournamentName, Mode=OneWay}" FontSize="14" />
                                             <Label Text="{Binding TournamentDateAndLocation, Mode=OneWay}" FontSize="14" TextColor="#888888" />
                                             <HorizontalStackLayout Spacing="20">
                                                 <HorizontalStackLayout Spacing="5">
                                                     <Image Source="players.svg">
                                                         <Image.Behaviors>
-                                                            <mct:IconTintColorBehavior TintColor="LightSlateGray" />
+                                                            <mct:IconTintColorBehavior TintColor="#888888" />
                                                         </Image.Behaviors>
                                                     </Image>
                                                     <Label Text="{Binding NumberOfPlayers, Mode=OneWay}" FontSize="14" TextColor="#888888" />
@@ -138,7 +138,7 @@
                                                 <HorizontalStackLayout Spacing="5">
                                                     <Image Source="rounds.svg">
                                                         <Image.Behaviors>
-                                                            <mct:IconTintColorBehavior TintColor="LightSlateGray" />
+                                                            <mct:IconTintColorBehavior TintColor="#888888" />
                                                         </Image.Behaviors>
                                                     </Image>
                                                     <Label Text="{Binding NumberOfRounds, Mode=OneWay}" FontSize="14" TextColor="#888888" />
