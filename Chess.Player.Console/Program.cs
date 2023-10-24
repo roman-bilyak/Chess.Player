@@ -5,7 +5,6 @@ using Microsoft.Extensions.DependencyInjection;
 ServiceProvider serviceProvider = new ServiceCollection()
             .AddChessServices()
             .AddTransient<ICacheManager, ConsoleFileCacheManager>()
-            .AddTransient<IOutputFormatter, ConsoleOutputFormatter>()
             .BuildServiceProvider();
 try
 {
@@ -18,8 +17,12 @@ try
         new SearchCriteria("Mosesov Danylo"),
     };
 
-    IChessDataService chessDataManager = serviceProvider.GetRequiredService<IChessDataService>();
-    await chessDataManager.SearchAsync(searchCriterias, CancellationToken.None);
+    ConsoleOutput consoleOutput = new();
+    IChessDataService chessDataService = serviceProvider.GetRequiredService<IChessDataService>();
+    chessDataService.ProgressChanged += (sender, args) => consoleOutput.DisplayProgress(args.ProgressPercentage);
+
+    SearchResult searchResult = await chessDataService.SearchAsync(searchCriterias, true, CancellationToken.None);
+    consoleOutput.DisplayResult(searchResult);
 }
 finally
 {

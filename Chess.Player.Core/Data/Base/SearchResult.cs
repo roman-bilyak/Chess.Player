@@ -1,39 +1,40 @@
-﻿namespace Chess.Player.Data
+﻿namespace Chess.Player.Data;
+
+public class SearchResult
 {
-    public class SearchResult : List<PlayerTournamentInfo>
+    public List<string> Names { get; set; } = new List<string>();
+
+    public List<PlayerTournamentInfo> Data { get; set; } = new List<PlayerTournamentInfo>();
+
+    public string? Title
     {
-        public List<string> Names { get; set; } = new List<string>();
-
-        public string? Title
+        get
         {
-            get
-            {
-                return this.FirstOrDefault(x => x.Player.Title is not null)?.Player.Title;
-            }
+            return this.Data.FirstOrDefault(x => x.Player.Title is not null)?.Player.Title;
         }
+    }
 
-        public string? FideId
+    public string? FideId
+    {
+        get
         {
-            get
-            {
-                return this.FirstOrDefault(x => x.Player.FideId is not null)?.Player.FideId;
-            }
+            return this.Data.FirstOrDefault(x => x.Player.FideId is not null)?.Player.FideId;
         }
+    }
 
-        public string? ClubCity
+    public string? ClubCity
+    {
+        get
         {
-            get
-            {
-                return this.FirstOrDefault(x => x.Player.ClubCity is not null)?.Player.ClubCity;
-            }
+            return this.Data.FirstOrDefault(x => x.Player.ClubCity is not null)?.Player.ClubCity;
         }
+    }
 
-        public int? YearOfBirth
+    public int? YearOfBirth
+    {
+        get
         {
-            get
-            {
-                return this.FirstOrDefault(x => x.Player.YearOfBirth is not null)?.Player.YearOfBirth;
-            }
+            return this.Data.FirstOrDefault(x => x.Player.YearOfBirth is not null)?.Player.YearOfBirth;
         }
     }
 }

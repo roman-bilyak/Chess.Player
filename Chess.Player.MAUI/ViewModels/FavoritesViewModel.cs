@@ -34,7 +34,11 @@ public partial class FavoritesViewModel : BaseViewModel
 
         foreach (string player in await _favoritePlayerService.GetAllAsync(cancellationToken))
         {
-            PlayerCardList.Players.Add(new PlayerCardViewModel { LastName = player });
+            PlayerCardList.Players.Add(new PlayerCardViewModel 
+            { 
+                LastName = player.Split(" ").FirstOrDefault(),
+                FirstName = player.Split(" ").Skip(1).FirstOrDefault(),
+            });
         }
     }
 }

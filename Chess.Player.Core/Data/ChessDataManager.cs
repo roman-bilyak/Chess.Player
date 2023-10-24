@@ -67,7 +67,7 @@ internal class ChessDataManager : IChessDataManager
         }
 
         playerTournamentInfos = playerTournamentInfos.OrderByDescending(x => x.Tournament.EndDate).ToList();
-        result.AddRange(playerTournamentInfos);
+        result.Data.AddRange(playerTournamentInfos);
 
         OnProgressChanged(100);
         return result;

@@ -2,5 +2,7 @@
 
 public interface IChessDataService
 {
-    Task SearchAsync(SearchCriteria[] searchCriterias, CancellationToken cancellationToken);
+    event SearchProgressEventHandler? ProgressChanged;
+
+    Task<SearchResult> SearchAsync(SearchCriteria[] searchCriterias, bool forceRefresh, CancellationToken cancellationToken);
 }

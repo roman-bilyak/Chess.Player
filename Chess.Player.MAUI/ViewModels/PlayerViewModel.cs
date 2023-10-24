@@ -11,10 +11,9 @@ namespace Chess.Player.MAUI.ViewModels;
 [INotifyPropertyChanged]
 public partial class PlayerViewModel : BaseViewModel, IDisposable
 {
-    private readonly IChessDataManager _chessDataService;
+    private readonly IChessDataService _chessDataService;
     private readonly IPlayerHistoryService _playerHistoryService;
     private readonly IFavoritePlayerService _favoritePlayerService;
-    private readonly ICacheManager _cacheManager;
     private readonly IPopupService _popupService;
 
     public string Name => Names.FirstOrDefault() ?? SearchCriterias.FirstOrDefault();
@@ -92,24 +91,21 @@ public partial class PlayerViewModel : BaseViewModel, IDisposable
 
     public PlayerViewModel
     (
-        IChessDataManager chessDataService,
+        IChessDataService chessDataService,
         IPlayerHistoryService historyService,
         IFavoritePlayerService favoritePlayerService,
-        ICacheManager cacheManager,
         IPopupService popupService
     )
     {
         ArgumentNullException.ThrowIfNull(chessDataService);
         ArgumentNullException.ThrowIfNull(historyService);
         ArgumentNullException.ThrowIfNull(favoritePlayerService);
-        ArgumentNullException.ThrowIfNull(cacheManager);
         ArgumentNullException.ThrowIfNull(popupService);
 
         _chessDataService = chessDataService;
 
         _playerHistoryService = historyService;
         _favoritePlayerService = favoritePlayerService;
-        _cacheManager = cacheManager;
         _popupService = popupService;
 
         _chessDataService.ProgressChanged += OnProgressChanged;
@@ -135,11 +131,7 @@ public partial class PlayerViewModel : BaseViewModel, IDisposable
         try
         {
             SearchCriteria[] searchCriterias = SearchCriterias.Select(x => new SearchCriteria(x)).ToArray();
-            SearchResult searchResult = await _cacheManager.GetOrAddAsync("PlayerProfile",
-                string.Join("_", searchCriterias.Select(x => x.Name)),
-                async () => await _chessDataService.SearchAsync(searchCriterias, cancellationToken),
-                ForceRefresh,
-                cancellationToken);
+            SearchResult searchResult = await _chessDataService.SearchAsync(searchCriterias, ForceRefresh, cancellationToken);
 
             Names.Clear();
             foreach (string name in searchResult.Names)
@@ -157,8 +149,8 @@ public partial class PlayerViewModel : BaseViewModel, IDisposable
             ClubCity = searchResult.ClubCity;
             YearOfBirth = searchResult.YearOfBirth;
 
-            int index = searchResult.Count;
-            _allTournaments = searchResult.GroupBy(x => x.Tournament.EndDate?.Year)
+            int index = searchResult.Data.Count;
+            _allTournaments = searchResult.Data.GroupBy(x => x.Tournament.EndDate?.Year)
                 .ToDictionary(x => new TournamentYearViewModel
                 {
                     Year = x.Key,

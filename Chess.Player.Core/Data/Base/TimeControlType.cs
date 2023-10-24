@@ -1,9 +1,9 @@
-﻿namespace Chess.Player.Data
+﻿namespace Chess.Player.Data;
+
+public enum TimeControlType
 {
-    public enum TimeControlType
-    {
-        Blitz,
-        Rapid,
-        Standart
-    }
+    None = 0,
+    Blitz,
+    Rapid,
+    Standart
 }

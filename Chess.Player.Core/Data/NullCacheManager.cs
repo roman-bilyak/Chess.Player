@@ -2,7 +2,7 @@
 
 internal class NullCacheManager : ICacheManager
 {
-    public async Task<T?> GetOrAddAsync<T>(string cacheType, string key, Func<Task<T?>> valueFactory, bool forceRefresh, CancellationToken cancellationToken)
+    public async Task<T> GetOrAddAsync<T>(string cacheType, string key, Func<Task<T>> valueFactory, bool forceRefresh, CancellationToken cancellationToken)
     {
         return await valueFactory();
     }

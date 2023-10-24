@@ -12,7 +12,6 @@ public static class ServiceCollectionExtensions
             .AddTransient<IChessDataManager, ChessDataManager>()
             .AddTransient<IChessDataFetcher, ChessResultsDataFetcher>()
             .AddTransient<IChessDataNormalizer, ChessDataNormalizer>()
-            .AddTransient<ICacheManager, NullCacheManager>()
-            .AddTransient<IOutputFormatter, ConsoleOutputFormatter>();
+            .AddTransient<ICacheManager, NullCacheManager>();
     }
 }

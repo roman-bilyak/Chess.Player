@@ -1,12 +1,13 @@
-﻿namespace Chess.Player.Data
-{
-    public class SearchProgressEventArgs : EventArgs
-    {
-        public int ProgressPercentage { get; private set; }
+﻿namespace Chess.Player.Data;
 
-        public SearchProgressEventArgs(int progressPercentage)
-        {
-            ProgressPercentage = progressPercentage;
-        }
+public delegate void SearchProgressEventHandler(object sender, SearchProgressEventArgs e);
+
+public class SearchProgressEventArgs : EventArgs
+{
+    public int ProgressPercentage { get; private set; }
+
+    public SearchProgressEventArgs(int progressPercentage)
+    {
+        ProgressPercentage = progressPercentage;
     }
 }

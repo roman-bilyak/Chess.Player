@@ -40,7 +40,11 @@ public partial class HomeViewModel : BaseViewModel
 
         foreach (var player in await _playerHistoryService.GetAllAsync(cancellationToken))
         {
-            PlayerCardList.Players.Add(new PlayerCardViewModel { LastName = player });
+            PlayerCardList.Players.Add(new PlayerCardViewModel 
+            {
+                LastName = player.Split(" ").FirstOrDefault(),
+                FirstName = player.Split(" ").Skip(1).FirstOrDefault(),
+            });
         }
     }
 

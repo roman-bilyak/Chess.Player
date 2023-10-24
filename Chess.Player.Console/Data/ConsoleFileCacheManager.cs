@@ -1,7 +1,6 @@
-﻿namespace Chess.Player.Data
+﻿namespace Chess.Player.Data;
+
+internal class ConsoleFileCacheManager : FileCacheManager
 {
-    internal class ConsoleFileCacheManager : FileCacheManager
-    {
-        protected override string RootPath => "Cache";
-    }
+    protected override string RootPath => "Cache";
 }
