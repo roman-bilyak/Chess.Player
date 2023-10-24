@@ -2,13 +2,13 @@
 
 namespace Chess.Player.MAUI.Services;
 
-internal class FavoritePlayerService : IFavoritePlayerService
+internal class PlayerFavoriteService : IPlayerFavoriteService
 {
     private readonly ICacheManager _cacheManager;
 
     private List<string> _players;
 
-    public FavoritePlayerService
+    public PlayerFavoriteService
     (
         ICacheManager cacheManager
     )

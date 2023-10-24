@@ -33,7 +33,7 @@ namespace Chess.Player.MAUI
             builder.Services.AddTransient<ICacheManager, MAUIFileCacheManager>();
 
             builder.Services.AddSingleton<IPlayerHistoryService, PlayerHistoryService>();
-            builder.Services.AddSingleton<IFavoritePlayerService, FavoritePlayerService>();
+            builder.Services.AddSingleton<IPlayerFavoriteService, PlayerFavoriteService>();
             builder.Services.AddTransient<INavigationService, MAUINavigationService>();
             builder.Services.AddTransient<IPopupService, MAUIPopupService>();
 

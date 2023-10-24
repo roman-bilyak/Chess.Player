@@ -8,21 +8,21 @@ namespace Chess.Player.MAUI.ViewModels;
 [INotifyPropertyChanged]
 public partial class FavoritesViewModel : BaseViewModel
 {
-    private readonly IFavoritePlayerService _favoritePlayerService;
+    private readonly IPlayerFavoriteService _playerFavoriteService;
 
     [ObservableProperty]
     private PlayerCardListViewModel _playerCardList;
 
     public FavoritesViewModel
     (
-        IFavoritePlayerService favoritePlayerService,
+        IPlayerFavoriteService playerFavoriteService,
         INavigationService navigationService
     )
     {
-        ArgumentNullException.ThrowIfNull(favoritePlayerService);
+        ArgumentNullException.ThrowIfNull(playerFavoriteService);
         ArgumentNullException.ThrowIfNull(navigationService);
 
-        _favoritePlayerService = favoritePlayerService;
+        _playerFavoriteService = playerFavoriteService;
 
         _playerCardList = new(navigationService);
     }
@@ -32,7 +32,7 @@ public partial class FavoritesViewModel : BaseViewModel
     {
         PlayerCardList.Players.Clear();
 
-        foreach (string player in await _favoritePlayerService.GetAllAsync(cancellationToken))
+        foreach (string player in await _playerFavoriteService.GetAllAsync(cancellationToken))
         {
             PlayerCardList.Players.Add(new PlayerCardViewModel 
             { 

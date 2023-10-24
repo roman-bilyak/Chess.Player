@@ -13,7 +13,7 @@ public partial class PlayerViewModel : BaseViewModel, IDisposable
 {
     private readonly IChessDataService _chessDataService;
     private readonly IPlayerHistoryService _playerHistoryService;
-    private readonly IFavoritePlayerService _favoritePlayerService;
+    private readonly IPlayerFavoriteService _playerFavoriteService;
     private readonly IPopupService _popupService;
 
     public string Name => Names.FirstOrDefault() ?? SearchCriterias.FirstOrDefault();
@@ -93,19 +93,19 @@ public partial class PlayerViewModel : BaseViewModel, IDisposable
     (
         IChessDataService chessDataService,
         IPlayerHistoryService historyService,
-        IFavoritePlayerService favoritePlayerService,
+        IPlayerFavoriteService playerFavoriteService,
         IPopupService popupService
     )
     {
         ArgumentNullException.ThrowIfNull(chessDataService);
         ArgumentNullException.ThrowIfNull(historyService);
-        ArgumentNullException.ThrowIfNull(favoritePlayerService);
+        ArgumentNullException.ThrowIfNull(playerFavoriteService);
         ArgumentNullException.ThrowIfNull(popupService);
 
         _chessDataService = chessDataService;
 
         _playerHistoryService = historyService;
-        _favoritePlayerService = favoritePlayerService;
+        _playerFavoriteService = playerFavoriteService;
         _popupService = popupService;
 
         _chessDataService.ProgressChanged += OnProgressChanged;
@@ -140,7 +140,7 @@ public partial class PlayerViewModel : BaseViewModel, IDisposable
             }
 
             await _playerHistoryService.AddAsync(Name, cancellationToken);
-            IsFavorite = await _favoritePlayerService.ContainsAsync(Name, cancellationToken);
+            IsFavorite = await _playerFavoriteService.ContainsAsync(Name, cancellationToken);
             OnPropertyChanged(nameof(Name));
             OnPropertyChanged(nameof(HasNames));
 
@@ -211,7 +211,7 @@ public partial class PlayerViewModel : BaseViewModel, IDisposable
     [RelayCommand]
     private async Task ToggleFavoriteAsync(CancellationToken cancellationToken)
     {
-        IsFavorite = await _favoritePlayerService.ToggleAsync(Name, cancellationToken);
+        IsFavorite = await _playerFavoriteService.ToggleAsync(Name, cancellationToken);
     }
 
     private void OnProgressChanged(object sender, SearchProgressEventArgs e)
