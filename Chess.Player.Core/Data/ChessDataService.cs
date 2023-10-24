@@ -1,6 +1,4 @@
-﻿using System.Globalization;
-
-namespace Chess.Player.Data
+﻿namespace Chess.Player.Data
 {
     public class ChessDataService : IChessDataService
     {
@@ -27,8 +25,7 @@ namespace Chess.Player.Data
             List<PlayerTournament> playerTournaments = new();
             foreach (SearchCriteria searchCriteria in searchCriterias)
             {
-                string name = CultureInfo.InvariantCulture.TextInfo.ToTitleCase(searchCriteria.Name);
-                string[] nameParts = name.Split(new[] { " ", "," }, StringSplitOptions.RemoveEmptyEntries);
+                string[] nameParts = searchCriteria.Name.Split(" ", StringSplitOptions.RemoveEmptyEntries);
 
                 string? lastName = nameParts.FirstOrDefault();
                 if (lastName is null)
@@ -40,8 +37,7 @@ namespace Chess.Player.Data
                 List<PlayerTournament>? tournaments = await _dataFetcher.GetPlayerTournamentsAsync(lastName, firstName, cancellationToken);
                 if (tournaments is not null && tournaments.Any())
                 {
-                    name = string.Join(" ", lastName, firstName);
-                    result.Names.Add(name);
+                    result.Names.Add(string.Join(" ", lastName, firstName));
 
                     playerTournaments.AddRange(tournaments);
                 }
