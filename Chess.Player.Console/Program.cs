@@ -1,11 +1,9 @@
-﻿using Chess.Player.Data;
+﻿using Chess.Player;
+using Chess.Player.Data;
 using Microsoft.Extensions.DependencyInjection;
 
 ServiceProvider serviceProvider = new ServiceCollection()
-            .AddTransient<IChessDataService, ChessDataService>()
-            .AddTransient<IChessDataManager, ChessDataManager>()
-            .AddTransient<IChessDataFetcher, ChessResultsDataFetcher>()
-            .AddTransient<IChessDataNormalizer, ChessDataNormalizer>()
+            .AddChessServices()
             .AddTransient<ICacheManager, ConsoleFileCacheManager>()
             .AddTransient<IOutputFormatter, ConsoleOutputFormatter>()
             .BuildServiceProvider();

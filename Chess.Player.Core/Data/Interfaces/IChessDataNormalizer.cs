@@ -1,6 +1,6 @@
 ﻿namespace Chess.Player.Data;
 
-public interface IChessDataNormalizer
+internal interface IChessDataNormalizer
 {
     string NormalizeName(string name);
 }

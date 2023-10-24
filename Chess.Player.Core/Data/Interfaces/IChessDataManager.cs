@@ -2,7 +2,7 @@
 
 public delegate void SearchProgressEventHandler(object sender, SearchProgressEventArgs e);
 
-public interface IChessDataManager
+internal interface IChessDataManager
 {
     event SearchProgressEventHandler? ProgressChanged;
 

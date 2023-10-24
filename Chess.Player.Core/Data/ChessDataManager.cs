@@ -1,6 +1,6 @@
 ﻿namespace Chess.Player.Data;
 
-public class ChessDataManager : IChessDataManager
+internal class ChessDataManager : IChessDataManager
 {
     private readonly IChessDataFetcher _chessDataFetcher;
     private readonly ICacheManager _cacheManager;

@@ -1,6 +1,6 @@
 ﻿namespace Chess.Player.Data;
 
-public class ChessDataService : IChessDataService
+internal class ChessDataService : IChessDataService
 {
     private readonly IChessDataManager _chessDataManager;
     private readonly IOutputFormatter _outputFormatter;

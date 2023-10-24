@@ -2,7 +2,7 @@
 
 namespace Chess.Player.Data;
 
-public class ChessDataNormalizer : IChessDataNormalizer
+internal class ChessDataNormalizer : IChessDataNormalizer
 {
     public string NormalizeName(string name)
     {
