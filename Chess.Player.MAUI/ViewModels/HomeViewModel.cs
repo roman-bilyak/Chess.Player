@@ -87,8 +87,9 @@ public partial class HomeViewModel : BaseViewModel
     {
         await _navigationService.PushAsync<PlayerPage, PlayerViewModel>(x =>
         {
-            x.SearchCriterias.Add(SearchText);
+            x.Name = SearchText;
         });
+
         SearchText = null;
     }
 }

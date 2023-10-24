@@ -1,13 +1,15 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using System.Collections.ObjectModel;
-using System.Xml.Linq;
 
 namespace Chess.Player.MAUI.ViewModels;
 
 [INotifyPropertyChanged]
 public partial class PlayerCardViewModel : BaseViewModel
 {
+    public string Name => Names.FirstOrDefault()?.FullName;
+
     [ObservableProperty]
+    [NotifyPropertyChangedFor(nameof(Name))]
     private ObservableCollection<NameViewModel> _names = new();
 
     [ObservableProperty]

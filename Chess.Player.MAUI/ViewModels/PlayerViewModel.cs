@@ -1,9 +1,11 @@
 ﻿using Chess.Player.Data;
+using Chess.Player.MAUI.Models;
 using Chess.Player.MAUI.Services;
 using Chess.Player.Services;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using System.Collections.ObjectModel;
+using System.Diagnostics.CodeAnalysis;
 using System.Net;
 
 namespace Chess.Player.MAUI.ViewModels;
@@ -12,18 +14,16 @@ namespace Chess.Player.MAUI.ViewModels;
 public partial class PlayerViewModel : BaseViewModel, IDisposable
 {
     private readonly IChessDataService _chessDataService;
+    private readonly IPlayerGroupService _playerGroupService;
     private readonly IPlayerHistoryService _playerHistoryService;
     private readonly IPlayerFavoriteService _playerFavoriteService;
     private readonly IPopupService _popupService;
 
-    public string Name => Names.Select(x => x.FullName).FirstOrDefault() ?? SearchCriterias.FirstOrDefault();
+    [ObservableProperty]
+    private string _name;
 
     [ObservableProperty]
-    [NotifyPropertyChangedFor(nameof(Name))]
-    private ObservableCollection<string> _searchCriterias = new();
-
-    [ObservableProperty]
-    [NotifyPropertyChangedFor(nameof(Name), nameof(HasNames))]
+    [NotifyPropertyChangedFor(nameof(HasNames))]
     private ObservableCollection<NameViewModel> _names = new();
 
     public bool HasNames => Names.Any();
@@ -92,18 +92,20 @@ public partial class PlayerViewModel : BaseViewModel, IDisposable
     public PlayerViewModel
     (
         IChessDataService chessDataService,
+        IPlayerGroupService playerGroupService,
         IPlayerHistoryService historyService,
         IPlayerFavoriteService playerFavoriteService,
         IPopupService popupService
     )
     {
         ArgumentNullException.ThrowIfNull(chessDataService);
+        ArgumentNullException.ThrowIfNull(playerGroupService);
         ArgumentNullException.ThrowIfNull(historyService);
         ArgumentNullException.ThrowIfNull(playerFavoriteService);
         ArgumentNullException.ThrowIfNull(popupService);
 
         _chessDataService = chessDataService;
-
+        _playerGroupService = playerGroupService;
         _playerHistoryService = historyService;
         _playerFavoriteService = playerFavoriteService;
         _popupService = popupService;
@@ -129,33 +131,29 @@ public partial class PlayerViewModel : BaseViewModel, IDisposable
         return Task.CompletedTask;
     }
 
+    [RelayCommand]
+    private async Task AddNameAsync(CancellationToken cancellationToken)
+    {
+        string name = await _popupService.DisplayPromptAsync("Add Name", placeholder: "Example: Smith John");
+        await _playerGroupService.AddToGroupAsync(Name, name, cancellationToken);
+
+        IsLoading = true;
+    }
+
     [RelayCommand(IncludeCancelCommand = true)]
     private async Task LoadAsync(CancellationToken cancellationToken)
     {
         try
         {
-            SearchCriteria[] searchCriterias = SearchCriterias.Select(x => new SearchCriteria(x)).ToArray();
-            PlayerFullInfo playerFullInfo = await _chessDataService.GetFullPlayerInfoAsync(searchCriterias, ForceRefresh, cancellationToken);
+            PlayerFullInfo playerFullInfo = await _chessDataService.GetFullPlayerInfoAsync(Name, ForceRefresh, cancellationToken);
 
-            Names.Clear();
-            foreach (NameInfo name in playerFullInfo.Names)
-            {
-                Names.Add(new NameViewModel
-                {
-                    LastName = name.LastName,
-                    FirstName = name.FirstName
-                });
-            }
-
-            await _playerHistoryService.AddAsync(Name, cancellationToken);
-            IsFavorite = await _playerFavoriteService.ContainsAsync(Name, cancellationToken);
-            OnPropertyChanged(nameof(Name));
-            OnPropertyChanged(nameof(HasNames));
-
+            Name = playerFullInfo.Name ?? Name;
+            Names = new ObservableCollection<NameViewModel>(playerFullInfo.Names.Select(x => new NameViewModel { LastName = x.LastName, FirstName = x.FirstName}));
             Title = playerFullInfo.Title;
             FideId = playerFullInfo.FideId;
             ClubCity = playerFullInfo.ClubCity;
             YearOfBirth = playerFullInfo.YearOfBirth;
+            IsFavorite = await _playerFavoriteService.ContainsAsync(Name, cancellationToken);
 
             int index = playerFullInfo.Tournaments.Count;
             _allTournaments = playerFullInfo.Tournaments.GroupBy(x => x.Tournament.EndDate?.Year)
@@ -182,6 +180,11 @@ public partial class PlayerViewModel : BaseViewModel, IDisposable
             TournamentYears = _allTournaments.Keys.ToList();
             TournamentYear = TournamentYears.FirstOrDefault(x => TournamentYear is null || x.Year == TournamentYear.Year);
 
+            if (playerFullInfo.Tournaments.Any())
+            {
+                await _playerHistoryService.AddAsync(Name, cancellationToken);
+            }
+
             Error = null;
         }
         catch (OperationCanceledException)
@@ -201,19 +204,6 @@ public partial class PlayerViewModel : BaseViewModel, IDisposable
             IsLoading = false;
             ForceRefresh = true;
         }
-    }
-
-    [RelayCommand]
-    private async Task AddSearchCriteriaAsync(CancellationToken cancellationToken)
-    {
-        string searchCriteria = await _popupService.DisplayPromptAsync("Add Search Criteria", placeholder: "Example: Smith John");
-        if (string.IsNullOrEmpty(searchCriteria?.Trim()))
-        {
-            return;
-        }
-
-        SearchCriterias.Add(searchCriteria);
-        IsLoading = true;
     }
 
     [RelayCommand]

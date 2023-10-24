@@ -12,7 +12,7 @@
     </ContentPage.Behaviors>
     <ContentPage.ToolbarItems>
         <ToolbarItem Text="{Binding ToggleFavoriteButtonName}" Order="Secondary" Command="{Binding ToggleFavoriteCommand}" />
-        <ToolbarItem Text="Add Search Criteria" Order="Secondary" Command="{Binding AddSearchCriteriaCommand}" />
+        <ToolbarItem Text="Add Name" Order="Secondary" Command="{Binding AddNameCommand}" />
         <ToolbarItem Text="Refresh" Order="Secondary" Command="{Binding RefreshCommand}" />
     </ContentPage.ToolbarItems>
     <StackLayout Padding="10">

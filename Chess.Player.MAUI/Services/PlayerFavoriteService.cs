@@ -69,7 +69,7 @@ internal class PlayerFavoriteService : IPlayerFavoriteService
         List<PlayerShortInfo> result = new();
         foreach(var player in _players)
         {
-            PlayerFullInfo playerInfo = await _chessDataService.GetFullPlayerInfoAsync(new[] { new SearchCriteria(player)}, forceRefresh, cancellationToken);
+            PlayerFullInfo playerInfo = await _chessDataService.GetFullPlayerInfoAsync(player, forceRefresh, cancellationToken);
             result.Add(playerInfo);
         }
 
