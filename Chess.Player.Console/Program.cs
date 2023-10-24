@@ -2,8 +2,8 @@
 using Microsoft.Extensions.DependencyInjection;
 
 ServiceProvider serviceProvider = new ServiceCollection()
-            .AddTransient<IChessDataManager, ChessDataManager>()
             .AddTransient<IChessDataService, ChessDataService>()
+            .AddTransient<IChessDataManager, ChessDataManager>()
             .AddTransient<IChessDataFetcher, ChessResultsDataFetcher>()
             .AddTransient<ICacheManager, ConsoleFileCacheManager>()
             .AddTransient<IOutputFormatter, ConsoleOutputFormatter>()
@@ -19,7 +19,7 @@ try
         new SearchCriteria("Mosesov Danylo"),
     };
 
-    IChessDataManager chessDataManager = serviceProvider.GetRequiredService<IChessDataManager>();
+    IChessDataService chessDataManager = serviceProvider.GetRequiredService<IChessDataService>();
     await chessDataManager.SearchAsync(searchCriterias, CancellationToken.None);
 }
 finally

@@ -11,7 +11,7 @@ namespace Chess.Player.MAUI.ViewModels;
 [INotifyPropertyChanged]
 public partial class PlayerViewModel : BaseViewModel, IDisposable
 {
-    private readonly IChessDataService _chessDataService;
+    private readonly IChessDataManager _chessDataService;
     private readonly IPlayerHistoryService _playerHistoryService;
     private readonly IFavoritePlayerService _favoritePlayerService;
     private readonly ICacheManager _cacheManager;
@@ -92,7 +92,7 @@ public partial class PlayerViewModel : BaseViewModel, IDisposable
 
     public PlayerViewModel
     (
-        IChessDataService chessDataService,
+        IChessDataManager chessDataService,
         IPlayerHistoryService historyService,
         IFavoritePlayerService favoritePlayerService,
         ICacheManager cacheManager,
