@@ -15,11 +15,7 @@ public abstract class FileCacheManager : ICacheManager
             {
                 string json = File.ReadAllText(cacheFilePath);
                 T? result = JsonConvert.DeserializeObject<T>(json);
-                if (result is null)
-                {
-                    throw new Exception("Failed to deserialize");
-                }
-                return result;
+                return result is null ? throw new Exception("Failed to deserialize") : result;
             }
         }
 
