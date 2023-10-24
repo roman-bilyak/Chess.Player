@@ -1,9 +1,8 @@
-﻿using Chess.Player.Data.Interfaces;
-using System.Globalization;
+﻿using System.Globalization;
 
 namespace Chess.Player.Data;
 
-public class StringNormalizer : IStringNormalizer
+public class ChessDataNormalizer : IChessDataNormalizer
 {
     public string NormalizeName(string name)
     {

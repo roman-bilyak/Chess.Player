@@ -5,6 +5,7 @@ ServiceProvider serviceProvider = new ServiceCollection()
             .AddTransient<IChessDataService, ChessDataService>()
             .AddTransient<IChessDataManager, ChessDataManager>()
             .AddTransient<IChessDataFetcher, ChessResultsDataFetcher>()
+            .AddTransient<IChessDataNormalizer, ChessDataNormalizer>()
             .AddTransient<ICacheManager, ConsoleFileCacheManager>()
             .AddTransient<IOutputFormatter, ConsoleOutputFormatter>()
             .BuildServiceProvider();
