@@ -9,7 +9,7 @@ internal class ChessDataNormalizer : IChessDataNormalizer
         TextInfo textInfo = CultureInfo.InvariantCulture.TextInfo;
         string normalizedName = textInfo.ToTitleCase(name.ToLower());
 
-        string[] nameParts = normalizedName.Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
+        string[] nameParts = normalizedName.Split(new[] { ' ', ',' }, StringSplitOptions.RemoveEmptyEntries);
         return string.Join(" ", nameParts);
     }
 }

@@ -2,6 +2,9 @@
 
 internal class ChessDataManager : IChessDataManager
 {
+    private const int PercentageStart = 1;
+    private const int PercentageFinish = 100;
+
     private readonly IChessDataFetcher _chessDataFetcher;
     private readonly ICacheManager _cacheManager;
 
@@ -18,7 +21,7 @@ internal class ChessDataManager : IChessDataManager
 
     public async Task<PlayerFullInfo> SearchAsync(SearchCriteria[] searchCriterias, CancellationToken cancellationToken)
     {
-        OnProgressChanged(1);
+        OnProgressChanged(PercentageStart);
 
         PlayerFullInfo playerFullInfo = new();
 
@@ -27,42 +30,31 @@ internal class ChessDataManager : IChessDataManager
         {
             string[] nameParts = searchCriteria.Name.Split(" ", StringSplitOptions.RemoveEmptyEntries);
 
-            string? lastName = nameParts.FirstOrDefault();
-            if (lastName is null)
-            {
-                continue;
-            }
+            string lastName = nameParts.First();
             string? firstName = string.Join(" ", nameParts.Skip(1));
+            playerFullInfo.Names.Add(new NameInfo(lastName, firstName));
 
-            List<PlayerTournament>? tournaments = await _chessDataFetcher.GetPlayerTournamentsAsync(lastName, firstName, cancellationToken);
-            if (tournaments is not null && tournaments.Any())
-            {
-                playerFullInfo.Names.Add(new NameInfo(lastName, firstName));
-
-                playerTournaments.AddRange(tournaments);
-            }
+            List<PlayerTournament> tournaments = await _chessDataFetcher.GetPlayerTournamentsAsync(lastName, firstName, cancellationToken);
+            playerTournaments.AddRange(tournaments);          
         }
 
         int i = 0;
         List<PlayerTournamentInfo> playerTournamentInfos = new();
         foreach (PlayerTournament playerTournament in playerTournaments)
         {
-            TournamentInfo? tournamentInfo = await _cacheManager.GetOrAddAsync(nameof(TournamentInfo), $"{playerTournament.TournamentId}",
+            TournamentInfo tournamentInfo = await _cacheManager.GetOrAddAsync(nameof(TournamentInfo), $"{playerTournament.TournamentId}",
                 () => _chessDataFetcher.GetTournamentInfoAsync(playerTournament.TournamentId, cancellationToken),
                 false, cancellationToken
             );
 
-            PlayerInfo? playerInfo = await _cacheManager.GetOrAddAsync(nameof(PlayerInfo), $"{playerTournament.TournamentId}_{playerTournament.PlayerStartingRank}",
+            PlayerInfo playerInfo = await _cacheManager.GetOrAddAsync(nameof(PlayerInfo), $"{playerTournament.TournamentId}_{playerTournament.PlayerStartingRank}",
                 () => _chessDataFetcher.GetPlayerInfoAsync(playerTournament.TournamentId, playerTournament.PlayerStartingRank, cancellationToken),
                 false, cancellationToken
             );
 
-            if (tournamentInfo is not null && playerInfo is not null)
-            {
-                playerTournamentInfos.Add(new PlayerTournamentInfo(tournamentInfo, playerInfo));
-            }
+            playerTournamentInfos.Add(new PlayerTournamentInfo(tournamentInfo, playerInfo));
 
-            int progressPercentage = i++ * 100 / playerTournaments.Count;
+            int progressPercentage = i++ * (PercentageFinish - PercentageStart) / playerTournaments.Count;
             OnProgressChanged(progressPercentage);
         }
 
@@ -74,7 +66,7 @@ internal class ChessDataManager : IChessDataManager
         playerFullInfo.ClubCity = playerFullInfo.Tournaments.FirstOrDefault(x => x.Player.ClubCity is not null)?.Player.ClubCity;
         playerFullInfo.YearOfBirth = playerFullInfo.Tournaments.FirstOrDefault(x => x.Player.YearOfBirth is not null)?.Player.YearOfBirth;
 
-        OnProgressChanged(100);
+        OnProgressChanged(PercentageFinish);
         return playerFullInfo;
     }
 

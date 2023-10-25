@@ -9,6 +9,7 @@ public static class ServiceCollectionExtensions
     {
         return services
             .AddTransient<IChessDataService, ChessDataService>()
+            .AddTransient<IPlayerGroupService, PlayerGroupService>()
             .AddTransient<IChessDataManager, ChessDataManager>()
             .AddTransient<IChessDataFetcher, ChessResultsDataFetcher>()
             .AddTransient<IChessDataNormalizer, ChessDataNormalizer>()

@@ -3,7 +3,7 @@
 internal class ChessDataService : IChessDataService
 {
     private readonly IChessDataManager _chessDataManager;
-    private readonly IChessDataNormalizer _chessDataNormalizer;
+    private readonly IPlayerGroupService _playerGroupService;
     private readonly ICacheManager _cacheManager;
 
     public event SearchProgressEventHandler? ProgressChanged
@@ -21,25 +21,23 @@ internal class ChessDataService : IChessDataService
     public ChessDataService
     (
         IChessDataManager chessDataManager,
-        IChessDataNormalizer chessDataNormalizer,
+        IPlayerGroupService playerGroupService,
         ICacheManager cacheManager
     )
     {
         ArgumentNullException.ThrowIfNull(chessDataManager);
-        ArgumentNullException.ThrowIfNull(chessDataNormalizer);
+        ArgumentNullException.ThrowIfNull(chessDataManager);
         ArgumentNullException.ThrowIfNull(cacheManager);
 
         _chessDataManager = chessDataManager;
-        _chessDataNormalizer = chessDataNormalizer;
+        _playerGroupService = playerGroupService;
         _cacheManager = cacheManager;
     }
 
-    public async Task<PlayerFullInfo> GetFullPlayerInfoAsync(SearchCriteria[] searchCriterias, bool forceRefresh, CancellationToken cancellationToken)
+    public async Task<PlayerFullInfo> GetFullPlayerInfoAsync(string name, bool forceRefresh, CancellationToken cancellationToken)
     {
-        foreach (SearchCriteria searchCriteria in searchCriterias)
-        {
-            searchCriteria.Name = _chessDataNormalizer.NormalizeName(searchCriteria.Name);
-        }
+        PlayerGroupInfo playerGroupInfo = await _playerGroupService.GetGroupInfoAsync(name, cancellationToken);
+        SearchCriteria[] searchCriterias = playerGroupInfo.Select(x => new SearchCriteria(x)).ToArray();
 
         return await _cacheManager.GetOrAddAsync(nameof(PlayerFullInfo),
                 string.Join("_", searchCriterias.Select(x => x.Name)),

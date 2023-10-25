@@ -8,20 +8,27 @@ ServiceProvider serviceProvider = new ServiceCollection()
             .BuildServiceProvider();
 try
 {
-    SearchCriteria[] searchCriterias = new SearchCriteria[]
+    string groupName = "Мосесов Даниїл";
+    List<string> names = new()
     {
-        new SearchCriteria("Мосесов Даниїл"),
-        new SearchCriteria("Мосесов Даниил"),
-        new SearchCriteria("Мосесов Данило"),
-        new SearchCriteria("Mosesov Danyil"),
-        new SearchCriteria("Mosesov Danylo"),
+        "Мосесов Даниїл",
+        "Мосесов Даниил",
+        "Мосесов Данило",
+        "Mosesov Danyil",
+        "Mosesov Danylo",
     };
+
+    IPlayerGroupService playerGroupService = serviceProvider.GetRequiredService<IPlayerGroupService>();
+    foreach (string name in names)
+    {
+        await playerGroupService.AddToGroupAsync(groupName, name, CancellationToken.None);
+    }
 
     ConsoleOutput consoleOutput = new();
     IChessDataService chessDataService = serviceProvider.GetRequiredService<IChessDataService>();
     chessDataService.ProgressChanged += (sender, args) => consoleOutput.DisplayProgress(args.ProgressPercentage);
 
-    PlayerFullInfo playerFullInfo = await chessDataService.GetFullPlayerInfoAsync(searchCriterias, true, CancellationToken.None);
+    PlayerFullInfo playerFullInfo = await chessDataService.GetFullPlayerInfoAsync(groupName, true, CancellationToken.None);
     consoleOutput.DisplayPlayerFullInfo(playerFullInfo);
 }
 finally

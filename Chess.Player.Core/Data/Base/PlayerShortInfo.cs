@@ -2,6 +2,8 @@
 
 public class PlayerShortInfo
 {
+    public string? Name => Names.FirstOrDefault()?.FullName;
+
     public List<NameInfo> Names { get; set; } = new List<NameInfo>();
 
     public string? Title { get; set; }
