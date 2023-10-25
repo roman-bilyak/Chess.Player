@@ -14,16 +14,7 @@
             </VisualState>
         </VisualStateGroup>
     </VisualStateManager.VisualStateGroups>
-    <Border x:Name="border" 
-            Stroke="LightGray"
-            StrokeThickness="1"
-            StrokeShape="RoundRectangle 10"
-            Margin="0, 5"
-            Padding="15"
-            BackgroundColor="#f8f9fa">
-        <Border.Shadow>
-            <Shadow Opacity="0.3" Offset="3,3" Radius="3"/>
-        </Border.Shadow>
+    <Border x:Name="border" Style="{StaticResource CardBorderStyle}">
         <Grid RowSpacing="5" ColumnSpacing="5">
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto" />
@@ -37,15 +28,15 @@
                 <VerticalStackLayout BindableLayout.ItemsSource="{Binding Names, Mode=OneWay}">
                     <BindableLayout.ItemTemplate>
                         <DataTemplate x:DataType="vm:NameViewModel">
-                            <Label Text="{Binding FullName}" FontSize="14" FontAttributes="Bold" />
+                            <Label Text="{Binding FullName}" Style="{StaticResource CardHighlightStyle}"/>
                         </DataTemplate>
                     </BindableLayout.ItemTemplate>
                 </VerticalStackLayout>
-                <Label Text="{Binding ClubCity}" FontSize="14" TextColor="#888888" IsVisible="{Binding HasClubCity}" />
-                <Label Text="{Binding YearOfBirth}" FontSize="14" TextColor="#888888" IsVisible="{Binding HasYearOfBirth}" />
+                <Label Text="{Binding ClubCity}" IsVisible="{Binding HasClubCity}" Style="{StaticResource CardDetailsStyle}" />
+                <Label Text="{Binding YearOfBirth}" IsVisible="{Binding HasYearOfBirth}" Style="{StaticResource CardDetailsStyle}" />
             </VerticalStackLayout>
-            <Label Grid.Row="0" Grid.Column="1" Text="{Binding Title}" FontSize="14" FontAttributes="Bold" TextColor="#333333" VerticalOptions="Start" HorizontalOptions="End" />
-            <Label Grid.Row="0" Grid.Column="1" Text="{Binding Years}" FontSize="14" IsVisible="{Binding HasYearOfBirth}" VerticalOptions="End" HorizontalOptions="End" />
+            <Label Grid.Row="0" Grid.Column="1" Text="{Binding Title}" VerticalOptions="Start" HorizontalOptions="End" Style="{StaticResource CardHighlightStyle}" />
+            <Label Grid.Row="0" Grid.Column="1" Text="{Binding Years}" IsVisible="{Binding HasYearOfBirth}" VerticalOptions="End" HorizontalOptions="End" Style="{StaticResource CardDetailsStyle}" />
         </Grid>
     </Border>
 </ContentView>
