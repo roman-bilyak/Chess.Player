@@ -3,6 +3,7 @@ using Chess.Player.MAUI.Services;
 using Chess.Player.Services;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using System.Collections.ObjectModel;
 
 namespace Chess.Player.MAUI.ViewModels;
 
@@ -59,22 +60,15 @@ public partial class FavoritesViewModel : BaseViewModel
         {
             PlayerCardList.Players.Clear();
 
-            foreach (PlayerShortInfo player in await _playerFavoriteService.GetAllAsync(ForceRefresh, cancellationToken))
+            foreach (PlayerFullInfo player in await _playerFavoriteService.GetAllAsync(ForceRefresh, cancellationToken))
             {
                 PlayerCardViewModel playerCardViewModel = new()
                 {
+                    Names = new ObservableCollection<NameViewModel>(player.Names.Select(x=> new NameViewModel { LastName = x.LastName, FirstName = x.FirstName })),
                     Title = player.Title,
                     ClubCity = player.ClubCity,
                     YearOfBirth = player.YearOfBirth,
                 };
-                foreach (NameInfo nameInfo in player.Names)
-                {
-                    playerCardViewModel.Names.Add(new NameViewModel
-                    {
-                        LastName = nameInfo.LastName,
-                        FirstName = nameInfo.FirstName
-                    });
-                }
                 PlayerCardList.Players.Add(playerCardViewModel);
             }
         }

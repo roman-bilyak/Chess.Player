@@ -61,11 +61,6 @@ internal class ChessDataManager : IChessDataManager
         playerTournamentInfos = playerTournamentInfos.OrderByDescending(x => x.Tournament.EndDate).ToList();
         playerFullInfo.Tournaments.AddRange(playerTournamentInfos);
 
-        playerFullInfo.Title = playerFullInfo.Tournaments.FirstOrDefault(x => x.Player.Title is not null)?.Player.Title;
-        playerFullInfo.FideId = playerFullInfo.Tournaments.FirstOrDefault(x => x.Player.FideId is not null)?.Player.FideId;
-        playerFullInfo.ClubCity = playerFullInfo.Tournaments.FirstOrDefault(x => x.Player.ClubCity is not null)?.Player.ClubCity;
-        playerFullInfo.YearOfBirth = playerFullInfo.Tournaments.FirstOrDefault(x => x.Player.YearOfBirth is not null)?.Player.YearOfBirth;
-
         OnProgressChanged(PercentageFinish);
         return playerFullInfo;
     }
