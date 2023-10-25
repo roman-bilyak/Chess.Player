@@ -15,17 +15,8 @@
             </VisualState>
         </VisualStateGroup>
     </VisualStateManager.VisualStateGroups>
-    <Border x:Name="border" 
-            Stroke="LightGray"
-            StrokeThickness="1"
-            StrokeShape="RoundRectangle 10"
-            Margin="0,5"
-            Padding="10"
-            BackgroundColor="#f8f9fa">
-        <Border.Shadow>
-            <Shadow Opacity="0.3" Offset="3,3" Radius="3"/>
-        </Border.Shadow>
-        <Grid ColumnSpacing="10">
+    <Border x:Name="border" Style="{StaticResource CardBorderStyle}">
+        <Grid>
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto" />
             </Grid.RowDefinitions>
@@ -35,11 +26,11 @@
                 <ColumnDefinition Width="30" />
             </Grid.ColumnDefinitions>
 
-            <Label Grid.Row="0" Grid.Column="0" Text="{Binding TournamentNo, Mode=OneWay}" FontSize="10" TextColor="#888888" VerticalOptions="Start" HorizontalOptions="Center" />
-            <Label Grid.Row="0" Grid.Column="0" Text="{Binding Rank, Mode=OneWay}" FontSize="14" FontAttributes="Bold" TextColor="#333333" VerticalOptions="Center" HorizontalOptions="Center" />
+            <Label Grid.Row="0" Grid.Column="0" Text="{Binding TournamentNo, Mode=OneWay}" VerticalOptions="Start" HorizontalOptions="Center" Style="{StaticResource CardDetails10Style}" />
+            <Label Grid.Row="0" Grid.Column="0" Text="{Binding Rank, Mode=OneWay}" VerticalOptions="Center" HorizontalOptions="Center" Style="{StaticResource CardHighlightStyle}" />
             <VerticalStackLayout Grid.Row="0" Grid.Column="1">
-                <Label Text="{Binding TournamentName, Mode=OneWay}" FontSize="14" />
-                <Label Text="{Binding TournamentDateAndLocation, Mode=OneWay}" FontSize="14" TextColor="#888888" />
+                <Label Text="{Binding TournamentName, Mode=OneWay}" />
+                <Label Text="{Binding TournamentDateAndLocation, Mode=OneWay}" Style="{StaticResource CardDetailsStyle}" />
                 <HorizontalStackLayout Spacing="20">
                     <HorizontalStackLayout Spacing="5">
                         <Image Source="players.svg">
@@ -47,7 +38,7 @@
                                 <mct:IconTintColorBehavior TintColor="#888888" />
                             </Image.Behaviors>
                         </Image>
-                        <Label Text="{Binding NumberOfPlayers, Mode=OneWay}" FontSize="14" TextColor="#888888" />
+                        <Label Text="{Binding NumberOfPlayers, Mode=OneWay}" Style="{StaticResource CardDetailsStyle}" />
                     </HorizontalStackLayout>
                     <HorizontalStackLayout Spacing="5">
                         <Image Source="rounds.svg">
@@ -55,12 +46,12 @@
                                 <mct:IconTintColorBehavior TintColor="#888888" />
                             </Image.Behaviors>
                         </Image>
-                        <Label Text="{Binding NumberOfRounds, Mode=OneWay}" FontSize="14" TextColor="#888888" />
+                        <Label Text="{Binding NumberOfRounds, Mode=OneWay}" Style="{StaticResource CardDetailsStyle}" />
                     </HorizontalStackLayout>
                 </HorizontalStackLayout>
             </VerticalStackLayout>
-            <Label Grid.Row="0" Grid.Column="2" Text="{Binding Points, Mode=OneWay}" FontSize="14" FontAttributes="Bold" TextColor="#333333" VerticalOptions="Center" HorizontalOptions="Center" />
-            <Label Grid.Row="0" Grid.Column="2" Text="{Binding Title, Mode=OneWay}" FontSize="12" TextColor="#888888" VerticalOptions="End" HorizontalOptions="Center" />
+            <Label Grid.Row="0" Grid.Column="2" Text="{Binding Points, Mode=OneWay}" VerticalOptions="Center" HorizontalOptions="Center" Style="{StaticResource CardHighlightStyle}" />
+            <Label Grid.Row="0" Grid.Column="2" Text="{Binding Title, Mode=OneWay}" VerticalOptions="End" HorizontalOptions="Center" Style="{StaticResource CardDetails12Style}" />
         </Grid>
     </Border>
 </ContentView>
