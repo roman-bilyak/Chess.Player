@@ -12,10 +12,10 @@
 		<ImplicitUsings>enable</ImplicitUsings>
 
 		<!-- Display name -->
-		<ApplicationTitle>Chess.Player.MAUI</ApplicationTitle>
+		<ApplicationTitle>Chess Player</ApplicationTitle>
 
 		<!-- App Identifier -->
-		<ApplicationId>com.companyname.chess.player.maui</ApplicationId>
+		<ApplicationId>com.chess.player</ApplicationId>
 		<ApplicationIdGuid>2e459571-f22c-438f-b070-edd9c3427e10</ApplicationIdGuid>
 
 		<!-- Versions -->
