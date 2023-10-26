@@ -16,7 +16,7 @@
         </VisualStateGroup>
     </VisualStateManager.VisualStateGroups>
     <Border x:Name="border" Style="{StaticResource CardBorderStyle}">
-        <Grid>
+        <Grid RowSpacing="10" ColumnSpacing="10">
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto" />
             </Grid.RowDefinitions>
