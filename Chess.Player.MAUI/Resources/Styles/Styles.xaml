@@ -14,7 +14,7 @@
     </Style>
 
     <Style TargetType="Border">
-        <Setter Property="Stroke" Value="{AppThemeBinding Light={StaticResource Gray200}, Dark={StaticResource Gray500}}" />
+        <Setter Property="Stroke" Value="{AppThemeBinding Light={StaticResource Primary}, Dark={StaticResource Gray500}}" />
         <Setter Property="StrokeShape" Value="RoundRectangle 10"/>
         <Setter Property="StrokeThickness" Value="1"/>
     </Style>
@@ -22,7 +22,7 @@
     <Style TargetType="Border" x:Key="CardBorderStyle">
         <Setter Property="Margin" Value="0,5"/>
         <Setter Property="Padding" Value="15"/>
-        <Setter Property="BackgroundColor" Value="#f8f9fa"/>
+        <Setter Property="BackgroundColor" Value="{AppThemeBinding Light={StaticResource Secondary}, Dark={StaticResource Gray500}}"/>
         <Setter Property="Shadow">
             <Setter.Value>
                 <Shadow Opacity="0.3" Offset="3,3" Radius="3"/>
@@ -193,6 +193,7 @@
     </Style>
 
     <Style TargetType="Label" x:Key="CardHighlightStyle">
+        <Setter Property="TextColor" Value="{AppThemeBinding Light={StaticResource Primary}, Dark={StaticResource White}}" />
         <Setter Property="FontAttributes" Value="Bold"/>
     </Style>
 

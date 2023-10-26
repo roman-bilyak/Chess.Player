@@ -10,7 +10,7 @@
             <VisualState Name="Normal"></VisualState>
             <VisualState Name="Selected">
                 <VisualState.Setters>
-                    <Setter TargetName="border" Property="Border.BackgroundColor" Value="LightGray" />
+                    <Setter TargetName="border" Property="Border.BackgroundColor" Value="#CEDDF3" />
                 </VisualState.Setters>
             </VisualState>
         </VisualStateGroup>
