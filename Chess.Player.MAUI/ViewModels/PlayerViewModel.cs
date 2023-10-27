@@ -15,6 +15,7 @@ public partial class PlayerViewModel : BaseViewModel, IDisposable
     private readonly IPlayerGroupService _playerGroupService;
     private readonly IPlayerHistoryService _playerHistoryService;
     private readonly IPlayerFavoriteService _playerFavoriteService;
+    private readonly IDateTimeProvider _dateTimeProvider;
     private readonly IPopupService _popupService;
 
     [ObservableProperty]
@@ -50,7 +51,7 @@ public partial class PlayerViewModel : BaseViewModel, IDisposable
 
     public bool HasYearOfBirth => YearOfBirth is not null;
 
-    public int Years => DateTime.UtcNow.Year - YearOfBirth ?? 0;
+    public int Years => _dateTimeProvider.UtcNow.Year - YearOfBirth ?? 0;
 
     [ObservableProperty]
     [NotifyPropertyChangedFor(nameof(HasTournamentYears))]
@@ -93,6 +94,7 @@ public partial class PlayerViewModel : BaseViewModel, IDisposable
         IPlayerGroupService playerGroupService,
         IPlayerHistoryService historyService,
         IPlayerFavoriteService playerFavoriteService,
+        IDateTimeProvider dateTimeProvider,
         IPopupService popupService
     )
     {
@@ -100,12 +102,14 @@ public partial class PlayerViewModel : BaseViewModel, IDisposable
         ArgumentNullException.ThrowIfNull(playerGroupService);
         ArgumentNullException.ThrowIfNull(historyService);
         ArgumentNullException.ThrowIfNull(playerFavoriteService);
+        ArgumentNullException.ThrowIfNull(dateTimeProvider);
         ArgumentNullException.ThrowIfNull(popupService);
 
         _chessDataService = chessDataService;
         _playerGroupService = playerGroupService;
         _playerHistoryService = historyService;
         _playerFavoriteService = playerFavoriteService;
+        _dateTimeProvider = dateTimeProvider;
         _popupService = popupService;
 
         _chessDataService.ProgressChanged += OnProgressChanged;

@@ -85,9 +85,10 @@ internal class ChessResultsDataFetcher : IChessDataFetcher
                 }
             }
 
-            if (tournamentId.HasValue && startingRank.HasValue)
+            string? endDateStr = node.SelectSingleNode("td[7]")?.InnerText?.Trim();
+            if (tournamentId.HasValue && startingRank.HasValue && DateTime.TryParse(endDateStr, out DateTime endDate))
             {
-                playerTournaments.Add(new PlayerTournament(tournamentId.Value, startingRank.Value));
+                playerTournaments.Add(new PlayerTournament(tournamentId.Value, startingRank.Value, endDate));
             }
         }
         return playerTournaments;

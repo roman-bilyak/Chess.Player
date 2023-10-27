@@ -1,4 +1,5 @@
-﻿using CommunityToolkit.Mvvm.ComponentModel;
+﻿using Chess.Player.Data;
+using CommunityToolkit.Mvvm.ComponentModel;
 using System.Collections.ObjectModel;
 
 namespace Chess.Player.MAUI.ViewModels;
@@ -6,6 +7,8 @@ namespace Chess.Player.MAUI.ViewModels;
 [INotifyPropertyChanged]
 public partial class PlayerCardViewModel : BaseViewModel
 {
+    private readonly IDateTimeProvider _dateTimeProvider;
+
     public string Name => Names.FirstOrDefault()?.FullName;
 
     [ObservableProperty]
@@ -27,5 +30,15 @@ public partial class PlayerCardViewModel : BaseViewModel
 
     public bool HasYearOfBirth => YearOfBirth is not null;
 
-    public int Years => DateTime.UtcNow.Year - YearOfBirth ?? 0;
+    public int Years => _dateTimeProvider.UtcNow.Year - YearOfBirth ?? 0;
+
+    public PlayerCardViewModel
+    (
+        IDateTimeProvider dateTimeProvider
+    )
+    {
+        ArgumentNullException.ThrowIfNull(dateTimeProvider);
+
+        _dateTimeProvider = dateTimeProvider;
+    }
 }

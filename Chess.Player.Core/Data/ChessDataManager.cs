@@ -6,16 +6,24 @@ internal class ChessDataManager : IChessDataManager
     private const int PercentageFinish = 100;
 
     private readonly IChessDataFetcher _chessDataFetcher;
+    private readonly IDateTimeProvider _dateTimeProvider;
     private readonly ICacheManager _cacheManager;
 
     public event SearchProgressEventHandler? ProgressChanged;
 
-    public ChessDataManager(IChessDataFetcher chessDataFetcher, ICacheManager cacheManager) 
+    public ChessDataManager
+    (
+        IChessDataFetcher chessDataFetcher,
+        IDateTimeProvider dateTimeProvider,
+        ICacheManager cacheManager
+    ) 
     {
         ArgumentNullException.ThrowIfNull(chessDataFetcher);
+        ArgumentNullException.ThrowIfNull(dateTimeProvider);
         ArgumentNullException.ThrowIfNull(cacheManager);
 
         _chessDataFetcher = chessDataFetcher;
+        _dateTimeProvider = dateTimeProvider;
         _cacheManager = cacheManager;
     }
 
@@ -38,23 +46,27 @@ internal class ChessDataManager : IChessDataManager
             playerTournaments.AddRange(tournaments);          
         }
 
-        int i = 0;
+        int index = 0;
         List<PlayerTournamentInfo> playerTournamentInfos = new();
         foreach (PlayerTournament playerTournament in playerTournaments)
         {
+            index++;
+
+            bool isForceRefresh = playerTournament.EndDate >= _dateTimeProvider.UtcNow.Date;
+
             TournamentInfo tournamentInfo = await _cacheManager.GetOrAddAsync(nameof(TournamentInfo), $"{playerTournament.TournamentId}",
                 () => _chessDataFetcher.GetTournamentInfoAsync(playerTournament.TournamentId, cancellationToken),
-                false, cancellationToken
+                isForceRefresh, cancellationToken
             );
 
             PlayerInfo playerInfo = await _cacheManager.GetOrAddAsync(nameof(PlayerInfo), $"{playerTournament.TournamentId}_{playerTournament.PlayerStartingRank}",
                 () => _chessDataFetcher.GetPlayerInfoAsync(playerTournament.TournamentId, playerTournament.PlayerStartingRank, cancellationToken),
-                false, cancellationToken
+                isForceRefresh, cancellationToken
             );
 
             playerTournamentInfos.Add(new PlayerTournamentInfo(tournamentInfo, playerInfo));
 
-            int progressPercentage = i++ * (PercentageFinish - PercentageStart) / playerTournaments.Count;
+            int progressPercentage = index * (PercentageFinish - PercentageStart) / playerTournaments.Count + PercentageStart;
             OnProgressChanged(progressPercentage);
         }
 

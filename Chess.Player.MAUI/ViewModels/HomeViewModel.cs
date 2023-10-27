@@ -13,6 +13,7 @@ public partial class HomeViewModel : BaseViewModel
 {
     private readonly IPlayerHistoryService _playerHistoryService;
     private readonly INavigationService _navigationService;
+    private readonly IServiceProvider _serviceProvider;
 
     [ObservableProperty]
     private string _searchText;
@@ -29,16 +30,19 @@ public partial class HomeViewModel : BaseViewModel
     public HomeViewModel
     (
         IPlayerHistoryService playerHistoryService,
-        INavigationService navigationService
+        INavigationService navigationService,
+        IServiceProvider serviceProvider
     )
     {
         ArgumentNullException.ThrowIfNull(playerHistoryService);
         ArgumentNullException.ThrowIfNull(navigationService);
+        ArgumentNullException.ThrowIfNull(serviceProvider);
 
         _playerHistoryService = playerHistoryService;
         _navigationService = navigationService;
+        _serviceProvider = serviceProvider;
 
-        PlayerCardList = new(_navigationService);
+        PlayerCardList = _serviceProvider.GetRequiredService<PlayerCardListViewModel>();
     }
 
     [RelayCommand]
@@ -59,13 +63,13 @@ public partial class HomeViewModel : BaseViewModel
 
             foreach (PlayerFullInfo player in await _playerHistoryService.GetAllAsync(ForceRefresh, cancellationToken))
             {
-                PlayerCardViewModel playerCardViewModel = new()
-                {
-                    Names = new ObservableCollection<NameViewModel>(player.Names.Select(x => new NameViewModel { LastName = x.LastName, FirstName = x.FirstName })),
-                    Title = player.Title,
-                    ClubCity = player.ClubCity,
-                    YearOfBirth = player.YearOfBirth,
-                };
+                PlayerCardViewModel playerCardViewModel = _serviceProvider.GetRequiredService<PlayerCardViewModel>();
+
+                playerCardViewModel.Names = new ObservableCollection<NameViewModel>(player.Names.Select(x => new NameViewModel { LastName = x.LastName, FirstName = x.FirstName }));
+                playerCardViewModel.Title = player.Title;
+                playerCardViewModel.ClubCity = player.ClubCity;
+                playerCardViewModel.YearOfBirth = player.YearOfBirth;
+
                 PlayerCardList.Players.Add(playerCardViewModel);
             }
         }
