@@ -1,10 +1,13 @@
-﻿using CommunityToolkit.Mvvm.ComponentModel;
+﻿using Chess.Player.Data;
+using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace Chess.Player.MAUI.ViewModels;
 
 [INotifyPropertyChanged]
 public partial class PlayerTournamentViewModel : BaseViewModel
 {
+    private readonly IDateTimeProvider _dateTimeProvider;
+
     [ObservableProperty]
     [NotifyPropertyChangedFor(nameof(NoAndTournamentName))]
     private int _tournamentNo;
@@ -16,12 +19,32 @@ public partial class PlayerTournamentViewModel : BaseViewModel
     public string NoAndTournamentName => $"{TournamentNo}. {TournamentName}";
 
     [ObservableProperty]
-    [NotifyPropertyChangedFor(nameof(TournamentDateAndLocation))]
+    [NotifyPropertyChangedFor(nameof(TournamentDateAndLocation), nameof(IsOnline), nameof(IsFuture))]
     private DateTime? _tournamentStartDate;
 
     [ObservableProperty]
-    [NotifyPropertyChangedFor(nameof(TournamentDateAndLocation))]
+    [NotifyPropertyChangedFor(nameof(TournamentDateAndLocation), nameof(IsOnline), nameof(IsFuture))]
     private DateTime? _tournamentEndDate;
+
+    public bool IsOnline
+    {
+        get
+        {
+            DateTime currentDate = _dateTimeProvider.UtcNow.Date;
+
+            return (!TournamentStartDate.HasValue || currentDate >= TournamentStartDate.Value)
+                && (!TournamentEndDate.HasValue || currentDate <= TournamentEndDate.Value);
+        }
+    }
+
+    public bool IsFuture
+    {
+        get
+        {
+            DateTime currentDate = _dateTimeProvider.UtcNow.Date;
+            return TournamentStartDate.HasValue && currentDate < TournamentStartDate.Value;
+        }
+    }
 
     [ObservableProperty]
     [NotifyPropertyChangedFor(nameof(TournamentDateAndLocation))]
@@ -45,4 +68,14 @@ public partial class PlayerTournamentViewModel : BaseViewModel
 
     [ObservableProperty]
     private double? _points;
+
+    public PlayerTournamentViewModel
+    (
+        IDateTimeProvider dateTimeProvider
+    )
+    {
+        ArgumentNullException.ThrowIfNull(dateTimeProvider);
+
+        _dateTimeProvider = dateTimeProvider;
+    }
 }

@@ -17,6 +17,7 @@ public partial class PlayerViewModel : BaseViewModel, IDisposable
     private readonly IPlayerFavoriteService _playerFavoriteService;
     private readonly IDateTimeProvider _dateTimeProvider;
     private readonly IPopupService _popupService;
+    private readonly IServiceProvider _serviceProvider;
 
     [ObservableProperty]
     private string _name;
@@ -95,7 +96,8 @@ public partial class PlayerViewModel : BaseViewModel, IDisposable
         IPlayerHistoryService historyService,
         IPlayerFavoriteService playerFavoriteService,
         IDateTimeProvider dateTimeProvider,
-        IPopupService popupService
+        IPopupService popupService,
+        IServiceProvider serviceProvider
     )
     {
         ArgumentNullException.ThrowIfNull(chessDataService);
@@ -104,6 +106,7 @@ public partial class PlayerViewModel : BaseViewModel, IDisposable
         ArgumentNullException.ThrowIfNull(playerFavoriteService);
         ArgumentNullException.ThrowIfNull(dateTimeProvider);
         ArgumentNullException.ThrowIfNull(popupService);
+        ArgumentNullException.ThrowIfNull(serviceProvider);
 
         _chessDataService = chessDataService;
         _playerGroupService = playerGroupService;
@@ -111,6 +114,7 @@ public partial class PlayerViewModel : BaseViewModel, IDisposable
         _playerFavoriteService = playerFavoriteService;
         _dateTimeProvider = dateTimeProvider;
         _popupService = popupService;
+        _serviceProvider = serviceProvider;
 
         _chessDataService.ProgressChanged += OnProgressChanged;
     }
@@ -165,18 +169,22 @@ public partial class PlayerViewModel : BaseViewModel, IDisposable
                     Years = x.Key - YearOfBirth ?? 0,
                     Count = x.Count()
                 },
-                x => x.Select(y => new PlayerTournamentViewModel
+                x => x.Select(y =>
                 {
-                    TournamentNo = index--,
-                    TournamentName = y.Tournament.Name,
-                    TournamentLocation = y.Tournament.Location,
-                    TournamentStartDate = y.Tournament.StartDate,
-                    TournamentEndDate = y.Tournament.EndDate,
-                    NumberOfPlayers = y.Tournament.NumberOfPlayers,
-                    NumberOfRounds = y.Tournament.NumberOfRounds,
-                    Title = y.Player.Title,
-                    Rank = y.Player.Rank,
-                    Points = y.Player.Points,
+                    PlayerTournamentViewModel viewModel = _serviceProvider.GetRequiredService<PlayerTournamentViewModel>();
+
+                    viewModel.TournamentNo = index--;
+                    viewModel.TournamentName = y.Tournament.Name;
+                    viewModel.TournamentLocation = y.Tournament.Location;
+                    viewModel.TournamentStartDate = y.Tournament.StartDate;
+                    viewModel.TournamentEndDate = y.Tournament.EndDate;
+                    viewModel.NumberOfPlayers = y.Tournament.NumberOfPlayers;
+                    viewModel.NumberOfRounds = y.Tournament.NumberOfRounds;
+                    viewModel.Title = y.Player.Title;
+                    viewModel.Rank = y.Player.Rank;
+                    viewModel.Points = y.Player.Points;
+
+                    return viewModel;
                 }).ToList());
 
             TournamentYears = _allTournaments.Keys.ToList();
