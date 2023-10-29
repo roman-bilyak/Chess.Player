@@ -13,7 +13,7 @@ public static class ServiceCollectionExtensions
             .AddTransient<IChessDataManager, ChessDataManager>()
             .AddTransient<IChessDataFetcher, ChessResultsDataFetcher>()
             .AddTransient<IChessDataNormalizer, ChessDataNormalizer>()
-            .AddTransient<IDateTimeProvider, DateTimeProvider>()
+            .AddSingleton<IDateTimeProvider, DateTimeProvider>()
             .AddTransient<ICacheManager, NullCacheManager>();
     }
 }

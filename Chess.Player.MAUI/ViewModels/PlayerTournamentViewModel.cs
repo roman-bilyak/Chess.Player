@@ -6,7 +6,7 @@ namespace Chess.Player.MAUI.ViewModels;
 [INotifyPropertyChanged]
 public partial class PlayerTournamentViewModel : BaseViewModel
 {
-    private readonly IDateTimeProvider _dateTimeProvider;
+    private readonly DateTime _currentDate;
 
     [ObservableProperty]
     [NotifyPropertyChangedFor(nameof(NoAndTournamentName))]
@@ -30,10 +30,8 @@ public partial class PlayerTournamentViewModel : BaseViewModel
     {
         get
         {
-            DateTime currentDate = _dateTimeProvider.UtcNow.Date;
-
-            return (!TournamentStartDate.HasValue || currentDate >= TournamentStartDate.Value)
-                && (!TournamentEndDate.HasValue || currentDate <= TournamentEndDate.Value);
+            return (!TournamentStartDate.HasValue || _currentDate >= TournamentStartDate.Value)
+                && (!TournamentEndDate.HasValue || _currentDate <= TournamentEndDate.Value);
         }
     }
 
@@ -41,8 +39,7 @@ public partial class PlayerTournamentViewModel : BaseViewModel
     {
         get
         {
-            DateTime currentDate = _dateTimeProvider.UtcNow.Date;
-            return TournamentStartDate.HasValue && currentDate < TournamentStartDate.Value;
+            return TournamentStartDate.HasValue && _currentDate < TournamentStartDate.Value;
         }
     }
 
@@ -81,6 +78,6 @@ public partial class PlayerTournamentViewModel : BaseViewModel
     {
         ArgumentNullException.ThrowIfNull(dateTimeProvider);
 
-        _dateTimeProvider = dateTimeProvider;
+        _currentDate = dateTimeProvider.UtcNow.Date;
     }
 }
