@@ -43,7 +43,7 @@
                 <Label Text="{Binding TournamentDateAndLocation, Mode=OneWay}" Style="{StaticResource CardDetailsStyle}" />
                 <HorizontalStackLayout Spacing="20">
                     <HorizontalStackLayout Spacing="5">
-                        <Image Source="players.svg">
+                        <Image Source="players.svg" WidthRequest="15" HeightRequest="15">
                             <Image.Behaviors>
                                 <mct:IconTintColorBehavior TintColor="#888888" />
                             </Image.Behaviors>
@@ -51,7 +51,7 @@
                         <Label Text="{Binding NumberOfPlayers, Mode=OneWay}" Style="{StaticResource CardDetailsStyle}" />
                     </HorizontalStackLayout>
                     <HorizontalStackLayout Spacing="5">
-                        <Image Source="rounds.svg">
+                        <Image Source="rounds.svg" WidthRequest="15" HeightRequest="15">
                             <Image.Behaviors>
                                 <mct:IconTintColorBehavior TintColor="#888888" />
                             </Image.Behaviors>
