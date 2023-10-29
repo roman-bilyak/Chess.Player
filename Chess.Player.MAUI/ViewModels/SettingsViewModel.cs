@@ -10,7 +10,7 @@ public partial class SettingsViewModel : BaseViewModel
     private readonly ICacheManager _cacheManager;
 
     [ObservableProperty]
-    private PlayerCardListViewModel _playerCardList;
+    private PlayerListViewModel _playerCardList;
 
     public SettingsViewModel
     (

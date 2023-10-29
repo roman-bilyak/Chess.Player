@@ -9,21 +9,17 @@ public partial class PlayerTournamentViewModel : BaseViewModel
     private readonly DateTime _currentDate;
 
     [ObservableProperty]
-    [NotifyPropertyChangedFor(nameof(NoAndTournamentName))]
     private int _tournamentNo;
 
     [ObservableProperty]
-    [NotifyPropertyChangedFor(nameof(NoAndTournamentName))]
     private string _tournamentName;
 
-    public string NoAndTournamentName => $"{TournamentNo}. {TournamentName}";
-
     [ObservableProperty]
-    [NotifyPropertyChangedFor(nameof(TournamentDateAndLocation), nameof(IsOnline), nameof(IsFuture))]
+    [NotifyPropertyChangedFor(nameof(TournamentDateAndLocation), nameof(IsOnline), nameof(IsFuture), nameof(IsNotFuture), nameof(IsActive), nameof(IsPodium))]
     private DateTime? _tournamentStartDate;
 
     [ObservableProperty]
-    [NotifyPropertyChangedFor(nameof(TournamentDateAndLocation), nameof(IsOnline), nameof(IsFuture))]
+    [NotifyPropertyChangedFor(nameof(TournamentDateAndLocation), nameof(IsOnline), nameof(IsFuture), nameof(IsNotFuture), nameof(IsActive), nameof(IsPodium))]
     private DateTime? _tournamentEndDate;
 
     public bool IsOnline
@@ -42,6 +38,8 @@ public partial class PlayerTournamentViewModel : BaseViewModel
             return TournamentStartDate.HasValue && _currentDate < TournamentStartDate.Value;
         }
     }
+
+    public bool IsNotFuture => !IsFuture;
 
     public bool IsActive => IsOnline || IsFuture;
 

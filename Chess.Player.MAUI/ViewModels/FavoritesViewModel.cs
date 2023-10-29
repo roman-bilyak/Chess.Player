@@ -13,7 +13,7 @@ public partial class FavoritesViewModel : BaseViewModel
     private readonly IServiceProvider _serviceProvider;
 
     [ObservableProperty]
-    private PlayerCardListViewModel _playerCardList;
+    private PlayerListViewModel _playerList;
 
     [ObservableProperty]
     private bool _isLoading = false;
@@ -33,7 +33,7 @@ public partial class FavoritesViewModel : BaseViewModel
         _playerFavoriteService = playerFavoriteService;
         _serviceProvider = serviceProvider;
 
-        _playerCardList = _serviceProvider.GetRequiredService<PlayerCardListViewModel>();
+        PlayerList = _serviceProvider.GetRequiredService<PlayerListViewModel>();
     }
 
     [RelayCommand]
@@ -59,18 +59,18 @@ public partial class FavoritesViewModel : BaseViewModel
     {
         try
         {
-            PlayerCardList.Players.Clear();
+            PlayerList.Players.Clear();
 
             foreach (PlayerFullInfo player in await _playerFavoriteService.GetAllAsync(ForceRefresh, cancellationToken))
             {
-                PlayerCardViewModel playerCardViewModel = _serviceProvider.GetRequiredService<PlayerCardViewModel>();
+                PlayerViewModel playerCardViewModel = _serviceProvider.GetRequiredService<PlayerViewModel>();
 
                 playerCardViewModel.Names = new ObservableCollection<NameViewModel>(player.Names.Select(x => new NameViewModel { LastName = x.LastName, FirstName = x.FirstName }));
                 playerCardViewModel.Title = player.Title;
                 playerCardViewModel.ClubCity = player.ClubCity;
                 playerCardViewModel.YearOfBirth = player.YearOfBirth;
 
-                PlayerCardList.Players.Add(playerCardViewModel);
+                PlayerList.Players.Add(playerCardViewModel);
             }
         }
         finally

@@ -19,7 +19,7 @@ public partial class HomeViewModel : BaseViewModel
     private string _searchText;
 
     [ObservableProperty]
-    private PlayerCardListViewModel _playerCardList;
+    private PlayerListViewModel _playerList;
 
     [ObservableProperty]
     private bool _isLoading = false;
@@ -42,7 +42,7 @@ public partial class HomeViewModel : BaseViewModel
         _navigationService = navigationService;
         _serviceProvider = serviceProvider;
 
-        PlayerCardList = _serviceProvider.GetRequiredService<PlayerCardListViewModel>();
+        PlayerList = _serviceProvider.GetRequiredService<PlayerListViewModel>();
     }
 
     [RelayCommand]
@@ -59,18 +59,18 @@ public partial class HomeViewModel : BaseViewModel
     {
         try
         {
-            PlayerCardList.Players.Clear();
+            PlayerList.Players.Clear();
 
             foreach (PlayerFullInfo player in await _playerHistoryService.GetAllAsync(ForceRefresh, cancellationToken))
             {
-                PlayerCardViewModel playerCardViewModel = _serviceProvider.GetRequiredService<PlayerCardViewModel>();
+                PlayerViewModel playerCardViewModel = _serviceProvider.GetRequiredService<PlayerViewModel>();
 
                 playerCardViewModel.Names = new ObservableCollection<NameViewModel>(player.Names.Select(x => new NameViewModel { LastName = x.LastName, FirstName = x.FirstName }));
                 playerCardViewModel.Title = player.Title;
                 playerCardViewModel.ClubCity = player.ClubCity;
                 playerCardViewModel.YearOfBirth = player.YearOfBirth;
 
-                PlayerCardList.Players.Add(playerCardViewModel);
+                PlayerList.Players.Add(playerCardViewModel);
             }
         }
         finally
@@ -83,7 +83,7 @@ public partial class HomeViewModel : BaseViewModel
     [RelayCommand]
     private async Task SearchAsync(CancellationToken cancellationToken)
     {
-        await _navigationService.PushAsync<PlayerPage, PlayerViewModel>(x =>
+        await _navigationService.PushAsync<PlayerFullPage, PlayerFullViewModel>(x =>
         {
             x.Name = SearchText;
         });

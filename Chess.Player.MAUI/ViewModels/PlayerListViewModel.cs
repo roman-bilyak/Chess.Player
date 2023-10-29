@@ -7,17 +7,17 @@ using System.Collections.ObjectModel;
 namespace Chess.Player.MAUI.ViewModels;
 
 [INotifyPropertyChanged]
-public partial class PlayerCardListViewModel : BaseViewModel
+public partial class PlayerListViewModel : BaseViewModel
 {
     private readonly INavigationService _navigationService;
 
     [ObservableProperty]
-    private ObservableCollection<PlayerCardViewModel> _players = new();
+    private ObservableCollection<PlayerViewModel> _players = new();
 
     [ObservableProperty]
-    private PlayerCardViewModel _selectedPlayer;
+    private PlayerViewModel _selectedPlayer;
 
-    public PlayerCardListViewModel
+    public PlayerListViewModel
     (
         INavigationService navigationService
     )
@@ -28,14 +28,14 @@ public partial class PlayerCardListViewModel : BaseViewModel
     }
 
     [RelayCommand]
-    private async Task ItemSelectedAsync(PlayerCardViewModel selectedPlayer)
+    private async Task ItemSelectedAsync(PlayerViewModel selectedPlayer)
     {
         if (selectedPlayer == null)
         {
             return;
         }
 
-        await _navigationService.PushAsync<PlayerPage, PlayerViewModel>(x =>
+        await _navigationService.PushAsync<PlayerFullPage, PlayerFullViewModel>(x =>
         {
             x.Name = selectedPlayer.Name;
         });

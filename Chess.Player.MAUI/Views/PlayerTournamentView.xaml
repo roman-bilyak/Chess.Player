@@ -5,11 +5,6 @@
              xmlns:vm="clr-namespace:Chess.Player.MAUI.ViewModels"
              x:Class="Chess.Player.MAUI.Views.PlayerTournamentView"
              x:DataType="vm:PlayerTournamentViewModel">
-    <ContentView.Resources>
-        <ResourceDictionary>
-            <mct:InvertedBoolConverter x:Key="InvertedBoolConverter" />
-        </ResourceDictionary>
-    </ContentView.Resources>
     <VisualStateManager.VisualStateGroups>
         <VisualStateGroup Name="CommonStates">
             <VisualState Name="Normal"></VisualState>
@@ -32,7 +27,12 @@
             </Grid.ColumnDefinitions>
 
             <Label Grid.Row="0" Grid.Column="0" Text="{Binding TournamentNo, Mode=OneWay}" VerticalOptions="Start" HorizontalOptions="Center" Style="{StaticResource CardDetails10Style}" />
-            <Label Grid.Row="0" Grid.Column="0" Text="{Binding Rank, Mode=OneWay}" VerticalOptions="Center" HorizontalOptions="Center" IsVisible="{Binding IsFuture, Mode=OneWay, Converter={StaticResource InvertedBoolConverter}}" Style="{StaticResource CardHighlightStyle}" />
+            <Label Grid.Row="0" Grid.Column="0" Text="{Binding Rank, Mode=OneWay}" VerticalOptions="Center" HorizontalOptions="Center" IsVisible="{Binding IsNotFuture, Mode=OneWay}" Style="{StaticResource CardHighlightStyle}" />
+            <Image Grid.Row="0" Grid.Column="0" Source="cup.svg" VerticalOptions="End" HorizontalOptions="Center" WidthRequest="20" HeightRequest="20" IsVisible="{Binding IsPodium, Mode=OneWay}">
+                <Image.Behaviors>
+                    <mct:IconTintColorBehavior TintColor="DarkGoldenrod" />
+                </Image.Behaviors>
+            </Image>
             <VerticalStackLayout Grid.Row="0" Grid.Column="1">
                 <Label Text="{Binding TournamentName, Mode=OneWay}" />
                 <Label Text="{Binding TournamentDateAndLocation, Mode=OneWay}" Style="{StaticResource CardDetailsStyle}" />
@@ -65,12 +65,7 @@
                     <mct:IconTintColorBehavior TintColor="#888888" />
                 </Image.Behaviors>
             </Image>
-            <Image Grid.Row="0" Grid.Column="2" Source="cup.svg" VerticalOptions="Start" HorizontalOptions="Center" WidthRequest="25" HeightRequest="25" IsVisible="{Binding IsPodium, Mode=OneWay}">
-                <Image.Behaviors>
-                    <mct:IconTintColorBehavior TintColor="DarkGoldenrod" />
-                </Image.Behaviors>
-            </Image>
-            <Label Grid.Row="0" Grid.Column="2" Text="{Binding Points, Mode=OneWay}" VerticalOptions="Center" HorizontalOptions="Center" IsVisible="{Binding IsFuture, Mode=OneWay, Converter={StaticResource InvertedBoolConverter}}" Style="{StaticResource CardHighlightStyle}" />
+            <Label Grid.Row="0" Grid.Column="2" Text="{Binding Points, Mode=OneWay}" VerticalOptions="Center" HorizontalOptions="Center" IsVisible="{Binding IsNotFuture, Mode=OneWay}" Style="{StaticResource CardHighlightStyle}" />
             <Label Grid.Row="0" Grid.Column="2" Text="{Binding Title, Mode=OneWay}" VerticalOptions="End" HorizontalOptions="Center" Style="{StaticResource CardDetails12Style}" />
         </Grid>
     </Border>

@@ -2,8 +2,8 @@
 <ContentView xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:vm="clr-namespace:Chess.Player.MAUI.ViewModels"
-             x:Class="Chess.Player.MAUI.Views.PlayerCardView"
-             x:DataType="vm:PlayerCardViewModel">
+             x:Class="Chess.Player.MAUI.Views.PlayerView"
+             x:DataType="vm:PlayerViewModel">
     <VisualStateManager.VisualStateGroups>
         <VisualStateGroup Name="CommonStates">
             <VisualState Name="Normal"></VisualState>

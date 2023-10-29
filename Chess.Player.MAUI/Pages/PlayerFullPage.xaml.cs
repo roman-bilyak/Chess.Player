@@ -2,9 +2,9 @@ using Chess.Player.MAUI.ViewModels;
 
 namespace Chess.Player.MAUI.Pages;
 
-public partial class PlayerPage : ContentPage
+public partial class PlayerFullPage : ContentPage
 {
-	public PlayerPage(PlayerViewModel viewModel)
+	public PlayerFullPage(PlayerFullViewModel viewModel)
 	{
 		InitializeComponent();
 

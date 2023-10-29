@@ -19,7 +19,7 @@
                      Command="{Binding LoadCommand}"
                      RefreshColor="Orange">
             <ScrollView>
-                <views:PlayerCardListView BindingContext="{Binding PlayerCardList}" Margin="10" />
+                <views:PlayerListView BindingContext="{Binding PlayerList}" Margin="10" />
             </ScrollView>
         </RefreshView>
     </StackLayout>
