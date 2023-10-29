@@ -46,6 +46,8 @@ public partial class PlayerTournamentViewModel : BaseViewModel
         }
     }
 
+    public bool IsActive => IsOnline || IsFuture;
+
     [ObservableProperty]
     [NotifyPropertyChangedFor(nameof(TournamentDateAndLocation))]
     private string _tournamentLocation;
@@ -64,10 +66,13 @@ public partial class PlayerTournamentViewModel : BaseViewModel
     private string _title;
 
     [ObservableProperty]
+    [NotifyPropertyChangedFor(nameof(IsPodium))]
     private int? _rank;
 
     [ObservableProperty]
     private double? _points;
+
+    public bool IsPodium => !IsActive && Rank.HasValue && Rank >= 1 && Rank <= 3;
 
     public PlayerTournamentViewModel
     (
