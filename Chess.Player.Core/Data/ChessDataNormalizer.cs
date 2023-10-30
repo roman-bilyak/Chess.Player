@@ -1,15 +1,23 @@
-﻿using System.Globalization;
+﻿using Newtonsoft.Json.Linq;
+using System.Diagnostics.CodeAnalysis;
+using System.Globalization;
 
 namespace Chess.Player.Data;
 
 internal class ChessDataNormalizer : IChessDataNormalizer
 {
-    public string NormalizeName(string name)
+    [return: NotNullIfNotNull(nameof(name))]
+    public string? NormalizeName(string? name)
     {
+        if (name == null)
+        {
+            return null;
+        }
+
         TextInfo textInfo = CultureInfo.InvariantCulture.TextInfo;
         string normalizedName = textInfo.ToTitleCase(name.ToLower());
 
-        string[] nameParts = normalizedName.Split(new[] { ' ', ',' }, StringSplitOptions.RemoveEmptyEntries);
+        IEnumerable<string> nameParts = normalizedName.Split(new[] { ' ', ',' }, StringSplitOptions.RemoveEmptyEntries).Take(2);
         return string.Join(" ", nameParts);
     }
 }

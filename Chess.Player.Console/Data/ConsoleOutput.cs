@@ -17,7 +17,7 @@ internal class ConsoleOutput
     {
         Console.OutputEncoding = Encoding.UTF8;
 
-        Console.WriteLine($"Name(s): {string.Join(",", searchResult.Names)}");
+        Console.WriteLine($"Name(s): {string.Join(",", searchResult.Names.Select(x => x.FullName))}");
         Console.WriteLine($"Title: {searchResult.Title}");
         Console.WriteLine($"FIDE ID: {searchResult.FideId}");
         Console.WriteLine($"Club/City: {searchResult.ClubCity}");

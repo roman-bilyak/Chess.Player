@@ -39,8 +39,8 @@ public partial class FavoritesViewModel : BaseViewModel
     [RelayCommand]
     private Task StartAsync(CancellationToken cancellationToken)
     {
-        IsLoading = true;
         ForceRefresh = false;
+        IsLoading = true;
 
         return Task.CompletedTask;
     }

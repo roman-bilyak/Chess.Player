@@ -8,6 +8,18 @@ namespace Chess.Player.Data;
 internal class ChessResultsDataFetcher : IChessDataFetcher
 {
     private const string BaseUrl = "https://chess-results.com";
+    private readonly IChessDataNormalizer _chessDataNormalizer;
+
+    public ChessResultsDataFetcher
+    (
+        IChessDataNormalizer chessDataNormalizer
+    )
+    {
+        ArgumentNullException.ThrowIfNull(chessDataNormalizer);
+
+        _chessDataNormalizer = chessDataNormalizer;
+    }
+
 
     public async Task<List<PlayerTournament>> GetPlayerTournamentsAsync(string lastName, string firstName, CancellationToken cancellationToken)
     {
@@ -228,7 +240,7 @@ internal class ChessResultsDataFetcher : IChessDataFetcher
 
         PlayerInfo player = new();
 
-        HtmlNodeCollection fieldNodes = htmlDocument.DocumentNode.SelectNodes("//div[@class='defaultDialog']/table[@class='CRs1']/tr") ?? new HtmlNodeCollection(null);
+        HtmlNodeCollection fieldNodes = htmlDocument.DocumentNode.SelectNodes("//div[@class='defaultDialog']/table[@class='CRs1'][1]/tr") ?? new HtmlNodeCollection(null);
         foreach (var fieldNode in fieldNodes)
         {
             string? fieldName = fieldNode.SelectSingleNode("td[1]")?.InnerText?.Trim();
@@ -285,6 +297,27 @@ internal class ChessResultsDataFetcher : IChessDataFetcher
         }
 
         player.Title ??= GetTitle(player.Name) ?? GetTitle(player.Rating);
+        player.Name = _chessDataNormalizer.NormalizeName(player.Name);
+
+        var gameRows = htmlDocument.DocumentNode.SelectNodes("//div[@class='defaultDialog']/table[@class='CRs1'][2]/tr") ?? new HtmlNodeCollection(null);
+
+        List<string> gameHeaders = gameRows.FirstOrDefault()?.SelectNodes("td").Select(x => x.InnerText.Trim())?.ToList() ?? new List<string>();
+        int roundIndex = gameHeaders.IndexOf("Rd.");
+        int nameIndex = gameHeaders.IndexOf("Name");
+        int resultIndex = gameHeaders.IndexOf("Res.");
+
+        foreach (HtmlNode gameRow in gameRows.Skip(1))
+        {
+            HtmlNode resultNode = gameRow.SelectSingleNode($"td[{resultIndex + 1}]/table/tr[1]");
+
+            player.Games.Add(new GameInfo
+            {
+                Round = int.TryParse(gameRow.SelectSingleNode($"td[{roundIndex + 1}]")?.InnerText?.Trim(), out int round) ? round : null,
+                OponentName = _chessDataNormalizer.NormalizeName(gameRow.SelectSingleNode($"td[{nameIndex + 1}]/a")?.InnerText?.Trim() ?? gameRow.SelectSingleNode($"td[{nameIndex + 1}]")?.InnerText),
+                IsWhite = resultNode?.SelectSingleNode("td[1]/div[@class='FarbewT']") is not null,
+                Result = GetResult(resultNode?.SelectSingleNode("td[2]")?.InnerText?.Trim())
+            });
+        }
 
         return player;
     }
@@ -319,6 +352,17 @@ internal class ChessResultsDataFetcher : IChessDataFetcher
             1700 => "III",
             1600 => "IV",
             1500 => null,
+            _ => null,
+        };
+    }
+
+    private double? GetResult(string? result)
+    {
+        return result switch
+        {
+            "1" => 1,
+            "½" => 0.5,
+            "0" => 0,
             _ => null,
         };
     }

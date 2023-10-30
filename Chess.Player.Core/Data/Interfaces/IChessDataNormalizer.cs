@@ -2,5 +2,5 @@
 
 public interface IChessDataNormalizer
 {
-    string NormalizeName(string name);
+    string? NormalizeName(string? name);
 }

@@ -8,7 +8,6 @@ ServiceProvider serviceProvider = new ServiceCollection()
             .BuildServiceProvider();
 try
 {
-    string groupName = "Мосесов Даниїл";
     List<string> names = new()
     {
         "Мосесов Даниїл",
@@ -17,6 +16,7 @@ try
         "Mosesov Danyil",
         "Mosesov Danylo",
     };
+    string groupName = names.First();
 
     IPlayerGroupService playerGroupService = serviceProvider.GetRequiredService<IPlayerGroupService>();
     foreach (string name in names)

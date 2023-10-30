@@ -31,4 +31,6 @@ public class PlayerInfo
     public string? FideId { get; set; }
 
     public int? YearOfBirth { get; set; }
+
+    public List<GameInfo> Games { get; set; } = new List<GameInfo>();
 }
