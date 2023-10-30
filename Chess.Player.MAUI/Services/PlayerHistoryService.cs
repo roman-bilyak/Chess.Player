@@ -46,7 +46,7 @@ internal class PlayerHistoryService : IPlayerHistoryService
         List<PlayerFullInfo> result = new();
         foreach (var player in _players)
         {
-            PlayerFullInfo playerInfo = await _chessDataService.GetFullPlayerInfoAsync(player, forceRefresh, cancellationToken);
+            PlayerFullInfo playerInfo = await _chessDataService.GetPlayerFullInfoAsync(player, forceRefresh, cancellationToken);
             result.Add(playerInfo);
         }
 

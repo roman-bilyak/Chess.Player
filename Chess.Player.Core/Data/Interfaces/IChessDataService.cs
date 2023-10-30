@@ -4,5 +4,5 @@ public interface IChessDataService
 {
     event SearchProgressEventHandler? ProgressChanged;
 
-    Task<PlayerFullInfo> GetFullPlayerInfoAsync(string name, bool forceRefresh, CancellationToken cancellationToken);
+    Task<PlayerFullInfo> GetPlayerFullInfoAsync(string name, bool forceRefresh, CancellationToken cancellationToken);
 }

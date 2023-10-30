@@ -151,7 +151,7 @@ public partial class PlayerFullViewModel : BaseViewModel, IDisposable
     {
         try
         {
-            PlayerFullInfo playerFullInfo = await _chessDataService.GetFullPlayerInfoAsync(Name, ForceRefresh, cancellationToken);
+            PlayerFullInfo playerFullInfo = await _chessDataService.GetPlayerFullInfoAsync(Name, ForceRefresh, cancellationToken);
 
             int index = playerFullInfo.Tournaments.Count;
             _allTournaments = playerFullInfo.Tournaments.GroupBy(x => x.Tournament.EndDate?.Year)

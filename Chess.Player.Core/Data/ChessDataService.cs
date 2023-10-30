@@ -34,14 +34,14 @@ internal class ChessDataService : IChessDataService
         _cacheManager = cacheManager;
     }
 
-    public async Task<PlayerFullInfo> GetFullPlayerInfoAsync(string name, bool forceRefresh, CancellationToken cancellationToken)
+    public async Task<PlayerFullInfo> GetPlayerFullInfoAsync(string name, bool forceRefresh, CancellationToken cancellationToken)
     {
         PlayerGroupInfo playerGroupInfo = await _playerGroupService.GetGroupInfoAsync(name, cancellationToken);
         SearchCriteria[] searchCriterias = playerGroupInfo.Select(x => new SearchCriteria(x)).ToArray();
 
         return await _cacheManager.GetOrAddAsync(nameof(PlayerFullInfo),
                 string.Join("_", searchCriterias.Select(x => x.Name)),
-                async () => await _chessDataManager.SearchAsync(searchCriterias, cancellationToken),
+                async () => await _chessDataManager.GetPlayerFullInfoAsync(searchCriterias, cancellationToken),
                 forceRefresh,
                 cancellationToken);
     }

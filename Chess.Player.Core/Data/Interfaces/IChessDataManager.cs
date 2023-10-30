@@ -4,5 +4,5 @@ internal interface IChessDataManager
 {
     event SearchProgressEventHandler? ProgressChanged;
 
-    Task<PlayerFullInfo> SearchAsync(SearchCriteria[] searchCriterias, CancellationToken cancellationToken);
+    Task<PlayerFullInfo> GetPlayerFullInfoAsync(SearchCriteria[] searchCriterias, CancellationToken cancellationToken);
 }

@@ -27,7 +27,7 @@ internal class ChessDataManager : IChessDataManager
         _cacheManager = cacheManager;
     }
 
-    public async Task<PlayerFullInfo> SearchAsync(SearchCriteria[] searchCriterias, CancellationToken cancellationToken)
+    public async Task<PlayerFullInfo> GetPlayerFullInfoAsync(SearchCriteria[] searchCriterias, CancellationToken cancellationToken)
     {
         OnProgressChanged(PercentageStart);
 
@@ -54,17 +54,8 @@ internal class ChessDataManager : IChessDataManager
 
             bool isForceRefresh = playerTournament.EndDate >= _dateTimeProvider.UtcNow.Date;
 
-            TournamentInfo tournamentInfo = await _cacheManager.GetOrAddAsync(nameof(TournamentInfo), $"{playerTournament.TournamentId}",
-                () => _chessDataFetcher.GetTournamentInfoAsync(playerTournament.TournamentId, cancellationToken),
-                isForceRefresh, cancellationToken
-            );
-
-            PlayerInfo playerInfo = await _cacheManager.GetOrAddAsync(nameof(PlayerInfo), $"{playerTournament.TournamentId}_{playerTournament.PlayerStartingRank}",
-                () => _chessDataFetcher.GetPlayerInfoAsync(playerTournament.TournamentId, playerTournament.PlayerStartingRank, cancellationToken),
-                isForceRefresh, cancellationToken
-            );
-
-            playerTournamentInfos.Add(new PlayerTournamentInfo(tournamentInfo, playerInfo));
+            PlayerTournamentInfo playerTournamentInfo = await GetPlayerTournamentInfoAsync(playerTournament.TournamentId, playerTournament.PlayerStartingRank, isForceRefresh, cancellationToken);
+            playerTournamentInfos.Add(playerTournamentInfo);
 
             int progressPercentage = index * (PercentageFinish - PercentageStart) / playerTournaments.Count + PercentageStart;
             OnProgressChanged(progressPercentage);
@@ -75,6 +66,21 @@ internal class ChessDataManager : IChessDataManager
 
         OnProgressChanged(PercentageFinish);
         return playerFullInfo;
+    }
+
+    public async Task<PlayerTournamentInfo> GetPlayerTournamentInfoAsync(int tournamentId, int playerStartingRank, bool isForceRefresh, CancellationToken cancellationToken)
+    {
+        TournamentInfo tournamentInfo = await _cacheManager.GetOrAddAsync(nameof(TournamentInfo), $"{tournamentId}",
+            () => _chessDataFetcher.GetTournamentInfoAsync(tournamentId, cancellationToken),
+            isForceRefresh, cancellationToken
+        );
+
+        PlayerInfo playerInfo = await _cacheManager.GetOrAddAsync(nameof(PlayerInfo), $"{tournamentId}_{playerStartingRank}",
+            () => _chessDataFetcher.GetPlayerInfoAsync(tournamentId, playerStartingRank, cancellationToken),
+            isForceRefresh, cancellationToken
+        );
+
+        return new PlayerTournamentInfo(tournamentInfo, playerInfo);
     }
 
     protected virtual void OnProgressChanged(int progressPercentage)
