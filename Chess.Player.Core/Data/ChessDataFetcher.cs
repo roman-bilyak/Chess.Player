@@ -303,7 +303,9 @@ internal class ChessResultsDataFetcher : IChessDataFetcher
 
         List<string> gameHeaders = gameRows.FirstOrDefault()?.SelectNodes("td").Select(x => x.InnerText.Trim())?.ToList() ?? new List<string>();
         int roundIndex = gameHeaders.IndexOf("Rd.");
+        int boardIndex = gameHeaders.IndexOf("Bo.");
         int nameIndex = gameHeaders.IndexOf("Name");
+        int clubCityIndex = gameHeaders.IndexOf("Club/City");
         int resultIndex = gameHeaders.IndexOf("Res.");
 
         foreach (HtmlNode gameRow in gameRows.Skip(1))
@@ -313,7 +315,9 @@ internal class ChessResultsDataFetcher : IChessDataFetcher
             player.Games.Add(new GameInfo
             {
                 Round = int.TryParse(gameRow.SelectSingleNode($"td[{roundIndex + 1}]")?.InnerText?.Trim(), out int round) ? round : null,
-                OponentName = _chessDataNormalizer.NormalizeName(gameRow.SelectSingleNode($"td[{nameIndex + 1}]/a")?.InnerText?.Trim() ?? gameRow.SelectSingleNode($"td[{nameIndex + 1}]")?.InnerText),
+                Board = int.TryParse(gameRow.SelectSingleNode($"td[{boardIndex + 1}]")?.InnerText?.Trim(), out int board) ? board : null,
+                Name = _chessDataNormalizer.NormalizeName(gameRow.SelectSingleNode($"td[{nameIndex + 1}]/a")?.InnerText?.Trim() ?? gameRow.SelectSingleNode($"td[{nameIndex + 1}]")?.InnerText),
+                ClubCity = gameRow.SelectSingleNode($"td[{clubCityIndex + 1}]")?.InnerText,
                 IsWhite = resultNode?.SelectSingleNode("td[1]/div[@class='FarbewT']") is not null,
                 Result = GetResult(resultNode?.SelectSingleNode("td[2]")?.InnerText?.Trim())
             });

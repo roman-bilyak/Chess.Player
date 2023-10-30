@@ -88,10 +88,12 @@
                     <BoxView Grid.Row="4" Grid.Column="0" Grid.ColumnSpan="4" HeightRequest="1" Color="#F17A00" HorizontalOptions="Center" VerticalOptions="Center" IsVisible="{Binding HasTournamentYears}" />
 
                     <CollectionView ItemsSource="{Binding Tournaments, Mode=OneWay}"
+                                    SelectionMode="Single"
+                                    SelectedItem="{Binding SelectedTournament}"
+                                    SelectionChangedCommand="{Binding ItemSelectedCommand}"
                                     Grid.Row="5"
                                     Grid.Column="0"
-                                    Grid.ColumnSpan="4"
-                                    SelectionMode="Single">
+                                    Grid.ColumnSpan="4">
                         <CollectionView.ItemTemplate>
                             <DataTemplate x:DataType="vm:PlayerTournamentViewModel">
                                 <views:PlayerTournamentView BindingContext="{Binding .}" />

@@ -9,7 +9,10 @@ public partial class PlayerTournamentViewModel : BaseViewModel
     private readonly DateTime _currentDate;
 
     [ObservableProperty]
-    private int _tournamentNo;
+    private int? _tournamentId;
+
+    [ObservableProperty]
+    private int _tournamentIndex;
 
     [ObservableProperty]
     private string _tournamentName;
@@ -56,6 +59,12 @@ public partial class PlayerTournamentViewModel : BaseViewModel
 
     [ObservableProperty]
     private int? _numberOfRounds;
+
+    [ObservableProperty]
+    private int? _startingRank;
+
+    [ObservableProperty]
+    private string _name;
 
     [ObservableProperty]
     private string _title;

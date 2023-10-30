@@ -34,7 +34,7 @@ internal class ChessDataService : IChessDataService
         _cacheManager = cacheManager;
     }
 
-    public async Task<PlayerFullInfo> GetPlayerFullInfoAsync(string name, bool forceRefresh, CancellationToken cancellationToken)
+    public async Task<PlayerFullInfo> GetPlayerFullInfoAsync(string name, bool isForceRefresh, CancellationToken cancellationToken)
     {
         PlayerGroupInfo playerGroupInfo = await _playerGroupService.GetGroupInfoAsync(name, cancellationToken);
         SearchCriteria[] searchCriterias = playerGroupInfo.Select(x => new SearchCriteria(x)).ToArray();
@@ -42,7 +42,12 @@ internal class ChessDataService : IChessDataService
         return await _cacheManager.GetOrAddAsync(nameof(PlayerFullInfo),
                 string.Join("_", searchCriterias.Select(x => x.Name)),
                 async () => await _chessDataManager.GetPlayerFullInfoAsync(searchCriterias, cancellationToken),
-                forceRefresh,
+                isForceRefresh,
                 cancellationToken);
+    }
+
+    public async Task<PlayerTournamentInfo> GetPlayerTournamentInfoAsync(int tournamentId, int playerStartingRank, bool isForceRefresh, CancellationToken cancellationToken)
+    {
+        return await _chessDataManager.GetPlayerTournamentInfoAsync(tournamentId, playerStartingRank, isForceRefresh, cancellationToken);
     }
 }

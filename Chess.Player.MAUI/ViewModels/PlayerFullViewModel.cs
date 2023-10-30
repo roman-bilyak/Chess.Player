@@ -1,4 +1,5 @@
 ﻿using Chess.Player.Data;
+using Chess.Player.MAUI.Pages;
 using Chess.Player.MAUI.Services;
 using Chess.Player.Services;
 using CommunityToolkit.Mvvm.ComponentModel;
@@ -16,6 +17,7 @@ public partial class PlayerFullViewModel : BaseViewModel, IDisposable
     private readonly IPlayerHistoryService _playerHistoryService;
     private readonly IPlayerFavoriteService _playerFavoriteService;
     private readonly IDateTimeProvider _dateTimeProvider;
+    private readonly INavigationService _navigationService;
     private readonly IPopupService _popupService;
     private readonly IServiceProvider _serviceProvider;
 
@@ -69,6 +71,9 @@ public partial class PlayerFullViewModel : BaseViewModel, IDisposable
     public List<PlayerTournamentViewModel> Tournaments => _allTournaments?.GetValueOrDefault(TournamentYear) ?? new List<PlayerTournamentViewModel>();
 
     [ObservableProperty]
+    private PlayerTournamentViewModel _selectedTournament;
+
+    [ObservableProperty]
     private bool _isLoading = false;
 
     [ObservableProperty]
@@ -96,6 +101,7 @@ public partial class PlayerFullViewModel : BaseViewModel, IDisposable
         IPlayerHistoryService historyService,
         IPlayerFavoriteService playerFavoriteService,
         IDateTimeProvider dateTimeProvider,
+        INavigationService navigationService,
         IPopupService popupService,
         IServiceProvider serviceProvider
     )
@@ -105,6 +111,7 @@ public partial class PlayerFullViewModel : BaseViewModel, IDisposable
         ArgumentNullException.ThrowIfNull(historyService);
         ArgumentNullException.ThrowIfNull(playerFavoriteService);
         ArgumentNullException.ThrowIfNull(dateTimeProvider);
+        ArgumentNullException.ThrowIfNull(navigationService);
         ArgumentNullException.ThrowIfNull(popupService);
         ArgumentNullException.ThrowIfNull(serviceProvider);
 
@@ -113,6 +120,7 @@ public partial class PlayerFullViewModel : BaseViewModel, IDisposable
         _playerHistoryService = historyService;
         _playerFavoriteService = playerFavoriteService;
         _dateTimeProvider = dateTimeProvider;
+        _navigationService = navigationService;
         _popupService = popupService;
         _serviceProvider = serviceProvider;
 
@@ -165,13 +173,16 @@ public partial class PlayerFullViewModel : BaseViewModel, IDisposable
                 {
                     PlayerTournamentViewModel viewModel = _serviceProvider.GetRequiredService<PlayerTournamentViewModel>();
 
-                    viewModel.TournamentNo = index--;
+                    viewModel.TournamentIndex = index--;
+                    viewModel.TournamentId = y.Tournament.Id;
                     viewModel.TournamentName = y.Tournament.Name;
                     viewModel.TournamentLocation = y.Tournament.Location;
                     viewModel.TournamentStartDate = y.Tournament.StartDate;
                     viewModel.TournamentEndDate = y.Tournament.EndDate;
                     viewModel.NumberOfPlayers = y.Tournament.NumberOfPlayers;
                     viewModel.NumberOfRounds = y.Tournament.NumberOfRounds;
+                    viewModel.Name = y.Player.Name;
+                    viewModel.StartingRank = y.Player.StartingRank;
                     viewModel.Title = y.Player.Title;
                     viewModel.Rank = y.Player.Rank;
                     viewModel.Points = y.Player.Points;
@@ -211,9 +222,31 @@ public partial class PlayerFullViewModel : BaseViewModel, IDisposable
         }
         finally
         {
-            IsLoading = false;
             ForceRefresh = true;
+            IsLoading = false;
         }
+    }
+
+    [RelayCommand]
+    private async Task ItemSelectedAsync()
+    {
+        if (SelectedTournament == null 
+            || !SelectedTournament.TournamentId.HasValue
+            || !SelectedTournament.StartingRank.HasValue)
+        {
+            return;
+        }
+
+        await _navigationService.PushAsync<PlayerTournamentFullPage, PlayerTournamentFullViewModel>(x =>
+        {
+            x.TournamentId = SelectedTournament.TournamentId.Value;
+            x.TournamentName = SelectedTournament.TournamentName;
+
+            x.PlayerStartingRank = SelectedTournament.StartingRank.Value;
+            x.PlayerName = SelectedTournament.Name;
+        });
+
+        SelectedTournament = null;
     }
 
     [RelayCommand]
