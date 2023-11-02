@@ -118,24 +118,6 @@ internal class ChessResultsDataFetcher : IChessDataFetcher
         string htmlContent = HttpUtility.HtmlDecode(await response.Content.ReadAsStringAsync(cancellationToken));
         htmlDocument.LoadHtml(htmlContent);
 
-        Dictionary<string, string?> postData = new()
-            {
-                { "__EVENTARGUMENT", htmlDocument.DocumentNode.SelectSingleNode("//input[@name='__EVENTARGUMENT']")?.GetAttributeValue("value", "") },
-                { "__EVENTTARGET", htmlDocument.DocumentNode.SelectSingleNode("//input[@name='__EVENTTARGET']")?.GetAttributeValue("value", "") },
-                { "__EVENTVALIDATION", htmlDocument.DocumentNode.SelectSingleNode("//input[@name='__EVENTVALIDATION']")?.GetAttributeValue("value", "") },
-                { "__LASTFOCUS", htmlDocument.DocumentNode.SelectSingleNode("//input[@name='__LASTFOCUS']")?.GetAttributeValue("value", "") },
-                { "__VIEWSTATE", htmlDocument.DocumentNode.SelectSingleNode("//input[@name='__VIEWSTATE']")?.GetAttributeValue("value", "") },
-                { "__VIEWSTATEGENERATOR", htmlDocument.DocumentNode.SelectSingleNode("//input[@name='__VIEWSTATEGENERATOR']")?.GetAttributeValue("value", "") },
-
-                { "cb_alleDetails", "Show tounament details" }
-            };
-
-        response = await httpClient.PostAsync(tournamentInfoUrl, new FormUrlEncodedContent(postData), cancellationToken);
-        response.EnsureSuccessStatusCode();
-
-        htmlContent = HttpUtility.HtmlDecode(await response.Content.ReadAsStringAsync(cancellationToken));
-        htmlDocument.LoadHtml(htmlContent);
-
         TournamentInfo tournament = new()
         {
             Id = tournamentId,
@@ -360,7 +342,7 @@ internal class ChessResultsDataFetcher : IChessDataFetcher
         };
     }
 
-    private double? GetResult(string? result)
+    private static double? GetResult(string? result)
     {
         return result switch
         {
