@@ -20,7 +20,7 @@
 
 		<!-- Versions -->
 		<ApplicationDisplayVersion>1.0</ApplicationDisplayVersion>
-		<ApplicationVersion>12</ApplicationVersion>
+		<ApplicationVersion>13</ApplicationVersion>
 
 		<SupportedOSPlatformVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'ios'">11.0</SupportedOSPlatformVersion>
 		<SupportedOSPlatformVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'maccatalyst'">13.1</SupportedOSPlatformVersion>
@@ -49,6 +49,7 @@
 
 	<ItemGroup>
 		<None Remove="Resources\Images\black.svg" />
+		<None Remove="Resources\Images\medal.svg" />
 		<None Remove="Resources\Images\online.svg" />
 		<None Remove="Resources\Images\players.svg" />
 		<None Remove="Resources\Images\rounds.svg" />
