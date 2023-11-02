@@ -255,6 +255,12 @@ public partial class PlayerFullViewModel : BaseViewModel, IDisposable
         IsFavorite = await _playerFavoriteService.ToggleAsync(Name, cancellationToken);
     }
 
+    [RelayCommand]
+    private async Task OpenFideProfileAsync(string fideId, CancellationToken cancellationToken)
+    {
+        await Launcher.OpenAsync(new Uri($"https://ratings.fide.com/profile/{fideId}"));
+    }
+
     private void OnProgressChanged(object sender, SearchProgressEventArgs e)
     {
         Progress = (double)e.ProgressPercentage / 100;
