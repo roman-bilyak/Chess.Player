@@ -5,9 +5,10 @@ using System.Web;
 
 namespace Chess.Player.Data;
 
-internal class ChessResultsDataFetcher : IChessDataFetcher
+internal class ChessResultsDataFetcher : IChessDataFetcher, IDisposable
 {
     private const string BaseUrl = "https://chess-results.com";
+    private readonly HttpClient _httpClient = new();
     private readonly IChessDataNormalizer _chessDataNormalizer;
 
     public ChessResultsDataFetcher
@@ -23,10 +24,8 @@ internal class ChessResultsDataFetcher : IChessDataFetcher
 
     public async Task<List<PlayerTournament>> GetPlayerTournamentsAsync(string lastName, string firstName, CancellationToken cancellationToken)
     {
-        using HttpClient httpClient = new();
-
         string searchUrl = $"{BaseUrl}/SpielerSuche.aspx?lan=1";
-        HttpResponseMessage response = await httpClient.GetAsync(searchUrl, cancellationToken);
+        HttpResponseMessage response = await _httpClient.GetAsync(searchUrl, cancellationToken);
         response.EnsureSuccessStatusCode();
 
         HtmlDocument htmlDocument = new();
@@ -55,7 +54,7 @@ internal class ChessResultsDataFetcher : IChessDataFetcher
                 { "ctl00$P1$txt_von_tag", "" },
                 { "ctl00$P1$txt_vorname", firstName},
             };
-        response = await httpClient.PostAsync(searchUrl, new FormUrlEncodedContent(postData), cancellationToken);
+        response = await _httpClient.PostAsync(searchUrl, new FormUrlEncodedContent(postData), cancellationToken);
         response.EnsureSuccessStatusCode();
 
         htmlContent = HttpUtility.HtmlDecode(await response.Content.ReadAsStringAsync(cancellationToken));
@@ -108,14 +107,30 @@ internal class ChessResultsDataFetcher : IChessDataFetcher
 
     public async Task<TournamentInfo> GetTournamentInfoAsync(int tournamentId, CancellationToken cancellationToken)
     {
-        using HttpClient httpClient = new();
-
         string tournamentInfoUrl = $"{BaseUrl}/tnr{tournamentId}.aspx?lan=1&turdet=YES";
-        HttpResponseMessage response = await httpClient.GetAsync(tournamentInfoUrl, cancellationToken);
+        HttpResponseMessage response = await _httpClient.GetAsync(tournamentInfoUrl, cancellationToken);
         response.EnsureSuccessStatusCode();
 
         HtmlDocument htmlDocument = new();
         string htmlContent = HttpUtility.HtmlDecode(await response.Content.ReadAsStringAsync(cancellationToken));
+        htmlDocument.LoadHtml(htmlContent);
+
+        Dictionary<string, string?> postData = new()
+            {
+                { "__EVENTARGUMENT", htmlDocument.DocumentNode.SelectSingleNode("//input[@name='__EVENTARGUMENT']")?.GetAttributeValue("value", "") },
+                { "__EVENTTARGET", htmlDocument.DocumentNode.SelectSingleNode("//input[@name='__EVENTTARGET']")?.GetAttributeValue("value", "") },
+                { "__EVENTVALIDATION", htmlDocument.DocumentNode.SelectSingleNode("//input[@name='__EVENTVALIDATION']")?.GetAttributeValue("value", "") },
+                { "__LASTFOCUS", htmlDocument.DocumentNode.SelectSingleNode("//input[@name='__LASTFOCUS']")?.GetAttributeValue("value", "") },
+                { "__VIEWSTATE", htmlDocument.DocumentNode.SelectSingleNode("//input[@name='__VIEWSTATE']")?.GetAttributeValue("value", "") },
+                { "__VIEWSTATEGENERATOR", htmlDocument.DocumentNode.SelectSingleNode("//input[@name='__VIEWSTATEGENERATOR']")?.GetAttributeValue("value", "") },
+
+                { "cb_alleDetails", "Show tournament details" }
+        };
+
+        response = await _httpClient.PostAsync(tournamentInfoUrl, new FormUrlEncodedContent(postData), cancellationToken);
+        response.EnsureSuccessStatusCode();
+
+        htmlContent = HttpUtility.HtmlDecode(await response.Content.ReadAsStringAsync(cancellationToken));
         htmlDocument.LoadHtml(htmlContent);
 
         TournamentInfo tournament = new()
@@ -210,10 +225,8 @@ internal class ChessResultsDataFetcher : IChessDataFetcher
 
     public async Task<PlayerInfo> GetPlayerInfoAsync(int tournamentId, int startingRank, CancellationToken cancellationToken)
     {
-        using HttpClient httpClient = new();
-
         string playerInfoUrl = $"{BaseUrl}/tnr{tournamentId}.aspx?lan=1&art=9&snr={startingRank}";
-        HttpResponseMessage response = await httpClient.GetAsync(playerInfoUrl, cancellationToken);
+        HttpResponseMessage response = await _httpClient.GetAsync(playerInfoUrl, cancellationToken);
         response.EnsureSuccessStatusCode();
 
         HtmlDocument htmlDocument = new();
@@ -308,7 +321,13 @@ internal class ChessResultsDataFetcher : IChessDataFetcher
         return player;
     }
 
+    public void Dispose()
+    {
+        _httpClient.Dispose();
+    }
+
     #region helper methods
+
     private static string? NormalizeTitle(string? title)
     {
         return title switch
