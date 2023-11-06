@@ -160,6 +160,10 @@ public partial class PlayerFullViewModel : BaseViewModel, IDisposable
         try
         {
             PlayerFullInfo playerFullInfo = await _chessDataService.GetPlayerFullInfoAsync(Name, ForceRefresh, cancellationToken);
+            if (playerFullInfo.Tournaments.Any())
+            {
+                await _playerHistoryService.AddAsync(playerFullInfo.Name, cancellationToken);
+            }
 
             int index = playerFullInfo.Tournaments.Count;
             _allTournaments = playerFullInfo.Tournaments.GroupBy(x => x.Tournament.EndDate?.Year)
@@ -200,11 +204,6 @@ public partial class PlayerFullViewModel : BaseViewModel, IDisposable
 
             TournamentYears = _allTournaments.Keys.ToList();
             TournamentYear = TournamentYears.FirstOrDefault(x => TournamentYear is null || x.Year == TournamentYear.Year);
-
-            if (playerFullInfo.Tournaments.Any())
-            {
-                await _playerHistoryService.AddAsync(Name, cancellationToken);
-            }
 
             Error = null;
         }
