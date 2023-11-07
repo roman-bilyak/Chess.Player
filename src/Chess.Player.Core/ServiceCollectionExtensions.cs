@@ -1,4 +1,5 @@
-﻿using Chess.Player.Data;
+﻿using Chess.Player.Cache;
+using Chess.Player.Data;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Chess.Player;
@@ -14,6 +15,11 @@ public static class ServiceCollectionExtensions
             .AddTransient<IChessDataFetcher, ChessResultsDataFetcher>()
             .AddTransient<IChessDataNormalizer, ChessDataNormalizer>()
             .AddSingleton<IDateTimeProvider, DateTimeProvider>()
-            .AddTransient<ICacheManager, NullCacheManager>();
+
+            .AddTransient<ICacheManager, CacheManager>()
+            .AddTransient<ICache<PlayerGroupInfo>, FileCache<PlayerGroupInfo>>()
+            .AddTransient<ICache<PlayerFullInfo>, FileCache<PlayerFullInfo>>()
+            .AddTransient<ICache<TournamentInfo>, FileCache<TournamentInfo>>()
+            .AddTransient<ICache<PlayerInfo>, FileCache<PlayerInfo>>();
     }
 }

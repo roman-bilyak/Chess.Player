@@ -4,7 +4,6 @@ using Microsoft.Extensions.DependencyInjection;
 
 ServiceProvider serviceProvider = new ServiceCollection()
             .AddChessServices()
-            .AddTransient<ICacheManager, ConsoleFileCacheManager>()
             .BuildServiceProvider();
 try
 {

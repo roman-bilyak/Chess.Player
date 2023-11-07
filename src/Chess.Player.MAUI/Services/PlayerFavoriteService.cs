@@ -1,4 +1,5 @@
-﻿using Chess.Player.Data;
+﻿using Chess.Player.Cache;
+using Chess.Player.Data;
 
 namespace Chess.Player.MAUI.Services;
 
@@ -7,7 +8,7 @@ internal class PlayerFavoriteService : IPlayerFavoriteService
     private readonly IChessDataService _chessDataService;
     private readonly ICacheManager _cacheManager;
 
-    private List<string> _players;
+    private PlayerFavoriteList _playerFavoriteList;
 
     public PlayerFavoriteService
     (
@@ -26,7 +27,7 @@ internal class PlayerFavoriteService : IPlayerFavoriteService
     {
         await EnsureLoadedAsync(cancellationToken);
 
-        _players.Add(name);
+        _playerFavoriteList.Add(name);
 
         await SaveAsync(cancellationToken);
     }
@@ -35,9 +36,9 @@ internal class PlayerFavoriteService : IPlayerFavoriteService
     {
         await EnsureLoadedAsync(cancellationToken);
 
-        if (_players.Contains(name))
+        if (_playerFavoriteList.Contains(name))
         {
-            _players.Remove(name);
+            _playerFavoriteList.Remove(name);
         }
 
         await SaveAsync(cancellationToken);
@@ -59,7 +60,7 @@ internal class PlayerFavoriteService : IPlayerFavoriteService
     {
         await EnsureLoadedAsync(cancellationToken);
 
-        return _players.Contains(name);
+        return _playerFavoriteList.Contains(name);
     }
 
     public async Task<IReadOnlyList<PlayerFullInfo>> GetAllAsync(bool forceRefresh, CancellationToken cancellationToken)
@@ -67,7 +68,7 @@ internal class PlayerFavoriteService : IPlayerFavoriteService
         await EnsureLoadedAsync(cancellationToken);
 
         List<PlayerFullInfo> result = new();
-        foreach(var player in _players)
+        foreach(var player in _playerFavoriteList)
         {
             PlayerFullInfo playerInfo = await _chessDataService.GetPlayerFullInfoAsync(player, forceRefresh, cancellationToken);
             result.Add(playerInfo);
@@ -76,16 +77,23 @@ internal class PlayerFavoriteService : IPlayerFavoriteService
         return result.OrderBy(x => x.Names.FirstOrDefault()?.FullName).ToList();
     }
 
+    public async Task ClearAsync(CancellationToken cancellationToken)
+    {
+        _playerFavoriteList = new PlayerFavoriteList();
+
+        await SaveAsync(cancellationToken);
+    }
+
     #region helper methods
 
     private async Task EnsureLoadedAsync(CancellationToken cancellationToken)
     {
-        _players ??= await _cacheManager.GetOrAddAsync("Favorites", "Root", () => Task.FromResult(new List<string>()), false, cancellationToken);
+        _playerFavoriteList ??= await _cacheManager.GetAsync<PlayerFavoriteList>(cancellationToken) ?? new PlayerFavoriteList();
     }
 
     private async Task SaveAsync(CancellationToken cancellationToken)
     {
-        await _cacheManager.GetOrAddAsync("Favorites", "Root", () => Task.FromResult(_players), true, cancellationToken);
+        await _cacheManager.AddAsync(_playerFavoriteList, cancellationToken);
     }
 
     #endregion

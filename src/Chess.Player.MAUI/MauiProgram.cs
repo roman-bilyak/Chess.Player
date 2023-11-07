@@ -1,4 +1,6 @@
-﻿using Chess.Player.Data;
+﻿using Chess.Player.Cache;
+using Chess.Player.Data;
+using Chess.Player.MAUI.Cache;
 using Chess.Player.MAUI.Pages;
 using Chess.Player.MAUI.Services;
 using Chess.Player.MAUI.ViewModels;
@@ -30,7 +32,14 @@ namespace Chess.Player.MAUI
 #endif
 
             builder.Services.AddChessServices();
-            builder.Services.AddTransient<ICacheManager, MAUIFileCacheManager>();
+
+            builder.Services.AddTransient<ICache<PlayerFavoriteList>, AppDataFileCache<PlayerFavoriteList>>();
+            builder.Services.AddTransient<ICache<PlayerHistoryList>, AppDataFileCache<PlayerHistoryList>>();
+            builder.Services.AddTransient<ICache<PlayerGroupInfo>, AppDataFileCache<PlayerGroupInfo>>();
+
+            builder.Services.AddTransient<ICache<PlayerFullInfo>, CacheDataFileCache<PlayerFullInfo>>();
+            builder.Services.AddTransient<ICache<TournamentInfo>, CacheDataFileCache<TournamentInfo>>();
+            builder.Services.AddTransient<ICache<PlayerInfo>, CacheDataFileCache<PlayerInfo>>();
 
             builder.Services.AddSingleton<IPlayerHistoryService, PlayerHistoryService>();
             builder.Services.AddSingleton<IPlayerFavoriteService, PlayerFavoriteService>();

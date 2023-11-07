@@ -1,4 +1,6 @@
-﻿namespace Chess.Player.Data;
+﻿using Chess.Player.Cache;
+
+namespace Chess.Player.Data;
 
 internal class ChessDataManager : IChessDataManager
 {
@@ -70,12 +72,16 @@ internal class ChessDataManager : IChessDataManager
 
     public async Task<PlayerTournamentInfo> GetPlayerTournamentInfoAsync(int tournamentId, int playerStartingRank, bool isForceRefresh, CancellationToken cancellationToken)
     {
-        TournamentInfo tournamentInfo = await _cacheManager.GetOrAddAsync(nameof(TournamentInfo), $"{tournamentId}",
+        TournamentInfo tournamentInfo = await _cacheManager.GetOrAddAsync
+        (
+            $"{tournamentId}",
             () => _chessDataFetcher.GetTournamentInfoAsync(tournamentId, cancellationToken),
             isForceRefresh, cancellationToken
         );
 
-        PlayerInfo playerInfo = await _cacheManager.GetOrAddAsync(nameof(PlayerInfo), $"{tournamentId}_{playerStartingRank}",
+        PlayerInfo playerInfo = await _cacheManager.GetOrAddAsync
+        (
+            $"{tournamentId}_{playerStartingRank}",
             () => _chessDataFetcher.GetPlayerInfoAsync(tournamentId, playerStartingRank, cancellationToken),
             isForceRefresh, cancellationToken
         );

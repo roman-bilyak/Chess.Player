@@ -6,10 +6,36 @@
              x:Class="Chess.Player.MAUI.Pages.SettingsPage"
              x:DataType="vm:SettingsViewModel"
              Title="Settings">
-    <VerticalStackLayout Padding="20, 10" Spacing="20">
-        <Grid ColumnDefinitions="*, Auto">
-            <Label Grid.Row="0" Grid.Column="0" Text="Cache" FontSize="14" FontAttributes="Bold"/>
-            <Button Grid.Row="0" Grid.Column="1" Text="Clear All" Command="{Binding ClearCacheCommand}"/>
+    <VerticalStackLayout Padding="20">
+        <Grid RowSpacing="10" ColumnSpacing="10">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="*" />
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="Auto" />
+            </Grid.ColumnDefinitions>
+            <Label Grid.Row="0" Grid.Column="0" Text="Cache" FontAttributes="Bold" />
+            
+            <Label Grid.Row="1" Grid.Column="0" Text="Favorites" />
+            <Button Grid.Row="1" Grid.Column="1" Text="Clear" Command="{Binding ClearFavoritesCommand}"/>
+
+            <Label Grid.Row="2" Grid.Column="0" Text="View History" />
+            <Button Grid.Row="2" Grid.Column="1" Text="Clear" Command="{Binding ClearViewHistoryCommand}"/>
+
+            <Label Grid.Row="3" Grid.Column="0" Text="User Data" />
+            <Button Grid.Row="3" Grid.Column="1" Text="Clear" Command="{Binding ClearUserDataCommand}"/>
+
+            <Label Grid.Row="4" Grid.Column="0" Text="Cache Data" />
+            <Button Grid.Row="4" Grid.Column="1" Text="Clear" Command="{Binding ClearCacheDataCommand}"/>
+            
+            <Button Grid.Row="5" Grid.Column="0" Grid.ColumnSpan="2" Text="Clear All" Command="{Binding ClearAllCommand}"/>
         </Grid>
     </VerticalStackLayout>
 </ContentPage>

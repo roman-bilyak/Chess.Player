@@ -1,4 +1,6 @@
-﻿namespace Chess.Player.Data;
+﻿using Chess.Player.Cache;
+
+namespace Chess.Player.Data;
 
 internal class ChessDataService : IChessDataService
 {
@@ -39,11 +41,13 @@ internal class ChessDataService : IChessDataService
         PlayerGroupInfo playerGroupInfo = await _playerGroupService.GetGroupInfoAsync(name, cancellationToken);
         SearchCriteria[] searchCriterias = playerGroupInfo.Select(x => new SearchCriteria(x)).ToArray();
 
-        return await _cacheManager.GetOrAddAsync(nameof(PlayerFullInfo),
-                string.Join("_", searchCriterias.Select(x => x.Name)),
-                async () => await _chessDataManager.GetPlayerFullInfoAsync(searchCriterias, cancellationToken),
-                isForceRefresh,
-                cancellationToken);
+        return await _cacheManager.GetOrAddAsync
+        (
+            string.Join("_", searchCriterias.Select(x => x.Name)),
+            async () => await _chessDataManager.GetPlayerFullInfoAsync(searchCriterias, cancellationToken),
+            isForceRefresh,
+            cancellationToken
+        );
     }
 
     public async Task<PlayerTournamentInfo> GetPlayerTournamentInfoAsync(int tournamentId, int playerStartingRank, bool isForceRefresh, CancellationToken cancellationToken)

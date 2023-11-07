@@ -1,4 +1,6 @@
-﻿namespace Chess.Player.Data;
+﻿using Chess.Player.Cache;
+
+namespace Chess.Player.Data;
 
 internal class PlayerGroupService : IPlayerGroupService
 {
@@ -21,20 +23,20 @@ internal class PlayerGroupService : IPlayerGroupService
     public async Task AddToGroupAsync(string groupName, string name, CancellationToken cancellationToken)
     {
         PlayerGroupInfo playerGroupInfo = await GetGroupInfoAsync(groupName, cancellationToken);
-        name = _chessDataNormalizer.NormalizeName(name);
 
-        if (!playerGroupInfo.Contains(name))
+        name = _chessDataNormalizer.NormalizeName(name);
+        if (!string.IsNullOrEmpty(name) && !playerGroupInfo.Contains(name))
         {
             playerGroupInfo.Add(name);
-        }
 
-        await _cacheManager.GetOrAddAsync(nameof(PlayerGroupInfo), groupName, () => Task.FromResult(playerGroupInfo), true, cancellationToken);
+            await _cacheManager.AddAsync(groupName, playerGroupInfo, cancellationToken);
+        }
     }
 
     public async Task<PlayerGroupInfo> GetGroupInfoAsync(string name, CancellationToken cancellationToken)
     {
         name = _chessDataNormalizer.NormalizeName(name);
 
-        return await _cacheManager.GetOrAddAsync(nameof(PlayerGroupInfo), name, () => Task.FromResult(new PlayerGroupInfo() { name }), false, cancellationToken);
+        return await _cacheManager.GetAsync<PlayerGroupInfo>(name, cancellationToken) ?? new PlayerGroupInfo() { name };
     }
 }

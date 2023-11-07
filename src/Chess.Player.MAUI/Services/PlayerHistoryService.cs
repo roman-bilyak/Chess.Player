@@ -1,4 +1,5 @@
-﻿using Chess.Player.Data;
+﻿using Chess.Player.Cache;
+using Chess.Player.Data;
 
 namespace Chess.Player.MAUI.Services;
 
@@ -9,7 +10,7 @@ internal class PlayerHistoryService : IPlayerHistoryService
     private readonly IChessDataService _chessDataService;
     private readonly ICacheManager _cacheManager;
 
-    private List<string> _players;
+    private PlayerHistoryList _playerHistoryList;
 
     public PlayerHistoryService
     (
@@ -28,12 +29,12 @@ internal class PlayerHistoryService : IPlayerHistoryService
     {
         await EnsureLoadedAsync(cancellationToken);
 
-        _players.RemoveAll(x => x.Equals(name));
-        _players.Insert(0, name);
+        _playerHistoryList.RemoveAll(x => x.Equals(name));
+        _playerHistoryList.Insert(0, name);
 
-        while (_players.Count > MaxCount)
+        while (_playerHistoryList.Count > MaxCount)
         {
-            _players.RemoveAt(_players.Count - 1);
+            _playerHistoryList.RemoveAt(_playerHistoryList.Count - 1);
         }
 
         await SaveAsync(cancellationToken);
@@ -44,7 +45,7 @@ internal class PlayerHistoryService : IPlayerHistoryService
         await EnsureLoadedAsync(cancellationToken);
 
         List<PlayerFullInfo> result = new();
-        foreach (var player in _players)
+        foreach (var player in _playerHistoryList)
         {
             PlayerFullInfo playerInfo = await _chessDataService.GetPlayerFullInfoAsync(player, forceRefresh, cancellationToken);
             result.Add(playerInfo);
@@ -53,16 +54,23 @@ internal class PlayerHistoryService : IPlayerHistoryService
         return result;
     }
 
+    public async Task ClearAsync(CancellationToken cancellationToken)
+    {
+        _playerHistoryList = new PlayerHistoryList();
+
+        await SaveAsync(cancellationToken);
+    }
+
     #region helper methods
 
     private async Task EnsureLoadedAsync(CancellationToken cancellationToken)
     {
-        _players ??= await _cacheManager.GetOrAddAsync("PlayerHistory", "Root", () => Task.FromResult(new List<string>()), false, cancellationToken);
+        _playerHistoryList ??= await _cacheManager.GetAsync<PlayerHistoryList>(cancellationToken) ?? new PlayerHistoryList();
     }
 
     private async Task SaveAsync(CancellationToken cancellationToken)
     {
-        await _cacheManager.GetOrAddAsync("PlayerHistory", "Root", () => Task.FromResult(_players), true, cancellationToken);
+        await _cacheManager.AddAsync(_playerHistoryList, cancellationToken);
     }
 
     #endregion
