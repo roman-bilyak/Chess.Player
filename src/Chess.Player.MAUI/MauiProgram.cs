@@ -63,6 +63,7 @@ namespace Chess.Player.MAUI
             builder.Services.AddTransient<PlayerTournamentFullPage>();
             builder.Services.AddTransient<FavoritesPage>();
             builder.Services.AddTransient<SettingsPage>();
+            builder.Services.AddTransient<AboutPage>();
 
             return builder.Build();
         }

@@ -16,5 +16,8 @@
         <Tab Title="Settings" Icon="settings.svg">
             <ShellContent ContentTemplate="{DataTemplate pages:SettingsPage}"/>
         </Tab>
+        <Tab Title="About" Icon="about.svg">
+            <ShellContent ContentTemplate="{DataTemplate pages:AboutPage}"/>
+        </Tab>
     </TabBar>
 </Shell>

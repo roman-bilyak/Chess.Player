@@ -48,8 +48,8 @@
 	</ItemGroup>
 
 	<ItemGroup>
+		<None Remove="Resources\Images\about.svg" />
 		<None Remove="Resources\Images\black.svg" />
-		<None Remove="Resources\Images\buymeacoffee.svg" />
 		<None Remove="Resources\Images\favorites.svg" />
 		<None Remove="Resources\Images\home.svg" />
 		<None Remove="Resources\Images\medal.svg" />
@@ -71,6 +71,9 @@
 	</ItemGroup>
 
 	<ItemGroup>
+	  <MauiXaml Update="Pages\AboutPage.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
 	  <MauiXaml Update="Pages\FavoritesPage.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
