@@ -54,9 +54,9 @@ internal class ChessDataManager : IChessDataManager
         {
             index++;
 
-            bool isForceRefresh = playerTournament.EndDate >= _dateTimeProvider.UtcNow.Date;
+            bool useCache = playerTournament.EndDate < _dateTimeProvider.UtcNow.Date;
 
-            PlayerTournamentInfo playerTournamentInfo = await GetPlayerTournamentInfoAsync(playerTournament.TournamentId, playerTournament.PlayerStartingRank, isForceRefresh, cancellationToken);
+            PlayerTournamentInfo playerTournamentInfo = await GetPlayerTournamentInfoAsync(playerTournament.TournamentId, playerTournament.PlayerStartingRank, useCache, cancellationToken);
             playerTournamentInfos.Add(playerTournamentInfo);
 
             int progressPercentage = index * (PercentageFinish - PercentageStart) / playerTournaments.Count + PercentageStart;
@@ -70,20 +70,15 @@ internal class ChessDataManager : IChessDataManager
         return playerFullInfo;
     }
 
-    public async Task<PlayerTournamentInfo> GetPlayerTournamentInfoAsync(int tournamentId, int playerStartingRank, bool isForceRefresh, CancellationToken cancellationToken)
+    public async Task<PlayerTournamentInfo> GetPlayerTournamentInfoAsync(int tournamentId, int playerStartingRank, bool useCache, CancellationToken cancellationToken)
     {
-        TournamentInfo tournamentInfo = await _cacheManager.GetOrAddAsync
-        (
-            $"{tournamentId}",
-            () => _chessDataFetcher.GetTournamentInfoAsync(tournamentId, cancellationToken),
-            isForceRefresh, cancellationToken
-        );
+        TournamentInfo tournamentInfo = !useCache
+            ? await _chessDataFetcher.GetTournamentInfoAsync(tournamentId, cancellationToken)
+            : await _cacheManager.GetOrAddAsync($"{tournamentId}", async () => await _chessDataFetcher.GetTournamentInfoAsync(tournamentId, cancellationToken), false, cancellationToken);
 
-        PlayerInfo playerInfo = await _cacheManager.GetOrAddAsync
-        (
-            $"{tournamentId}_{playerStartingRank}",
-            () => _chessDataFetcher.GetPlayerInfoAsync(tournamentId, playerStartingRank, cancellationToken),
-            isForceRefresh, cancellationToken
+        PlayerInfo playerInfo = !useCache
+            ? await _chessDataFetcher.GetPlayerInfoAsync(tournamentId, playerStartingRank, cancellationToken)
+            : await _cacheManager.GetOrAddAsync($"{tournamentId}_{playerStartingRank}", async () => await _chessDataFetcher.GetPlayerInfoAsync(tournamentId, playerStartingRank, cancellationToken), false, cancellationToken
         );
 
         return new PlayerTournamentInfo(tournamentInfo, playerInfo);

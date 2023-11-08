@@ -14,11 +14,6 @@ public static class ICacheManagerExtensions
         return cacheManager.AddAsync<T>(DefaultKey, value, cancellationToken);
     }
 
-    public static Task<T> GetOrAddAsync<T>(this ICacheManager cacheManager, Func<Task<T>> valueFactory, bool forceRefresh, CancellationToken cancellationToken)
-    {
-        return cacheManager.GetOrAddAsync(DefaultKey, valueFactory, forceRefresh, cancellationToken);
-    }
-
     public static async Task<T> GetOrAddAsync<T>(this ICacheManager cacheManager, string key, Func<Task<T>> valueFactory, bool forceRefresh, CancellationToken cancellationToken)
     {
         if (!forceRefresh)
