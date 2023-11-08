@@ -7,13 +7,13 @@
     Shell.FlyoutBehavior="Disabled">
 
     <TabBar x:Name="PhoneTabs">
-        <Tab Title="Home" Icon="tab_home.png">
+        <Tab Title="Home" Icon="home.svg">
             <ShellContent ContentTemplate="{DataTemplate pages:HomePage}"/>
         </Tab>
-        <Tab Title="Favorites" Icon="tab_favorites.png">
+        <Tab Title="Favorites" Icon="favorites.svg">
             <ShellContent ContentTemplate="{DataTemplate pages:FavoritesPage}"/>
         </Tab>
-        <Tab Title="Settings" Icon="tab_settings.png">
+        <Tab Title="Settings" Icon="settings.svg">
             <ShellContent ContentTemplate="{DataTemplate pages:SettingsPage}"/>
         </Tab>
     </TabBar>

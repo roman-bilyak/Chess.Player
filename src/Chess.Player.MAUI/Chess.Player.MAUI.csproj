@@ -49,13 +49,14 @@
 
 	<ItemGroup>
 		<None Remove="Resources\Images\black.svg" />
+		<None Remove="Resources\Images\buymeacoffee.svg" />
+		<None Remove="Resources\Images\favorites.svg" />
+		<None Remove="Resources\Images\home.svg" />
 		<None Remove="Resources\Images\medal.svg" />
 		<None Remove="Resources\Images\online.svg" />
 		<None Remove="Resources\Images\players.svg" />
 		<None Remove="Resources\Images\rounds.svg" />
-		<None Remove="Resources\Images\tab_favorites.svg" />
-		<None Remove="Resources\Images\tab_home.svg" />
-		<None Remove="Resources\Images\tab_settings.svg" />
+		<None Remove="Resources\Images\settings.svg" />
 		<None Remove="Resources\Images\white.svg" />
 	</ItemGroup>
 
