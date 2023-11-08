@@ -37,6 +37,6 @@ internal class PlayerGroupService : IPlayerGroupService
     {
         name = _chessDataNormalizer.NormalizeName(name);
 
-        return await _cacheManager.GetAsync<PlayerGroupInfo>(name, cancellationToken) ?? new PlayerGroupInfo() { name };
+        return await _cacheManager.GetAsync<PlayerGroupInfo>(name, cancellationToken) ?? new PlayerGroupInfo(name);
     }
 }
