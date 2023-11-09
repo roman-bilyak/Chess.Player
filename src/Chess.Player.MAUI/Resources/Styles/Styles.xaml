@@ -193,7 +193,7 @@
     </Style>
 
     <Style TargetType="Label" x:Key="CardDetailsStyle">
-        <Setter Property="TextColor" Value="{AppThemeBinding Light={StaticResource Gray500}, Dark={StaticResource Gray600}}" />
+        <Setter Property="TextColor" Value="{AppThemeBinding Light={StaticResource Gray500}, Dark={StaticResource Gray100}}" />
     </Style>
 
     <Style TargetType="Label" x:Key="CardDetails10Style" BasedOn="{StaticResource CardDetailsStyle}">

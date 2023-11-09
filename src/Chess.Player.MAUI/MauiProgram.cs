@@ -21,6 +21,14 @@ namespace Chess.Player.MAUI
             builder
                 .UseMauiApp<App>()
                 .UseMauiCommunityToolkit()
+                .ConfigureMauiHandlers((handlers) =>
+                {
+#if ANDROID
+                    handlers.AddHandler(typeof(Shell), typeof(Chess.Player.MAUI.AndroidShellRenderer));
+#elif IOS
+                    handlers.AddHandler(typeof(Shell), typeof(Chess.Player.MAUI.IOSShellRenderer));
+#endif
+                })
                 .ConfigureFonts(fonts =>
                 {
                     fonts.AddFont("OpenSans-Regular.ttf", "OpenSansRegular");
