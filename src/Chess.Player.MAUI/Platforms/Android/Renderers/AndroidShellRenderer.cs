@@ -13,4 +13,9 @@ internal class AndroidShellRenderer : ShellRenderer
     {
         return new AndroidShellItemRenderer(this);
     }
+
+    protected override IShellToolbarAppearanceTracker CreateToolbarAppearanceTracker()
+    {
+        return new AndroidShellToolbarAppearanceTracker(this);
+    }
 }
