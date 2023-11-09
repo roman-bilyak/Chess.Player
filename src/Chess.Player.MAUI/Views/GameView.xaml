@@ -16,38 +16,38 @@
         </VisualStateGroup>
     </VisualStateManager.VisualStateGroups>
     <Border x:Name="border" Style="{StaticResource CardBorderStyle}">
-        <Grid RowSpacing="10" ColumnSpacing="5">
+        <Grid ColumnSpacing="5">
             <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
                 <RowDefinition Height="Auto" />
             </Grid.RowDefinitions>
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="Auto" />
                 <ColumnDefinition Width="30" />
                 <ColumnDefinition Width="*" />
                 <ColumnDefinition Width="30" />
             </Grid.ColumnDefinitions>
 
-            <Label Grid.Row="0" Grid.Column="0" Text="{Binding RoundName}" VerticalOptions="Center" HorizontalOptions="Center" Style="{StaticResource CardHighlightStyle}" />
-            <Image Grid.Row="0" Grid.Column="1" Source="white.svg" WidthRequest="25" HeightRequest="25" VerticalOptions="Center" HorizontalOptions="Center" IsVisible="{Binding IsWhite}">
+            <Label Grid.Row="0" Grid.Column="0" Text="{Binding RoundName}" VerticalOptions="Start" HorizontalOptions="Center" Style="{StaticResource CardHighlightStyle}" />
+
+            <Image Grid.Row="1" Grid.Column="0" Source="white.svg" WidthRequest="25" HeightRequest="25" VerticalOptions="Center" HorizontalOptions="Center" IsVisible="{Binding IsWhite}">
                 <Image.Behaviors>
                     <mct:IconTintColorBehavior TintColor="#888888" />
                 </Image.Behaviors>
             </Image>
-            <Label Grid.Row="0" Grid.Column="1" Text="{Binding Board}" VerticalOptions="Center" HorizontalOptions="Center" TextColor="#888888" FontSize="12" IsVisible="{Binding IsWhite}" />
+            <Label Grid.Row="1" Grid.Column="0" Text="{Binding Board}" VerticalOptions="Center" HorizontalOptions="Center" TextColor="#888888" FontSize="12" IsVisible="{Binding IsWhite}" />
 
-            <Image Grid.Row="0" Grid.Column="1" Source="black.svg" WidthRequest="25" HeightRequest="25" VerticalOptions="Center" HorizontalOptions="Center" IsVisible="{Binding IsBlack}">
+            <Image Grid.Row="1" Grid.Column="0" Source="black.svg" WidthRequest="25" HeightRequest="25" VerticalOptions="Center" HorizontalOptions="Center" IsVisible="{Binding IsBlack}">
                 <Image.Behaviors>
                     <mct:IconTintColorBehavior TintColor="#888888" />
                 </Image.Behaviors>
             </Image>
-            <Label Grid.Row="0" Grid.Column="1" Text="{Binding Board}" VerticalOptions="Center" HorizontalOptions="Center" TextColor="White" FontSize="12" IsVisible="{Binding IsBlack}" />
-            
-            <VerticalStackLayout Grid.Row="0" Grid.Column="2">
-                <Label Text="{Binding Name}" Style="{StaticResource CardHighlightStyle}" />
-                <Label Text="{Binding ClubCity}" Style="{StaticResource CardDetailsStyle}" />
-            </VerticalStackLayout>
+            <Label Grid.Row="1" Grid.Column="0" Text="{Binding Board}" VerticalOptions="Center" HorizontalOptions="Center" TextColor="White" FontSize="12" IsVisible="{Binding IsBlack}" />
 
-            <Label Grid.Row="0" Grid.Column="3" Text="{Binding Result}" VerticalOptions="Center" HorizontalOptions="Center" Style="{StaticResource CardHighlightStyle}" />
+            <Label Grid.Row="0" Grid.Column="1" Text="{Binding Name}" VerticalOptions="Start" HorizontalOptions="Start" Style="{StaticResource CardHighlightStyle}" />
+
+            <Label Grid.Row="1" Grid.Column="1" Text="{Binding ClubCity}" VerticalOptions="Center" HorizontalOptions="Start" Style="{StaticResource CardDetailsStyle}" />
+
+            <Label Grid.Row="0" Grid.Column="2" Grid.RowSpan="2" Text="{Binding Result}" VerticalOptions="Center" HorizontalOptions="Center" Style="{StaticResource CardHighlightStyle}" />
         </Grid>
     </Border>
 </ContentView>
