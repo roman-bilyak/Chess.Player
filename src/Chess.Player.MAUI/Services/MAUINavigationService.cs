@@ -1,5 +1,4 @@
-﻿using Chess.Player.MAUI;
-using Chess.Player.MAUI.ViewModels;
+﻿using Chess.Player.MAUI.ViewModels;
 
 namespace Chess.Player.Services
 {
@@ -20,7 +19,7 @@ namespace Chess.Player.Services
         public async Task PushAsync<TPage>() where TPage : Page
         {
             TPage page = _serviceProvider.GetRequiredService<TPage>();
-            await App.Current.MainPage.Navigation.PushAsync(page);
+            await Shell.Current.Navigation.PushAsync(page);
         }
 
         public async Task PushAsync<TPage, TViewModel>(Action<TViewModel> init)
@@ -35,12 +34,12 @@ namespace Chess.Player.Services
                 init(viewModel);
             }
 
-            await App.Current.MainPage.Navigation.PushAsync(page);
+            await Shell.Current.Navigation.PushAsync(page);
         }
 
         public async Task PopAsync()
         {
-            await App.Current.MainPage.Navigation.PopAsync();
+            await Shell.Current.Navigation.PopAsync();
         }
     }
 }
