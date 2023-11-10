@@ -14,16 +14,17 @@
     </Shell.Behaviors>
     <TabBar x:Name="PhoneTabs">
         <Tab Title="Home" Icon="home.svg">
-            <ShellContent ContentTemplate="{DataTemplate pages:HomePage}"/>
+            <ShellContent ContentTemplate="{DataTemplate pages:HomePage}" />
         </Tab>
         <Tab Title="Favorites" Icon="favorites.svg">
-            <ShellContent ContentTemplate="{DataTemplate pages:FavoritesPage}"/>
+            <ShellContent ContentTemplate="{DataTemplate pages:FavoritesPage}" />
         </Tab>
         <Tab Title="Settings" Icon="settings.svg">
-            <ShellContent ContentTemplate="{DataTemplate pages:SettingsPage}"/>
+            <ShellContent Title="Settings" ContentTemplate="{DataTemplate pages:SettingsPage}" Shell.NavBarIsVisible="false" />
+            <ShellContent Title="Cache" ContentTemplate="{DataTemplate pages:CachePage}" Shell.NavBarIsVisible="false" />
         </Tab>
         <Tab Title="About" Icon="about.svg">
-            <ShellContent ContentTemplate="{DataTemplate pages:AboutPage}"/>
+            <ShellContent ContentTemplate="{DataTemplate pages:AboutPage}" />
         </Tab>
     </TabBar>
 </Shell>

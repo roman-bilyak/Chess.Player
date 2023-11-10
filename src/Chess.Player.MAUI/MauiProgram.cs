@@ -62,6 +62,7 @@ namespace Chess.Player.MAUI
             builder.Services.AddTransient<PlayerTournamentFullViewModel>();
             builder.Services.AddTransient<FavoritesViewModel>();
             builder.Services.AddTransient<SettingsViewModel>();
+            builder.Services.AddTransient<CacheViewModel>();
 
             builder.Services.AddTransient<PlayerListViewModel>();
             builder.Services.AddTransient<PlayerViewModel>();
@@ -75,6 +76,7 @@ namespace Chess.Player.MAUI
             builder.Services.AddTransient<PlayerTournamentFullPage>();
             builder.Services.AddTransient<FavoritesPage>();
             builder.Services.AddTransient<SettingsPage>();
+            builder.Services.AddTransient<CachePage>();
             builder.Services.AddTransient<AboutPage>();
 
             return builder.Build();
