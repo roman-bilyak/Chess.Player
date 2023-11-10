@@ -16,10 +16,10 @@ internal class CacheManager : ICacheManager
         _serviceProvider = serviceProvider;
     }
 
-    public TimeSpan GetCacheInvalidatePeriod(bool useCache, bool isArchive)
+    public TimeSpan? GetCacheInvalidatePeriod(bool useCache)
     {
-        return useCache || isArchive
-            ? TimeSpan.FromDays(356)
+        return useCache
+            ? null
             : TimeSpan.FromMinutes(1);
     }
 

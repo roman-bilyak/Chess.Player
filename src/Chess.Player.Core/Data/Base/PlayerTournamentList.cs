@@ -2,7 +2,9 @@
 
 namespace Chess.Player.Data;
 
-internal class PlayerTournamentList : List<PlayerTournament>, ICacheItem
+public class PlayerTournamentList : ICacheItem
 {
+    public List<PlayerTournament> Items { get; protected set; } = new List<PlayerTournament>();
+
     public DateTime? LastUpdateTime { get; set; }
 }

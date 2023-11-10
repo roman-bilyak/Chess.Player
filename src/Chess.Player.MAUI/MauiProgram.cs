@@ -47,6 +47,7 @@ namespace Chess.Player.MAUI
             builder.Services.AddTransient<ICache<PlayerGroupInfo>, AppDataFileCache<PlayerGroupInfo>>();
 
             builder.Services.AddTransient<ICache<PlayerFullInfo>, CacheDataFileCache<PlayerFullInfo>>();
+            builder.Services.AddTransient<ICache<PlayerTournamentList>, CacheDataFileCache<PlayerTournamentList>>();
             builder.Services.AddTransient<ICache<TournamentInfo>, CacheDataFileCache<TournamentInfo>>();
             builder.Services.AddTransient<ICache<PlayerInfo>, CacheDataFileCache<PlayerInfo>>();
 

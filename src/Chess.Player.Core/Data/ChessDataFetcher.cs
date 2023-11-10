@@ -98,7 +98,7 @@ internal class ChessResultsDataFetcher : IChessDataFetcher, IDisposable
             string? endDateStr = node.SelectSingleNode("td[7]")?.InnerText?.Trim();
             if (tournamentId.HasValue && startingRank.HasValue && DateTime.TryParse(endDateStr, out DateTime endDate))
             {
-                playerTournamentList.Add(new PlayerTournament(tournamentId.Value, startingRank.Value, endDate));
+                playerTournamentList.Items.Add(new PlayerTournament(tournamentId.Value, startingRank.Value, endDate));
             }
         }
         return playerTournamentList;

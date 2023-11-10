@@ -21,7 +21,7 @@ public static class ICacheManagerExtensions
         return cacheManager.AddAsync<T>(DefaultKey, value, cancellationToken);
     }
 
-    public static async Task<T> GetOrAddAsync<T>(this ICacheManager cacheManager, string key, TimeSpan invalidatePeriod, Func<Task<T>> valueFactory, CancellationToken cancellationToken)
+    public static async Task<T> GetOrAddAsync<T>(this ICacheManager cacheManager, string key, TimeSpan? invalidatePeriod, Func<Task<T>> valueFactory, CancellationToken cancellationToken)
         where T : ICacheItem
     {
         T? cacheItem = await cacheManager.GetAsync<T>(key, invalidatePeriod, cancellationToken);

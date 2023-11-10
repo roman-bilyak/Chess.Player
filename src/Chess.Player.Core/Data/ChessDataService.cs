@@ -42,7 +42,7 @@ internal class ChessDataService : IChessDataService
         SearchCriteria[] searchCriterias = playerGroupInfo.Select(x => new SearchCriteria(x)).ToArray();
 
         string cacheKey = string.Join("_", searchCriterias.Select(x => x.Name));
-        TimeSpan cacheInvalidatePeriod = _cacheManager.GetCacheInvalidatePeriod(useCache, isArchive: false);
+        TimeSpan? cacheInvalidatePeriod = _cacheManager.GetCacheInvalidatePeriod(useCache);
         return await _cacheManager.GetOrAddAsync(cacheKey, cacheInvalidatePeriod, async () => await _chessDataManager.GetPlayerFullInfoAsync(searchCriterias, useCache, cancellationToken), cancellationToken);
     }
 
