@@ -3,33 +3,54 @@ using Chess.Player.Data;
 using Chess.Player.MAUI.Services;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using System.Collections.ObjectModel;
+using System.ComponentModel;
 
 namespace Chess.Player.MAUI.ViewModels;
 
 [INotifyPropertyChanged]
 public partial class SettingsViewModel : BaseViewModel
 {
+    private readonly ISettingsService _settingsService;
     private readonly IPlayerFavoriteService _playerFavoriteService;
     private readonly IPlayerHistoryService _playerHistoryService;
     private readonly ICacheManager _cacheManager;
 
     [ObservableProperty]
-    private PlayerListViewModel _playerCardList;
+    private AppTheme _theme;
+
+    [ObservableProperty]
+    private ObservableCollection<AppTheme> _themes = new(new[] { AppTheme.Unspecified, AppTheme.Light, AppTheme.Dark });
 
     public SettingsViewModel
     (
+        ISettingsService settingsService,
         IPlayerFavoriteService playerFavoriteService,
         IPlayerHistoryService playerHistoryService,
         ICacheManager cacheManager
     )
     {
+        ArgumentNullException.ThrowIfNull(settingsService);
         ArgumentNullException.ThrowIfNull(playerFavoriteService);
         ArgumentNullException.ThrowIfNull(playerHistoryService);
         ArgumentNullException.ThrowIfNull(cacheManager);
 
+        _settingsService = settingsService;
         _playerFavoriteService = playerFavoriteService;
         _playerHistoryService = playerHistoryService;
         _cacheManager = cacheManager;
+    }
+
+    [RelayCommand(IncludeCancelCommand = true)]
+    private async Task LoadSettingsAsync(CancellationToken cancellationToken)
+    {
+        Theme = await _settingsService.GetThemeAsync(cancellationToken);
+    }
+
+    [RelayCommand]
+    private async Task SaveSettingsAsync(CancellationToken cancellationToken)
+    {
+        await _settingsService.SetThemeAsync(Theme, cancellationToken);
     }
 
     [RelayCommand]

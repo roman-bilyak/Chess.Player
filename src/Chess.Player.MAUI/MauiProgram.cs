@@ -41,6 +41,7 @@ namespace Chess.Player.MAUI
 
             builder.Services.AddChessServices();
 
+            builder.Services.AddTransient<ICache<SettingsInfo>, AppDataFileCache<SettingsInfo>>();
             builder.Services.AddTransient<ICache<PlayerFavoriteList>, AppDataFileCache<PlayerFavoriteList>>();
             builder.Services.AddTransient<ICache<PlayerHistoryList>, AppDataFileCache<PlayerHistoryList>>();
             builder.Services.AddTransient<ICache<PlayerGroupInfo>, AppDataFileCache<PlayerGroupInfo>>();
@@ -49,11 +50,13 @@ namespace Chess.Player.MAUI
             builder.Services.AddTransient<ICache<TournamentInfo>, CacheDataFileCache<TournamentInfo>>();
             builder.Services.AddTransient<ICache<PlayerInfo>, CacheDataFileCache<PlayerInfo>>();
 
+            builder.Services.AddSingleton<ISettingsService, SettingsService>();
             builder.Services.AddSingleton<IPlayerHistoryService, PlayerHistoryService>();
             builder.Services.AddSingleton<IPlayerFavoriteService, PlayerFavoriteService>();
             builder.Services.AddTransient<INavigationService, MAUINavigationService>();
             builder.Services.AddTransient<IPopupService, MAUIPopupService>();
 
+            builder.Services.AddTransient<AppShellViewModel>();
             builder.Services.AddTransient<HomeViewModel>();
             builder.Services.AddTransient<PlayerFullViewModel>();
             builder.Services.AddTransient<PlayerTournamentFullViewModel>();
@@ -66,6 +69,7 @@ namespace Chess.Player.MAUI
             builder.Services.AddTransient<GameListViewModel>();
             builder.Services.AddTransient<GameViewModel>();
 
+            builder.Services.AddTransient<AppShell>();
             builder.Services.AddTransient<HomePage>();
             builder.Services.AddTransient<PlayerFullPage>();
             builder.Services.AddTransient<PlayerTournamentFullPage>();
