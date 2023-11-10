@@ -11,7 +11,14 @@
         <mct:EventToCommandBehavior Command="{Binding StartCommand}" EventName="Appearing" />
         <mct:EventToCommandBehavior Command="{Binding LoadCancelCommand}" EventName="Disappearing" />
     </ContentPage.Behaviors>
+    <ContentPage.ToolbarItems>
+        <ToolbarItem Text="Refresh" Order="Secondary" Command="{Binding RefreshCommand}" />
+    </ContentPage.ToolbarItems>
     <StackLayout Padding="10">
+        <Frame BorderColor="HotPink" BackgroundColor="LightPink" CornerRadius="5" Padding="10" Margin="10" IsVisible="{Binding HasError}">
+            <Label Text="{Binding Error}" HorizontalOptions="Center" VerticalOptions="Center" />
+        </Frame>
+        
         <SearchBar Text="{Binding SearchText}" SearchCommand="{Binding SearchCommand}" Placeholder="Example: Smith John" HorizontalOptions="StartAndExpand" />
 
         <RefreshView IsRefreshing="{Binding IsLoading}"

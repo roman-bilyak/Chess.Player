@@ -74,7 +74,16 @@ public partial class PlayerFullViewModel : BaseViewModel, IDisposable
     private PlayerTournamentViewModel _selectedTournament;
 
     [ObservableProperty]
-    private bool _isLoading = false;
+    [NotifyPropertyChangedFor(nameof(ToggleFavoriteButtonName))]
+    private bool _isFavorite;
+
+    public string ToggleFavoriteButtonName => !IsFavorite ? "Add To Favorites" : "Remove From Favorites";
+
+    [ObservableProperty]
+    private bool _useCache;
+
+    [ObservableProperty]
+    private bool _isLoading;
 
     [ObservableProperty]
     private double _progress;
@@ -84,15 +93,6 @@ public partial class PlayerFullViewModel : BaseViewModel, IDisposable
     private string _error;
 
     public bool HasError => !string.IsNullOrWhiteSpace(Error);
-
-    [ObservableProperty]
-    private bool _forceRefresh;
-
-    [ObservableProperty]
-    [NotifyPropertyChangedFor(nameof(ToggleFavoriteButtonName))]
-    private bool _isFavorite;
-
-    public string ToggleFavoriteButtonName => !IsFavorite ? "Add To Favorites" : "Remove From Favorites";
 
     public PlayerFullViewModel
     (
@@ -130,7 +130,7 @@ public partial class PlayerFullViewModel : BaseViewModel, IDisposable
     [RelayCommand]
     private Task StartAsync(CancellationToken cancellationToken)
     {
-        ForceRefresh = false;
+        UseCache = true;
         IsLoading = true;
 
         return Task.CompletedTask;
@@ -139,7 +139,7 @@ public partial class PlayerFullViewModel : BaseViewModel, IDisposable
     [RelayCommand]
     private Task RefreshAsync(CancellationToken cancellationToken)
     {
-        ForceRefresh = true;
+        UseCache = false;
         IsLoading = true;
 
         return Task.CompletedTask;
@@ -159,7 +159,7 @@ public partial class PlayerFullViewModel : BaseViewModel, IDisposable
     {
         try
         {
-            PlayerFullInfo playerFullInfo = await _chessDataService.GetPlayerFullInfoAsync(Name, ForceRefresh, cancellationToken);
+            PlayerFullInfo playerFullInfo = await _chessDataService.GetPlayerFullInfoAsync(Name, UseCache, cancellationToken);
             if (playerFullInfo.Tournaments.Any())
             {
                 await _playerHistoryService.AddAsync(playerFullInfo.Name, cancellationToken);
@@ -221,7 +221,7 @@ public partial class PlayerFullViewModel : BaseViewModel, IDisposable
         }
         finally
         {
-            ForceRefresh = true;
+            UseCache = false;
             IsLoading = false;
         }
     }

@@ -1,14 +1,18 @@
-﻿using Newtonsoft.Json;
+﻿using Chess.Player.Data;
+using Newtonsoft.Json;
 
 namespace Chess.Player.Cache;
 
-public class FileCache<T> : ICache<T>
+public class FileCache<T> : BaseCache<T>
 {
     protected virtual string RootPath => "Cache";
 
-    protected virtual string CacheName => typeof(T).Name;
+    public FileCache(IDateTimeProvider dateTimeProvider)
+        : base(dateTimeProvider)
+    {
+    }
 
-    public async Task<T?> GetAsync(string key, CancellationToken cancellationToken)
+    protected sealed override async Task<T?> GetAsync(string key, CancellationToken cancellationToken)
     {
         string cacheFilePath = GetCacheFilePath(key);
 
@@ -19,10 +23,11 @@ public class FileCache<T> : ICache<T>
 
         string json = await File.ReadAllTextAsync(cacheFilePath, cancellationToken);
         T? result = JsonConvert.DeserializeObject<T>(json);
+
         return result is null ? throw new Exception("Failed to deserialize") : result;
     }
 
-    public async Task AddAsync(string key, T value, CancellationToken cancellationToken)
+    protected sealed override async Task StoreAsync(string key, T value, CancellationToken cancellationToken)
     {
         string cacheFilePath = GetCacheFilePath(key);
 
@@ -36,7 +41,7 @@ public class FileCache<T> : ICache<T>
         await File.WriteAllTextAsync(cacheFilePath, jsonToWrite, cancellationToken);
     }
 
-    public Task ClearAsync(CancellationToken cancellationToken)
+    public sealed override Task ClearAsync(CancellationToken cancellationToken)
     {
         string cacheFolderPath = GetCacheFolderPath();
 

@@ -1,6 +1,8 @@
-﻿namespace Chess.Player.Data;
+﻿using Chess.Player.Cache.Interfaces;
 
-public class PlayerInfo
+namespace Chess.Player.Data;
+
+public class PlayerInfo : ICacheItem
 {
     public string? Name { get; set; }
 
@@ -33,4 +35,6 @@ public class PlayerInfo
     public int? YearOfBirth { get; set; }
 
     public List<GameInfo> Games { get; set; } = new List<GameInfo>();
+
+    public DateTime? LastUpdateTime { get; set; }
 }

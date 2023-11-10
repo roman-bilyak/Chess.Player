@@ -1,6 +1,8 @@
-﻿namespace Chess.Player.Data;
+﻿using Chess.Player.Cache.Interfaces;
 
-public class PlayerFullInfo
+namespace Chess.Player.Data;
+
+public class PlayerFullInfo: ICacheItem
 {
     public string? Name => Names.FirstOrDefault()?.FullName;
 
@@ -15,4 +17,6 @@ public class PlayerFullInfo
     public List<NameInfo> Names { get; set; } = new List<NameInfo>();
 
     public List<PlayerTournamentInfo> Tournaments { get; set; } = new List<PlayerTournamentInfo>();
+
+    public DateTime? LastUpdateTime { get; set; }
 }

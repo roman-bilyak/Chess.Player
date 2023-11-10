@@ -36,17 +36,18 @@ internal class ChessDataService : IChessDataService
         _cacheManager = cacheManager;
     }
 
-    public async Task<PlayerFullInfo> GetPlayerFullInfoAsync(string name, bool isForceRefresh, CancellationToken cancellationToken)
+    public async Task<PlayerFullInfo> GetPlayerFullInfoAsync(string name, bool useCache, CancellationToken cancellationToken)
     {
         PlayerGroupInfo playerGroupInfo = await _playerGroupService.GetGroupInfoAsync(name, cancellationToken);
         SearchCriteria[] searchCriterias = playerGroupInfo.Select(x => new SearchCriteria(x)).ToArray();
 
         string cacheKey = string.Join("_", searchCriterias.Select(x => x.Name));
-        return await _cacheManager.GetOrAddAsync(cacheKey, async () => await _chessDataManager.GetPlayerFullInfoAsync(searchCriterias, cancellationToken), isForceRefresh, cancellationToken);
+        TimeSpan cacheInvalidatePeriod = _cacheManager.GetCacheInvalidatePeriod(useCache, isArchive: false);
+        return await _cacheManager.GetOrAddAsync(cacheKey, cacheInvalidatePeriod, async () => await _chessDataManager.GetPlayerFullInfoAsync(searchCriterias, useCache, cancellationToken), cancellationToken);
     }
 
-    public async Task<PlayerTournamentInfo> GetPlayerTournamentInfoAsync(int tournamentId, int playerStartingRank, bool isForceRefresh, CancellationToken cancellationToken)
+    public async Task<PlayerTournamentInfo> GetPlayerTournamentInfoAsync(int tournamentId, DateTime? tournamentEndDate, int playerStartingRank, bool useCache, CancellationToken cancellationToken)
     {
-        return await _chessDataManager.GetPlayerTournamentInfoAsync(tournamentId, playerStartingRank, isForceRefresh, cancellationToken);
+        return await _chessDataManager.GetPlayerTournamentInfoAsync(tournamentId, tournamentEndDate, playerStartingRank, useCache, cancellationToken);
     }
 }

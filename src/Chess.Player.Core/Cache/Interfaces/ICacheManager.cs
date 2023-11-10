@@ -2,7 +2,9 @@
 
 public interface ICacheManager
 {
-    Task<T?> GetAsync<T>(string key, CancellationToken cancellationToken);
+    TimeSpan GetCacheInvalidatePeriod(bool useCache, bool isArchive);
+
+    Task<T?> GetAsync<T>(string key, TimeSpan? invalidatePeriod, CancellationToken cancellationToken);
 
     Task AddAsync<T>(string key, T value, CancellationToken cancellationToken);
 

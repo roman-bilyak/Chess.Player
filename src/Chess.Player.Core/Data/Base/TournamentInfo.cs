@@ -1,6 +1,8 @@
-﻿namespace Chess.Player.Data;
+﻿using Chess.Player.Cache.Interfaces;
 
-public class TournamentInfo
+namespace Chess.Player.Data;
+
+public class TournamentInfo : ICacheItem
 {
     public int? Id { get; set; }
 
@@ -39,4 +41,6 @@ public class TournamentInfo
     public int? NumberOfPlayers { get; set; }
 
     public bool IsTeamTournament { get; set; }
+
+    public DateTime? LastUpdateTime { get; set; }
 }

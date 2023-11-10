@@ -18,6 +18,9 @@ public partial class PlayerTournamentFullViewModel : BaseViewModel
     private string _tournamentName;
 
     [ObservableProperty]
+    private DateTime? _tournamentEndDate;
+
+    [ObservableProperty]
     private string _tournamentLocation;
 
     [ObservableProperty]
@@ -36,16 +39,16 @@ public partial class PlayerTournamentFullViewModel : BaseViewModel
     private GameListViewModel _gameList;
 
     [ObservableProperty]
-    private bool _forceRefresh;
+    private bool _useCache;
+
+    [ObservableProperty]
+    private bool _isLoading = false;
 
     [ObservableProperty]
     [NotifyPropertyChangedFor(nameof(HasError))]
     private string _error;
 
     public bool HasError => !string.IsNullOrWhiteSpace(Error);
-
-    [ObservableProperty]
-    private bool _isLoading = false;
 
     public PlayerTournamentFullViewModel
     (
@@ -63,7 +66,7 @@ public partial class PlayerTournamentFullViewModel : BaseViewModel
     [RelayCommand]
     private Task StartAsync(CancellationToken cancellationToken)
     {
-        ForceRefresh = false;
+        UseCache = true;
         IsLoading = true;
 
         return Task.CompletedTask;
@@ -72,7 +75,7 @@ public partial class PlayerTournamentFullViewModel : BaseViewModel
     [RelayCommand]
     private Task RefreshAsync(CancellationToken cancellationToken)
     {
-        ForceRefresh = true;
+        UseCache = false;
         IsLoading = true;
 
         return Task.CompletedTask;
@@ -83,9 +86,10 @@ public partial class PlayerTournamentFullViewModel : BaseViewModel
     {
         try
         {
-            PlayerTournamentInfo playerTournamentInfo = await _chessDataService.GetPlayerTournamentInfoAsync(TournamentId, PlayerStartingRank, ForceRefresh, cancellationToken);
+            PlayerTournamentInfo playerTournamentInfo = await _chessDataService.GetPlayerTournamentInfoAsync(TournamentId, TournamentEndDate, PlayerStartingRank, UseCache, cancellationToken);
 
             TournamentName = playerTournamentInfo.Tournament.Name;
+            TournamentEndDate = playerTournamentInfo.Tournament.EndDate;
             TournamentLocation = playerTournamentInfo.Tournament.Location;
 
             PlayerName = playerTournamentInfo.Player.Name;
@@ -122,8 +126,8 @@ public partial class PlayerTournamentFullViewModel : BaseViewModel
         }
         finally
         {
+            UseCache = true;
             IsLoading = false;
-            ForceRefresh = true;
         }
     }
 }

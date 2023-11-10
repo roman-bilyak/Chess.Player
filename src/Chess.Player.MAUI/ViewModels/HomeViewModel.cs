@@ -5,6 +5,7 @@ using Chess.Player.Services;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using System.Collections.ObjectModel;
+using System.Net;
 
 namespace Chess.Player.MAUI.ViewModels;
 
@@ -22,10 +23,16 @@ public partial class HomeViewModel : BaseViewModel
     private PlayerListViewModel _playerList;
 
     [ObservableProperty]
-    private bool _isLoading = false;
+    private bool _useCache;
 
     [ObservableProperty]
-    private bool _forceRefresh;
+    private bool _isLoading;
+
+    [ObservableProperty]
+    [NotifyPropertyChangedFor(nameof(HasError))]
+    private string _error;
+
+    public bool HasError => !string.IsNullOrWhiteSpace(Error);
 
     public HomeViewModel
     (
@@ -48,8 +55,17 @@ public partial class HomeViewModel : BaseViewModel
     [RelayCommand]
     private Task StartAsync(CancellationToken cancellationToken)
     {
+        UseCache = true;
         IsLoading = true;
-        ForceRefresh = false;
+
+        return Task.CompletedTask;
+    }
+
+    [RelayCommand]
+    private Task RefreshAsync(CancellationToken cancellationToken)
+    {
+        UseCache = false;
+        IsLoading = true;
 
         return Task.CompletedTask;
     }
@@ -61,7 +77,7 @@ public partial class HomeViewModel : BaseViewModel
         {
             PlayerList.Players.Clear();
 
-            foreach (PlayerFullInfo player in await _playerHistoryService.GetAllAsync(ForceRefresh, cancellationToken))
+            foreach (PlayerFullInfo player in await _playerHistoryService.GetAllAsync(UseCache, cancellationToken))
             {
                 PlayerViewModel playerCardViewModel = _serviceProvider.GetRequiredService<PlayerViewModel>();
 
@@ -72,11 +88,25 @@ public partial class HomeViewModel : BaseViewModel
 
                 PlayerList.Players.Add(playerCardViewModel);
             }
+
+            Error = null;
+        }
+        catch (OperationCanceledException)
+        {
+
+        }
+        catch (WebException)
+        {
+            Error = "No internet connection.";
+        }
+        catch
+        {
+            Error = "Oops! Something went wrong.";
         }
         finally
         {
+            UseCache = false;
             IsLoading = false;
-            ForceRefresh = false;
         }
     }
 

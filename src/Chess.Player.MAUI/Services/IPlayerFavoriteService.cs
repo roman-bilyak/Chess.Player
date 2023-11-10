@@ -12,7 +12,7 @@ public interface IPlayerFavoriteService
 
     Task<bool> ContainsAsync(string name, CancellationToken cancellationToken);
 
-    Task<IReadOnlyList<PlayerFullInfo>> GetAllAsync(bool forceRefresh, CancellationToken cancellationToken);
+    Task<IReadOnlyList<PlayerFullInfo>> GetAllAsync(bool useCache, CancellationToken cancellationToken);
 
     Task ClearAsync(CancellationToken cancellationToken);
 }

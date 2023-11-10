@@ -63,14 +63,14 @@ internal class PlayerFavoriteService : IPlayerFavoriteService
         return _playerFavoriteList.Contains(name);
     }
 
-    public async Task<IReadOnlyList<PlayerFullInfo>> GetAllAsync(bool forceRefresh, CancellationToken cancellationToken)
+    public async Task<IReadOnlyList<PlayerFullInfo>> GetAllAsync(bool useCache, CancellationToken cancellationToken)
     {
         await EnsureLoadedAsync(cancellationToken);
 
         List<PlayerFullInfo> result = new();
         foreach(var player in _playerFavoriteList)
         {
-            PlayerFullInfo playerInfo = await _chessDataService.GetPlayerFullInfoAsync(player, forceRefresh, cancellationToken);
+            PlayerFullInfo playerInfo = await _chessDataService.GetPlayerFullInfoAsync(player, useCache, cancellationToken);
             result.Add(playerInfo);
         }
 

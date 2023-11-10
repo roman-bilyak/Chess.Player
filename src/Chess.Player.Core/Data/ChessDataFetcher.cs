@@ -21,8 +21,7 @@ internal class ChessResultsDataFetcher : IChessDataFetcher, IDisposable
         _chessDataNormalizer = chessDataNormalizer;
     }
 
-
-    public async Task<List<PlayerTournament>> GetPlayerTournamentsAsync(string lastName, string firstName, CancellationToken cancellationToken)
+    public async Task<PlayerTournamentList> GetPlayerTournamentListAsync(string lastName, string firstName, CancellationToken cancellationToken)
     {
         string searchUrl = $"{BaseUrl}/SpielerSuche.aspx?lan=1";
         HttpResponseMessage response = await _httpClient.GetAsync(searchUrl, cancellationToken);
@@ -60,7 +59,7 @@ internal class ChessResultsDataFetcher : IChessDataFetcher, IDisposable
         htmlContent = HttpUtility.HtmlDecode(await response.Content.ReadAsStringAsync(cancellationToken));
         htmlDocument.LoadHtml(htmlContent);
 
-        List<PlayerTournament> playerTournaments = new();
+        PlayerTournamentList playerTournamentList = new();
 
         var searchResultNodes = htmlDocument.DocumentNode.SelectNodes("//table[@class='CRs2']/tr")?.Skip(1) ?? new HtmlNodeCollection(null);
         foreach (HtmlNode node in searchResultNodes)
@@ -99,10 +98,10 @@ internal class ChessResultsDataFetcher : IChessDataFetcher, IDisposable
             string? endDateStr = node.SelectSingleNode("td[7]")?.InnerText?.Trim();
             if (tournamentId.HasValue && startingRank.HasValue && DateTime.TryParse(endDateStr, out DateTime endDate))
             {
-                playerTournaments.Add(new PlayerTournament(tournamentId.Value, startingRank.Value, endDate));
+                playerTournamentList.Add(new PlayerTournament(tournamentId.Value, startingRank.Value, endDate));
             }
         }
-        return playerTournaments;
+        return playerTournamentList;
     }
 
     public async Task<TournamentInfo> GetTournamentInfoAsync(int tournamentId, CancellationToken cancellationToken)

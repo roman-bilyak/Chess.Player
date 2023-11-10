@@ -15,6 +15,9 @@
         <ToolbarItem Text="Refresh" Order="Secondary" Command="{Binding RefreshCommand}" />
     </ContentPage.ToolbarItems>
     <StackLayout Padding="10">
+        <Frame BorderColor="HotPink" BackgroundColor="LightPink" CornerRadius="5" Padding="10" Margin="10" IsVisible="{Binding HasError}">
+            <Label Text="{Binding Error}" HorizontalOptions="Center" VerticalOptions="Center" />
+        </Frame>
         <RefreshView IsRefreshing="{Binding IsLoading}"
                      Command="{Binding LoadCommand}"
                      RefreshColor="Orange">

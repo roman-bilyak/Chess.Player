@@ -2,7 +2,7 @@
 
 public interface ICache<T>
 {
-    Task<T?> GetAsync(string key, CancellationToken cancellationToken);
+    Task<T?> GetAsync(string key, TimeSpan? invalidatePeriod, CancellationToken cancellationToken);
 
     Task AddAsync(string key, T value, CancellationToken cancellationToken);
 
