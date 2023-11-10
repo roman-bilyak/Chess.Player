@@ -240,6 +240,7 @@ public partial class PlayerFullViewModel : BaseViewModel, IDisposable
         {
             x.TournamentId = SelectedTournament.TournamentId.Value;
             x.TournamentName = SelectedTournament.TournamentName;
+            x.TournamentEndDate = SelectedTournament.TournamentEndDate;
 
             x.PlayerStartingRank = SelectedTournament.StartingRank.Value;
             x.PlayerName = SelectedTournament.Name;
