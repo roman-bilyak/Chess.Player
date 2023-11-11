@@ -75,18 +75,23 @@ public partial class HomeViewModel : BaseViewModel
     {
         try
         {
-            PlayerList.Players.Clear();
-
+            List<PlayerViewModel> players = new();
             foreach (PlayerFullInfo player in await _playerHistoryService.GetAllAsync(UseCache, cancellationToken))
             {
-                PlayerViewModel playerCardViewModel = _serviceProvider.GetRequiredService<PlayerViewModel>();
+                PlayerViewModel playerViewModel = _serviceProvider.GetRequiredService<PlayerViewModel>();
 
-                playerCardViewModel.Names = new ObservableCollection<NameViewModel>(player.Names.Select(x => new NameViewModel { LastName = x.LastName, FirstName = x.FirstName }));
-                playerCardViewModel.Title = player.Title;
-                playerCardViewModel.ClubCity = player.ClubCity;
-                playerCardViewModel.YearOfBirth = player.YearOfBirth;
+                playerViewModel.Names = new ObservableCollection<NameViewModel>(player.Names.Select(x => new NameViewModel { LastName = x.LastName, FirstName = x.FirstName }));
+                playerViewModel.Title = player.Title;
+                playerViewModel.ClubCity = player.ClubCity;
+                playerViewModel.YearOfBirth = player.YearOfBirth;
 
-                PlayerList.Players.Add(playerCardViewModel);
+                players.Add(playerViewModel);
+            }
+
+            PlayerList.Players.Clear();
+            foreach(PlayerViewModel playerViewModel in players)
+            {
+                PlayerList.Players.Add(playerViewModel);
             }
 
             Error = null;
