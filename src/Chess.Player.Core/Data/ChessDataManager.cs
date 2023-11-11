@@ -78,20 +78,45 @@ internal class ChessDataManager : IChessDataManager
         TournamentInfo tournamentInfo = await _cacheManager.GetOrAddAsync($"{tournamentId}",
             useCache,
             () => _chessDataFetcher.GetTournamentInfoAsync(tournamentId, cancellationToken),
-            x => x.EndDate is null || x.EndDate >= _dateTimeProvider.UtcNow.Date ? _dateTimeProvider.UtcNow.AddMinutes(1) : null,
+            x => GetExpirationDate(x),
             cancellationToken);
 
         PlayerInfo playerInfo = await _cacheManager.GetOrAddAsync($"{tournamentId}_{playerStartingRank}",
             useCache,
             () => _chessDataFetcher.GetPlayerInfoAsync(tournamentId, playerStartingRank, cancellationToken),
-            x => tournamentInfo.EndDate is null || tournamentInfo.EndDate >= _dateTimeProvider.UtcNow.Date ? _dateTimeProvider.UtcNow.AddMinutes(1) : null,
+            x => GetExpirationDate(tournamentInfo),
             cancellationToken);
 
         return new PlayerTournamentInfo(tournamentInfo, playerInfo);
     }
 
+    #region helper methods
+
     protected virtual void OnProgressChanged(int progressPercentage)
     {
         ProgressChanged?.Invoke(this, new SearchProgressEventArgs(progressPercentage));
     }
+
+    private DateTime? GetExpirationDate(TournamentInfo tournamentInfo)
+    {
+        DateTime utcNow = _dateTimeProvider.UtcNow;
+
+        DateTime startDate = tournamentInfo.StartDate?.Date ?? DateTime.MinValue;
+        DateTime endDate = tournamentInfo.EndDate?.Date ?? DateTime.MaxValue;
+
+        if (utcNow.Date < startDate)
+        {
+            return utcNow.AddHours(1);
+        }
+        else if (utcNow.Date > endDate)
+        {
+            return null;
+        }
+        else
+        {
+            return utcNow.AddMinutes(1);
+        }
+    }
+
+    #endregion
 }
