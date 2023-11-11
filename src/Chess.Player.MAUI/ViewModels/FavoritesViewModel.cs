@@ -76,7 +76,7 @@ public partial class FavoritesViewModel : BaseViewModel
                 playerViewModel.ClubCity = player.ClubCity;
                 playerViewModel.YearOfBirth = player.YearOfBirth;
 
-                PlayerList.Players.Add(playerViewModel);
+                players.Add(playerViewModel);
             }
 
             PlayerList.Players.Clear();
