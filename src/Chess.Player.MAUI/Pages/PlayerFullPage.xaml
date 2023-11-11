@@ -53,7 +53,7 @@
                     <Label Grid.Row="1" Grid.Column="0" Text="Title" FontSize="14" FontAttributes="Bold" IsVisible="{Binding HasTitle, Mode=OneWay}" />
                     <Label Grid.Row="1" Grid.Column="1" Text="{Binding Title, Mode=OneWay}" FontSize="14" IsVisible="{Binding HasTitle, Mode=OneWay}" />
                     <Label Grid.Row="1" Grid.Column="2" Text="Fide ID" FontSize="14" FontAttributes="Bold" IsVisible="{Binding HasFideId, Mode=OneWay}" />
-                    <Label Grid.Row="1" Grid.Column="3" Text="{Binding FideId, Mode=OneWay}" FontSize="14" TextColor="{StaticResource Primary}" TextDecorations="Underline" IsVisible="{Binding HasFideId, Mode=OneWay}">
+                    <Label Grid.Row="1" Grid.Column="3" Text="{Binding FideId, Mode=OneWay}" FontSize="14" TextDecorations="Underline" IsVisible="{Binding HasFideId, Mode=OneWay}">
                         <Label.GestureRecognizers>
                             <TapGestureRecognizer Command="{Binding OpenFideProfileCommand}" CommandParameter="{Binding FideId, Mode=OneWay}"/>
                         </Label.GestureRecognizers>
