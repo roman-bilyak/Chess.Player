@@ -19,6 +19,7 @@ public static class ServiceCollectionExtensions
             .AddTransient<ICacheManager, CacheManager>()
             .AddTransient<ICache<PlayerGroupInfo>, FileCache<PlayerGroupInfo>>()
             .AddTransient<ICache<PlayerFullInfo>, FileCache<PlayerFullInfo>>()
+            .AddTransient<ICache<PlayerTournamentList>, FileCache<PlayerTournamentList>>()
             .AddTransient<ICache<TournamentInfo>, FileCache<TournamentInfo>>()
             .AddTransient<ICache<PlayerInfo>, FileCache<PlayerInfo>>();
     }

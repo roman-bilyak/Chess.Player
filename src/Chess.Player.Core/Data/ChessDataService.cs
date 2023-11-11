@@ -6,6 +6,7 @@ internal class ChessDataService : IChessDataService
 {
     private readonly IChessDataManager _chessDataManager;
     private readonly IPlayerGroupService _playerGroupService;
+    private readonly IDateTimeProvider _dateTimeProvider;
     private readonly ICacheManager _cacheManager;
 
     public event SearchProgressEventHandler? ProgressChanged
@@ -24,15 +25,18 @@ internal class ChessDataService : IChessDataService
     (
         IChessDataManager chessDataManager,
         IPlayerGroupService playerGroupService,
+        IDateTimeProvider dateTimeProvider,
         ICacheManager cacheManager
     )
     {
         ArgumentNullException.ThrowIfNull(chessDataManager);
         ArgumentNullException.ThrowIfNull(chessDataManager);
+        ArgumentNullException.ThrowIfNull(dateTimeProvider);
         ArgumentNullException.ThrowIfNull(cacheManager);
 
         _chessDataManager = chessDataManager;
         _playerGroupService = playerGroupService;
+        _dateTimeProvider = dateTimeProvider;
         _cacheManager = cacheManager;
     }
 
@@ -42,12 +46,15 @@ internal class ChessDataService : IChessDataService
         SearchCriteria[] searchCriterias = playerGroupInfo.Select(x => new SearchCriteria(x)).ToArray();
 
         string cacheKey = string.Join("_", searchCriterias.Select(x => x.Name));
-        TimeSpan? cacheInvalidatePeriod = _cacheManager.GetCacheInvalidatePeriod(useCache);
-        return await _cacheManager.GetOrAddAsync(cacheKey, cacheInvalidatePeriod, async () => await _chessDataManager.GetPlayerFullInfoAsync(searchCriterias, useCache, cancellationToken), cancellationToken);
+        return await _cacheManager.GetOrAddAsync(cacheKey, 
+            useCache, 
+            () => _chessDataManager.GetPlayerFullInfoAsync(searchCriterias, useCache, cancellationToken), 
+            x => _dateTimeProvider.UtcNow.AddMinutes(1), 
+            cancellationToken);
     }
 
-    public async Task<PlayerTournamentInfo> GetPlayerTournamentInfoAsync(int tournamentId, DateTime? tournamentEndDate, int playerStartingRank, bool useCache, CancellationToken cancellationToken)
+    public async Task<PlayerTournamentInfo> GetPlayerTournamentInfoAsync(int tournamentId, int playerStartingRank, bool useCache, CancellationToken cancellationToken)
     {
-        return await _chessDataManager.GetPlayerTournamentInfoAsync(tournamentId, tournamentEndDate, playerStartingRank, useCache, cancellationToken);
+        return await _chessDataManager.GetPlayerTournamentInfoAsync(tournamentId, playerStartingRank, useCache, cancellationToken);
     }
 }

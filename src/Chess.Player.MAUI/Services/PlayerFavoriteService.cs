@@ -88,12 +88,12 @@ internal class PlayerFavoriteService : IPlayerFavoriteService
 
     private async Task EnsureLoadedAsync(CancellationToken cancellationToken)
     {
-        _playerFavoriteList ??= await _cacheManager.GetAsync<PlayerFavoriteList>(cancellationToken) ?? new PlayerFavoriteList();
+        _playerFavoriteList ??= await _cacheManager.GetAsync<PlayerFavoriteList>(includeExpired: false, cancellationToken) ?? new PlayerFavoriteList();
     }
 
     private async Task SaveAsync(CancellationToken cancellationToken)
     {
-        await _cacheManager.AddAsync(_playerFavoriteList, cancellationToken);
+        await _cacheManager.AddAsync(_playerFavoriteList, expirationDate: null, cancellationToken);
     }
 
     #endregion

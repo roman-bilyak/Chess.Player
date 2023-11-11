@@ -2,9 +2,9 @@
 
 public interface ICache<T>
 {
-    Task<T?> GetAsync(string key, TimeSpan? invalidatePeriod, CancellationToken cancellationToken);
+    Task<T?> GetAsync(string key, bool includeExpired, CancellationToken cancellationToken);
 
-    Task AddAsync(string key, T value, CancellationToken cancellationToken);
+    Task AddAsync(string key, T value, DateTime? expirationDate, CancellationToken cancellationToken);
 
-    Task ClearAsync(CancellationToken cancellationToken);
+    Task ClearAllAsync(CancellationToken cancellationToken);
 }

@@ -36,7 +36,6 @@ internal class ChessDataManager : IChessDataManager
         PlayerFullInfo playerFullInfo = new();
 
         List<PlayerTournament> playerTournaments = new();
-        TimeSpan? cacheInvalidatePeriod = _cacheManager.GetCacheInvalidatePeriod(useCache);
         foreach (SearchCriteria searchCriteria in searchCriterias)
         {
             string[] nameParts = searchCriteria.Name.Split(" ", StringSplitOptions.RemoveEmptyEntries);
@@ -45,7 +44,12 @@ internal class ChessDataManager : IChessDataManager
             string? firstName = string.Join(" ", nameParts.Skip(1));
             playerFullInfo.Names.Add(new NameInfo(lastName, firstName));
 
-            PlayerTournamentList playerTournamentList = await _cacheManager.GetOrAddAsync($"{lastName}_{firstName}", cacheInvalidatePeriod, async () => await _chessDataFetcher.GetPlayerTournamentListAsync(lastName, firstName, cancellationToken), cancellationToken);
+            PlayerTournamentList playerTournamentList = await _cacheManager.GetOrAddAsync($"{lastName}_{firstName}",
+                useCache,
+                async () => await _chessDataFetcher.GetPlayerTournamentListAsync(lastName, firstName, cancellationToken),
+                x => _dateTimeProvider.UtcNow.AddHours(1),
+                cancellationToken);
+
             playerTournaments.AddRange(playerTournamentList.Items);
         }
 
@@ -55,7 +59,7 @@ internal class ChessDataManager : IChessDataManager
         {
             index++;
 
-            PlayerTournamentInfo playerTournamentInfo = await GetPlayerTournamentInfoAsync(playerTournament.TournamentId, playerTournament.EndDate, playerTournament.PlayerStartingRank, useCache, cancellationToken);
+            PlayerTournamentInfo playerTournamentInfo = await GetPlayerTournamentInfoAsync(playerTournament.TournamentId, playerTournament.PlayerStartingRank, useCache, cancellationToken);
             playerTournamentInfos.Add(playerTournamentInfo);
 
             int progressPercentage = index * (PercentageFinish - PercentageStart) / playerTournaments.Count + PercentageStart;
@@ -69,14 +73,19 @@ internal class ChessDataManager : IChessDataManager
         return playerFullInfo;
     }
 
-    public async Task<PlayerTournamentInfo> GetPlayerTournamentInfoAsync(int tournamentId, DateTime? tournamentEndDate, int playerStartingRank, bool useCache, CancellationToken cancellationToken)
+    public async Task<PlayerTournamentInfo> GetPlayerTournamentInfoAsync(int tournamentId, int playerStartingRank, bool useCache, CancellationToken cancellationToken)
     {
-        bool isArchive = tournamentEndDate is not null && tournamentEndDate < _dateTimeProvider.UtcNow.Date;
-        string cachePrefix = isArchive ? "" : "_x";
-        TimeSpan? cacheInvalidatePeriod = _cacheManager.GetCacheInvalidatePeriod(useCache || isArchive);
+        TournamentInfo tournamentInfo = await _cacheManager.GetOrAddAsync($"{tournamentId}",
+            useCache,
+            () => _chessDataFetcher.GetTournamentInfoAsync(tournamentId, cancellationToken),
+            x => x.EndDate is null || x.EndDate >= _dateTimeProvider.UtcNow.Date ? _dateTimeProvider.UtcNow.AddMinutes(1) : null,
+            cancellationToken);
 
-        TournamentInfo tournamentInfo = await _cacheManager.GetOrAddAsync($"{tournamentId}{cachePrefix}", cacheInvalidatePeriod, async () => await _chessDataFetcher.GetTournamentInfoAsync(tournamentId, cancellationToken), cancellationToken);
-        PlayerInfo playerInfo = await _cacheManager.GetOrAddAsync($"{tournamentId}_{playerStartingRank}{cachePrefix}", cacheInvalidatePeriod, async () => await _chessDataFetcher.GetPlayerInfoAsync(tournamentId, playerStartingRank, cancellationToken), cancellationToken);
+        PlayerInfo playerInfo = await _cacheManager.GetOrAddAsync($"{tournamentId}_{playerStartingRank}",
+            useCache,
+            () => _chessDataFetcher.GetPlayerInfoAsync(tournamentId, playerStartingRank, cancellationToken),
+            x => tournamentInfo.EndDate is null || tournamentInfo.EndDate >= _dateTimeProvider.UtcNow.Date ? _dateTimeProvider.UtcNow.AddMinutes(1) : null,
+            cancellationToken);
 
         return new PlayerTournamentInfo(tournamentInfo, playerInfo);
     }

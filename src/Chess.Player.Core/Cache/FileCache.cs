@@ -12,7 +12,7 @@ public class FileCache<T> : BaseCache<T>
     {
     }
 
-    protected sealed override async Task<T?> GetAsync(string key, CancellationToken cancellationToken)
+    protected sealed override async Task<CacheItem<T>?> GetCacheItemAsync(string key, CancellationToken cancellationToken)
     {
         string cacheFilePath = GetCacheFilePath(key);
 
@@ -22,18 +22,25 @@ public class FileCache<T> : BaseCache<T>
         }
 
         string json = await File.ReadAllTextAsync(cacheFilePath, cancellationToken);
-        T? result = JsonConvert.DeserializeObject<T>(json);
+        CacheItem<T>? cacheItem = JsonConvert.DeserializeObject<CacheItem<T>>(json, new JsonSerializerSettings
+        {
+            DefaultValueHandling = DefaultValueHandling.Ignore
+        });
 
-        return result is null ? throw new Exception("Failed to deserialize") : result;
+        return cacheItem is null ? throw new Exception("Failed to deserialize") : cacheItem;
     }
 
-    protected sealed override async Task StoreAsync(string key, T value, CancellationToken cancellationToken)
+    protected sealed override async Task StoreCacheItemAsync(string key, CacheItem<T> cacheItem, CancellationToken cancellationToken)
     {
         string cacheFilePath = GetCacheFilePath(key);
 
-        string jsonToWrite = JsonConvert.SerializeObject(value);
+        string jsonToWrite = JsonConvert.SerializeObject(cacheItem, Formatting.None, new JsonSerializerSettings
+        {
+            DefaultValueHandling = DefaultValueHandling.Ignore
+        });
         string? cacheFileDirectory = Path.GetDirectoryName(cacheFilePath);
-        if (cacheFileDirectory is not null)
+        if (cacheFileDirectory is not null
+            && !Directory.Exists(cacheFileDirectory))
         {
             Directory.CreateDirectory(cacheFileDirectory);
         }
@@ -41,7 +48,7 @@ public class FileCache<T> : BaseCache<T>
         await File.WriteAllTextAsync(cacheFilePath, jsonToWrite, cancellationToken);
     }
 
-    public sealed override Task ClearAsync(CancellationToken cancellationToken)
+    public sealed override Task ClearAllAsync(CancellationToken cancellationToken)
     {
         string cacheFolderPath = GetCacheFolderPath();
 

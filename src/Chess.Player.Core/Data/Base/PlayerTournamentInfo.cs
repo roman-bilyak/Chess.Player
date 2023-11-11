@@ -1,14 +1,10 @@
-﻿using Chess.Player.Cache.Interfaces;
+﻿namespace Chess.Player.Data;
 
-namespace Chess.Player.Data;
-
-public class PlayerTournamentInfo : ICacheItem
+public class PlayerTournamentInfo
 {
     public TournamentInfo Tournament { get; private set; }
 
     public PlayerInfo Player { get; private set; }
-
-    public DateTime? LastUpdateTime { get; set; }
 
     public PlayerTournamentInfo(TournamentInfo tournament, PlayerInfo player)
     {

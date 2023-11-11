@@ -45,15 +45,16 @@ public partial class CacheViewModel : BaseViewModel
     [RelayCommand]
     private async Task ClearUserDataAsync(CancellationToken cancellationToken)
     {
-        await _cacheManager.ClearAsync<PlayerGroupInfo>(cancellationToken);
+        await _cacheManager.ClearAllAsync<PlayerGroupInfo>(cancellationToken);
     }
 
     [RelayCommand]
     private async Task ClearSyncDataAsync(CancellationToken cancellationToken)
     {
-        await _cacheManager.ClearAsync<PlayerFullInfo>(cancellationToken);
-        await _cacheManager.ClearAsync<TournamentInfo>(cancellationToken);
-        await _cacheManager.ClearAsync<PlayerInfo>(cancellationToken);
+        await _cacheManager.ClearAllAsync<PlayerFullInfo>(cancellationToken);
+        await _cacheManager.ClearAllAsync<PlayerTournamentList>(cancellationToken);
+        await _cacheManager.ClearAllAsync<TournamentInfo>(cancellationToken);
+        await _cacheManager.ClearAllAsync<PlayerInfo>(cancellationToken);
     }
 
     [RelayCommand]

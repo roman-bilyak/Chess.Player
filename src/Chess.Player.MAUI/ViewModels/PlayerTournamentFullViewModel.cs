@@ -86,7 +86,7 @@ public partial class PlayerTournamentFullViewModel : BaseViewModel
     {
         try
         {
-            PlayerTournamentInfo playerTournamentInfo = await _chessDataService.GetPlayerTournamentInfoAsync(TournamentId, TournamentEndDate, PlayerStartingRank, UseCache, cancellationToken);
+            PlayerTournamentInfo playerTournamentInfo = await _chessDataService.GetPlayerTournamentInfoAsync(TournamentId, PlayerStartingRank, UseCache, cancellationToken);
 
             TournamentName = playerTournamentInfo.Tournament.Name;
             TournamentEndDate = playerTournamentInfo.Tournament.EndDate;

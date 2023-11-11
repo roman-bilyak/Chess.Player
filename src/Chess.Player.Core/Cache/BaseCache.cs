@@ -1,5 +1,4 @@
-﻿using Chess.Player.Cache.Interfaces;
-using Chess.Player.Data;
+﻿using Chess.Player.Data;
 
 namespace Chess.Player.Cache;
 
@@ -19,45 +18,34 @@ public abstract class BaseCache<T> : ICache<T>
         _dateTimeProvider = dateTimeProvider;
     }
 
-    protected abstract Task<T?> GetAsync(string key, CancellationToken cancellationToken);
-
-    public async Task<T?> GetAsync(string key, TimeSpan? invalidatePeriod, CancellationToken cancellationToken)
+    public async Task<T?> GetAsync(string key, bool includeExpired, CancellationToken cancellationToken)
     {
-        T? value = await GetAsync(key, cancellationToken);
+        CacheItem<T>? value = await GetCacheItemAsync(key, cancellationToken);
 
-        if (ShouldInvalidate(value, invalidatePeriod))
+        if (value == null)
         {
             return default;
         }
 
-        return value;
-    }
-
-    protected abstract Task StoreAsync(string key, T value, CancellationToken cancellationToken);
-
-    public async Task AddAsync(string key, T value, CancellationToken cancellationToken)
-    {
-        if (value is ICacheItem cacheItem
-            && cacheItem.LastUpdateTime is null)
+        if (includeExpired
+            || value.ExpirationDate is null
+            || value.ExpirationDate > _dateTimeProvider.UtcNow)
         {
-            cacheItem.LastUpdateTime = _dateTimeProvider.UtcNow;
+            return value.Value;
         }
 
-        await StoreAsync(key, value, cancellationToken);
+        return default;
     }
 
-    public abstract Task ClearAsync(CancellationToken cancellationToken);
+    protected abstract Task<CacheItem<T>?> GetCacheItemAsync(string key, CancellationToken cancellationToken);
 
-    #region helper methods
-
-    private bool ShouldInvalidate(T? value, TimeSpan? invalidatePeriod)
+    public async Task AddAsync(string key, T value, DateTime? expirationDate, CancellationToken cancellationToken)
     {
-        return value is not null
-            && invalidatePeriod is not null
-            && value is ICacheItem cacheItem
-            && cacheItem.LastUpdateTime is not null
-            && (_dateTimeProvider.UtcNow - cacheItem.LastUpdateTime) > invalidatePeriod;
+       CacheItem<T> cacheItem = new(value, expirationDate);
+       await StoreCacheItemAsync(key, cacheItem, cancellationToken);
     }
 
-    #endregion
+    protected abstract Task StoreCacheItemAsync(string key, CacheItem<T> cacheItem, CancellationToken cancellationToken);
+
+    public abstract Task ClearAllAsync(CancellationToken cancellationToken);
 }

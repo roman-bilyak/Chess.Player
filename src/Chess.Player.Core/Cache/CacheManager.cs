@@ -16,25 +16,18 @@ internal class CacheManager : ICacheManager
         _serviceProvider = serviceProvider;
     }
 
-    public TimeSpan? GetCacheInvalidatePeriod(bool useCache)
+    public Task<T?> GetAsync<T>(string key, bool includeExpired, CancellationToken cancellationToken)
     {
-        return useCache
-            ? null
-            : TimeSpan.FromMinutes(1);
+        return _serviceProvider.GetRequiredService<ICache<T>>().GetAsync(key, includeExpired, cancellationToken);
     }
 
-    public Task<T?> GetAsync<T>(string key, TimeSpan? invalidatePeriod, CancellationToken cancellationToken)
+    public Task AddAsync<T>(string key, T value, DateTime? expirationDate, CancellationToken cancellationToken)
     {
-        return _serviceProvider.GetRequiredService<ICache<T>>().GetAsync(key, invalidatePeriod, cancellationToken);
+        return _serviceProvider.GetRequiredService<ICache<T>>().AddAsync(key, value, expirationDate, cancellationToken);
     }
 
-    public Task AddAsync<T>(string key, T value, CancellationToken cancellationToken)
+    public Task ClearAllAsync<T>(CancellationToken cancellationToken)
     {
-        return _serviceProvider.GetRequiredService<ICache<T>>().AddAsync(key, value, cancellationToken);
-    }
-
-    public Task ClearAsync<T>(CancellationToken cancellationToken)
-    {
-        return _serviceProvider.GetRequiredService<ICache<T>>().ClearAsync(cancellationToken);
+        return _serviceProvider.GetRequiredService<ICache<T>>().ClearAllAsync(cancellationToken);
     }
 }

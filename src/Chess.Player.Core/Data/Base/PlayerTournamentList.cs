@@ -1,8 +1,6 @@
-﻿using Chess.Player.Cache.Interfaces;
+﻿namespace Chess.Player.Data;
 
-namespace Chess.Player.Data;
-
-public class PlayerTournamentList : ICacheItem
+public class PlayerTournamentList
 {
     public List<PlayerTournament> Items { get; protected set; } = new List<PlayerTournament>();
 

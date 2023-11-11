@@ -45,12 +45,12 @@ internal class SettingsService : ISettingsService
 
     private async Task EnsureLoadedAsync(CancellationToken cancellationToken)
     {
-        _settingsInfo ??= await _cacheManager.GetAsync<SettingsInfo>(cancellationToken) ?? new SettingsInfo { Theme = AppTheme.Unspecified };
+        _settingsInfo ??= await _cacheManager.GetAsync<SettingsInfo>(includeExpired: false, cancellationToken) ?? new SettingsInfo { Theme = AppTheme.Unspecified };
     }
 
     private async Task SaveAsync(CancellationToken cancellationToken)
     {
-        await _cacheManager.AddAsync(_settingsInfo, cancellationToken);
+        await _cacheManager.AddAsync(_settingsInfo, expirationDate: null, cancellationToken);
     }
 
     #endregion

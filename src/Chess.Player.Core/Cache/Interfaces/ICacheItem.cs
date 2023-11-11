@@ -1,6 +1,7 @@
-﻿namespace Chess.Player.Cache.Interfaces;
+﻿namespace Chess.Player.Cache;
 
-public interface ICacheItem
+internal interface ICacheItem<T>
 {
-    public DateTime? LastUpdateTime { get; set; }
+    T Value { get; }
+    DateTime? ExpirationDate { get; }
 }

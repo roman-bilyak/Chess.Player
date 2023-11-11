@@ -65,12 +65,12 @@ internal class PlayerHistoryService : IPlayerHistoryService
 
     private async Task EnsureLoadedAsync(CancellationToken cancellationToken)
     {
-        _playerHistoryList ??= await _cacheManager.GetAsync<PlayerHistoryList>(cancellationToken) ?? new PlayerHistoryList();
+        _playerHistoryList ??= await _cacheManager.GetAsync<PlayerHistoryList>(includeExpired: false, cancellationToken) ?? new PlayerHistoryList();
     }
 
     private async Task SaveAsync(CancellationToken cancellationToken)
     {
-        await _cacheManager.AddAsync(_playerHistoryList, cancellationToken);
+        await _cacheManager.AddAsync(_playerHistoryList, expirationDate: null, cancellationToken);
     }
 
     #endregion

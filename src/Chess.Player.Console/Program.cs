@@ -27,7 +27,7 @@ try
     IChessDataService chessDataService = serviceProvider.GetRequiredService<IChessDataService>();
     chessDataService.ProgressChanged += (sender, args) => consoleOutput.DisplayProgress(args.ProgressPercentage);
 
-    PlayerFullInfo playerFullInfo = await chessDataService.GetPlayerFullInfoAsync(groupName, useCache: false, CancellationToken.None);
+    PlayerFullInfo playerFullInfo = await chessDataService.GetPlayerFullInfoAsync(groupName, useCache: true, CancellationToken.None);
     consoleOutput.DisplayPlayerFullInfo(playerFullInfo);
 }
 finally

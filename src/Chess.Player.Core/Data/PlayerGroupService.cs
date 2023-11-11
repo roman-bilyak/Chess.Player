@@ -29,7 +29,7 @@ internal class PlayerGroupService : IPlayerGroupService
         {
             playerGroupInfo.Add(name);
 
-            await _cacheManager.AddAsync(groupName, playerGroupInfo, cancellationToken);
+            await _cacheManager.AddAsync(groupName, playerGroupInfo, expirationDate: null, cancellationToken);
         }
     }
 
@@ -37,6 +37,6 @@ internal class PlayerGroupService : IPlayerGroupService
     {
         name = _chessDataNormalizer.NormalizeName(name);
 
-        return await _cacheManager.GetAsync<PlayerGroupInfo>(name, cancellationToken) ?? new PlayerGroupInfo(name);
+        return await _cacheManager.GetAsync<PlayerGroupInfo>(name, includeExpired: false, cancellationToken) ?? new PlayerGroupInfo(name);
     }
 }
