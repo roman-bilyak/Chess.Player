@@ -263,7 +263,10 @@ public partial class PlayerFullViewModel : BaseViewModel, IDisposable
 
     private void OnProgressChanged(object sender, SearchProgressEventArgs e)
     {
-        Progress = (double)e.ProgressPercentage / 100;
+        MainThread.BeginInvokeOnMainThread(() =>
+        {
+            Progress = (double)e.ProgressPercentage / 100;
+        });
     }
 
     public void Dispose()
