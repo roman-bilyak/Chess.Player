@@ -12,7 +12,7 @@
                     SelectionChangedCommandParameter="{Binding SelectedItem, Source={RelativeSource Self}}">
         <CollectionView.ItemTemplate>
             <DataTemplate x:DataType="vm:PlayerScoreViewModel">
-                <views:GameView BindingContext="{Binding .}" />
+                <views:PlayerScoreView BindingContext="{Binding .}" />
             </DataTemplate>
         </CollectionView.ItemTemplate>
     </CollectionView>

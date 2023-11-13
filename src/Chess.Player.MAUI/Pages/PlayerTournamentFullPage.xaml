@@ -23,7 +23,6 @@
                     <Grid.RowDefinitions>
                         <RowDefinition Height="Auto" />
                         <RowDefinition Height="Auto" />
-                        <RowDefinition Height="Auto" />
                         <RowDefinition Height="*" />
                     </Grid.RowDefinitions>
                     <Grid.ColumnDefinitions>
@@ -33,17 +32,36 @@
                         <ColumnDefinition Width="*" />
                     </Grid.ColumnDefinitions>
 
-                    <Label Grid.Row="0" Grid.Column="0" Text="Tournament" FontAttributes="Bold" />
-                    <Label Grid.Row="0" Grid.Column="1" Grid.ColumnSpan="3" Text="{Binding TournamentName, Mode=OneWay}" />
-                    <Label Grid.Row="1" Grid.Column="0" Text="Location" FontAttributes="Bold" />
-                    <Label Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="3" Text="{Binding TournamentLocation, Mode=OneWay}" />
-                    <Label Grid.Row="2" Grid.Column="0" Text="Rank" FontAttributes="Bold" />
-                    <Label Grid.Row="2" Grid.Column="1" Grid.ColumnSpan="3" Text="{Binding PlayerRank, Mode=OneWay}" />
-                    <Label Grid.Row="2" Grid.Column="2" Text="Points" FontAttributes="Bold" />
-                    <Label Grid.Row="2" Grid.Column="3" Grid.ColumnSpan="3" Text="{Binding PlayerPoints, Mode=OneWay}" />
+                    <Border x:Name="border" Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="4" Style="{StaticResource CardBorderStyle}">
+                        <Border.GestureRecognizers>
+                            <TapGestureRecognizer Command="{Binding ShowTournamentCommand}" />
+                        </Border.GestureRecognizers>
+
+                        <Grid RowSpacing="10" ColumnSpacing="10">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="Auto" />
+                            </Grid.RowDefinitions>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="*" />
+                            </Grid.ColumnDefinitions>
+                            <Label Grid.Row="0" Grid.Column="0" Text="Tournament" FontAttributes="Bold" />
+                            <Label Grid.Row="0" Grid.Column="1" Grid.ColumnSpan="3" Text="{Binding TournamentName, Mode=OneWay}" />
+                            <Label Grid.Row="1" Grid.Column="0" Text="Location" FontAttributes="Bold" />
+                            <Label Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="3" Text="{Binding TournamentLocation, Mode=OneWay}" />
+                        </Grid>
+                    </Border>
+                    
+                    <Label Grid.Row="1" Grid.Column="0" Text="Rank" FontAttributes="Bold" />
+                    <Label Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="3" Text="{Binding PlayerRank, Mode=OneWay}" />
+                    <Label Grid.Row="1" Grid.Column="2" Text="Points" FontAttributes="Bold" />
+                    <Label Grid.Row="1" Grid.Column="3" Grid.ColumnSpan="3" Text="{Binding PlayerPoints, Mode=OneWay}" />
 
                     <views:GameListView BindingContext="{Binding GameList}"
-                                        Grid.Row="3"
+                                        Grid.Row="2"
                                         Grid.Column="0"
                                         Grid.ColumnSpan="4" />
                 </Grid>

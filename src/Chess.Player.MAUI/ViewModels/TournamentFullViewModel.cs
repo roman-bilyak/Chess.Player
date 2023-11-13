@@ -48,6 +48,7 @@ public partial class TournamentFullViewModel : BaseViewModel
         ArgumentNullException.ThrowIfNull(navigationService);
 
         _chessDataService = chessDataService;
+
         _playerScoreList = new PlayerScoreListViewModel(navigationService);
     }
 
@@ -81,7 +82,7 @@ public partial class TournamentFullViewModel : BaseViewModel
             TournamentLocation = tournamentInfo.Location;
 
             PlayerScoreList.PlayerScores.Clear();
-            foreach (PlayerScoreInfo playerScoreInfo in tournamentInfo.Players.OrderByDescending(x => x.Rank))
+            foreach (PlayerScoreInfo playerScoreInfo in tournamentInfo.Players)
             {
                 PlayerScoreList.PlayerScores.Add(new PlayerScoreViewModel
                 {

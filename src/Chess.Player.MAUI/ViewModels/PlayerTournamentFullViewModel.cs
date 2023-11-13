@@ -1,4 +1,5 @@
 ﻿using Chess.Player.Data;
+using Chess.Player.MAUI.Pages;
 using Chess.Player.Services;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
@@ -10,6 +11,7 @@ namespace Chess.Player.MAUI.ViewModels;
 public partial class PlayerTournamentFullViewModel : BaseViewModel
 {
     private readonly IChessDataService _chessDataService;
+    private readonly INavigationService _navigationService;
 
     [ObservableProperty]
     private int _tournamentId;
@@ -60,6 +62,7 @@ public partial class PlayerTournamentFullViewModel : BaseViewModel
         ArgumentNullException.ThrowIfNull(navigationService);
 
         _chessDataService = chessDataService;
+        _navigationService = navigationService;
         _gameList = new GameListViewModel(navigationService);
     }
 
@@ -129,5 +132,15 @@ public partial class PlayerTournamentFullViewModel : BaseViewModel
             UseCache = false;
             IsLoading = false;
         }
+    }
+
+    [RelayCommand]
+    private async Task ShowTournamentAsync(CancellationToken cancellationToken)
+    {
+        await _navigationService.PushAsync<TournamentFullPage, TournamentFullViewModel>(x =>
+        {
+            x.TournamentId = TournamentId;
+            x.TournamentName = TournamentName;
+        });
     }
 }
