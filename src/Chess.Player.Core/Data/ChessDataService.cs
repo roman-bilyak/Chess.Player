@@ -30,7 +30,7 @@ internal class ChessDataService : IChessDataService
     )
     {
         ArgumentNullException.ThrowIfNull(chessDataManager);
-        ArgumentNullException.ThrowIfNull(chessDataManager);
+        ArgumentNullException.ThrowIfNull(playerGroupService);
         ArgumentNullException.ThrowIfNull(dateTimeProvider);
         ArgumentNullException.ThrowIfNull(cacheManager);
 
