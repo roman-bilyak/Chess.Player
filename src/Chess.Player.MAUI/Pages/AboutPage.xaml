@@ -1,7 +1,57 @@
-<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:mct="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
+             xmlns:vm="clr-namespace:Chess.Player.MAUI.ViewModels"
              x:Class="Chess.Player.MAUI.Pages.AboutPage"
+             x:DataType="vm:AboutViewModel"
              Title="About">
-    <WebView Source="https://www.buymeacoffee.com/widget/page/chess.player" />
+    <ScrollView Padding="10" Margin="10">
+        <StackLayout Spacing="10">
+            <Frame HeightRequest="70"
+                   WidthRequest="70"
+                   CornerRadius="35">
+                <Image Source="logo.svg" 
+                       Aspect="AspectFit"
+                       VerticalOptions="Center"
+                       HorizontalOptions="Center" 
+                       HeightRequest="70" 
+                       WidthRequest="70" 
+                       Margin="0,20" BackgroundColor="{AppThemeBinding Light={StaticResource Primary}, Dark={StaticResource White}}">
+                    <Image.Behaviors>
+                        <mct:IconTintColorBehavior TintColor="{AppThemeBinding Light={StaticResource White}, Dark={StaticResource Black}}" />
+                    </Image.Behaviors>
+                </Image>
+            </Frame>
+            
+            <Label Text="Chess Player" FontSize="24" FontAttributes="Bold" HorizontalOptions="Center" />
+            <Label Text="{Binding Version}" HorizontalOptions="Center" FontSize="10" TextColor="Gray" />
+
+            <Label HorizontalOptions="Start">The "Chess Player" is your go-to application for comprehensive player information and in-depth tournament history. It provides insight into chess players by showing essential details such as club affiliation, city, title, and class. Whether you're interested in a local chess talent or a renowned player, this app offers a rich repository of profiles.</Label>
+
+            <Label HorizontalOptions="Start">Deep dive into the past performances of players, unraveling their strategies, successes, and challenges in various chess events.</Label>
+
+            <Label HorizontalOptions="Start" HorizontalTextAlignment="Start">For inquiries and support, contact us at:</Label>
+
+            <Label Text="chess.player@gmail.com"
+                       Margin="0,10"
+                       HorizontalOptions="Center"
+                       TextDecorations="Underline">
+                <Label.GestureRecognizers>
+                    <TapGestureRecognizer Command="{Binding SendEmailCommand}" />
+                </Label.GestureRecognizers>
+            </Label>
+
+            <Label FontAttributes="Bold" HorizontalOptions="Start">The application is free, but if my work has had a positive impact and you want to show your support, feel free to buy me a coffee!</Label>
+
+
+            <Button Text="Buy me a coffee"
+                    Command="{Binding BuyMeACoffeeCommand}"
+                    HorizontalOptions="Center"
+                    BackgroundColor="#FFD700"
+                    TextColor="Black"
+                    CornerRadius="10"
+                    Padding="15,5"
+                    Margin="0,20" />
+        </StackLayout>
+    </ScrollView>
 </ContentPage>

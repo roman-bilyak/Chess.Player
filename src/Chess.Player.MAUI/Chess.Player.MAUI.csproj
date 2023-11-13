@@ -52,6 +52,7 @@
 		<None Remove="Resources\Images\black.svg" />
 		<None Remove="Resources\Images\favorites.svg" />
 		<None Remove="Resources\Images\home.svg" />
+		<None Remove="Resources\Images\logo.svg" />
 		<None Remove="Resources\Images\medal.svg" />
 		<None Remove="Resources\Images\online.svg" />
 		<None Remove="Resources\Images\players.svg" />

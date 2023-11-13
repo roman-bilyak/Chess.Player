@@ -64,6 +64,7 @@ namespace Chess.Player.MAUI
             builder.Services.AddTransient<FavoritesViewModel>();
             builder.Services.AddTransient<SettingsViewModel>();
             builder.Services.AddTransient<CacheViewModel>();
+            builder.Services.AddTransient<AboutViewModel>();
 
             builder.Services.AddTransient<PlayerListViewModel>();
             builder.Services.AddTransient<PlayerViewModel>();
