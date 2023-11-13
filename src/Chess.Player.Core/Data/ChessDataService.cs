@@ -53,6 +53,11 @@ internal class ChessDataService : IChessDataService
             cancellationToken);
     }
 
+    public async Task<TournamentInfo> GetTournamentInfoAsync(int tournamentId, bool useCache, CancellationToken cancellationToken)
+    {
+        return await _chessDataManager.GetTournamentInfoAsync(tournamentId, useCache, cancellationToken);
+    }
+
     public async Task<PlayerTournamentInfo> GetPlayerTournamentInfoAsync(int tournamentId, int playerStartingRank, bool useCache, CancellationToken cancellationToken)
     {
         return await _chessDataManager.GetPlayerTournamentInfoAsync(tournamentId, playerStartingRank, useCache, cancellationToken);

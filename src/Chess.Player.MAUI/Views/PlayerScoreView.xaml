@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentView xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:mct="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
+             xmlns:vm="clr-namespace:Chess.Player.MAUI.ViewModels"
+             x:Class="Chess.Player.MAUI.Views.PlayerScoreView"
+             x:DataType="vm:PlayerScoreViewModel">
+    <VisualStateManager.VisualStateGroups>
+        <VisualStateGroup Name="CommonStates">
+            <VisualState Name="Normal"></VisualState>
+            <VisualState Name="Selected">
+                <VisualState.Setters>
+                    <Setter TargetName="border" Property="Border.BackgroundColor" Value="#CEDDF3" />
+                </VisualState.Setters>
+            </VisualState>
+        </VisualStateGroup>
+    </VisualStateManager.VisualStateGroups>
+    <Border x:Name="border" Style="{StaticResource CardBorderStyle}">
+        <Grid ColumnSpacing="5">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="30" />
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="30" />
+                <ColumnDefinition Width="30" />
+            </Grid.ColumnDefinitions>
+
+            <Label Grid.Row="0" Grid.Column="0" Text="{Binding Rank}" VerticalOptions="Start" HorizontalOptions="Center" Style="{StaticResource CardHighlightStyle}" />
+
+            <VerticalStackLayout Grid.Row="0" Grid.Column="1">
+                <Label Text="{Binding Name}" VerticalOptions="Start" HorizontalOptions="Start" Style="{StaticResource CardHighlightStyle}" />
+                <Label Text="{Binding ClubCity}" VerticalOptions="Center" HorizontalOptions="Start" Style="{StaticResource CardDetailsStyle}" />
+            </VerticalStackLayout>
+
+            <Label Grid.Row="0" Grid.Column="2" Text="{Binding Points}" VerticalOptions="Center" HorizontalOptions="Center" Style="{StaticResource CardHighlightStyle}" />
+
+            <VerticalStackLayout Grid.Row="0" Grid.Column="3">
+                <Label Text="{Binding TB1}" HorizontalOptions="Center" Style="{StaticResource CardDetailsStyle}" />
+                <Label Text="{Binding TB2}" HorizontalOptions="Center" Style="{StaticResource CardDetailsStyle}" />
+                <Label Text="{Binding TB3}" HorizontalOptions="Center" Style="{StaticResource CardDetailsStyle}" />
+            </VerticalStackLayout>
+        </Grid>
+    </Border>
+</ContentView>

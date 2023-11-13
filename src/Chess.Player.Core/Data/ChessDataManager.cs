@@ -73,13 +73,18 @@ internal class ChessDataManager : IChessDataManager
         return playerFullInfo;
     }
 
-    public async Task<PlayerTournamentInfo> GetPlayerTournamentInfoAsync(int tournamentId, int playerStartingRank, bool useCache, CancellationToken cancellationToken)
+    public async Task<TournamentInfo> GetTournamentInfoAsync(int tournamentId, bool useCache, CancellationToken cancellationToken)
     {
-        TournamentInfo tournamentInfo = await _cacheManager.GetOrAddAsync($"{tournamentId}",
+        return await _cacheManager.GetOrAddAsync($"{tournamentId}",
             useCache,
             () => _chessDataFetcher.GetTournamentInfoAsync(tournamentId, cancellationToken),
             x => GetExpirationDate(x),
             cancellationToken);
+    }
+
+    public async Task<PlayerTournamentInfo> GetPlayerTournamentInfoAsync(int tournamentId, int playerStartingRank, bool useCache, CancellationToken cancellationToken)
+    {
+        TournamentInfo tournamentInfo = await GetTournamentInfoAsync(tournamentId, useCache, cancellationToken);
 
         PlayerInfo playerInfo = await _cacheManager.GetOrAddAsync($"{tournamentId}_{playerStartingRank}",
             useCache,

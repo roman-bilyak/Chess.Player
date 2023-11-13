@@ -61,6 +61,7 @@ namespace Chess.Player.MAUI
             builder.Services.AddTransient<HomeViewModel>();
             builder.Services.AddTransient<PlayerFullViewModel>();
             builder.Services.AddTransient<PlayerTournamentFullViewModel>();
+            builder.Services.AddTransient<TournamentFullViewModel>();
             builder.Services.AddTransient<FavoritesViewModel>();
             builder.Services.AddTransient<SettingsViewModel>();
             builder.Services.AddTransient<CacheViewModel>();
@@ -71,11 +72,14 @@ namespace Chess.Player.MAUI
             builder.Services.AddTransient<PlayerTournamentViewModel>();
             builder.Services.AddTransient<GameListViewModel>();
             builder.Services.AddTransient<GameViewModel>();
+            builder.Services.AddTransient<PlayerScoreListViewModel>();
+            builder.Services.AddTransient<PlayerScoreViewModel>();
 
             builder.Services.AddTransient<AppShell>();
             builder.Services.AddTransient<HomePage>();
             builder.Services.AddTransient<PlayerFullPage>();
             builder.Services.AddTransient<PlayerTournamentFullPage>();
+            builder.Services.AddTransient<TournamentFullPage>();
             builder.Services.AddTransient<FavoritesPage>();
             builder.Services.AddTransient<SettingsPage>();
             builder.Services.AddTransient<CachePage>();
