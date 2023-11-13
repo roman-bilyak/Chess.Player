@@ -35,7 +35,7 @@ internal class ConsoleOutput
                 TournamentInfo tournament = playerTournament.Tournament;
                 PlayerInfo player = playerTournament.Player;
 
-                Console.WriteLine($"{index--,-3} {player.Title,-3} {tournament.EndDate:dd.MM} {(tournament.IsTeamTournament ? null : player.Rank),4} {tournament.NumberOfPlayers,4} {player.Points,4} {tournament.NumberOfRounds,2}  {tournament.Name}");
+                Console.WriteLine($"{index--,-3} {player.Title,-3} {tournament.EndDate:dd.MM} {(tournament.IsTeamTournament ? null : player.Rank),4} {tournament.Players.Count,4} {player.Points,4} {tournament.NumberOfRounds,2}  {tournament.Name}");
             }
         }
     }

@@ -106,7 +106,7 @@ internal class ChessResultsDataFetcher : IChessDataFetcher, IDisposable
 
     public async Task<TournamentInfo> GetTournamentInfoAsync(int tournamentId, CancellationToken cancellationToken)
     {
-        string tournamentInfoUrl = $"{BaseUrl}/tnr{tournamentId}.aspx?lan=1&turdet=YES";
+        string tournamentInfoUrl = $"{BaseUrl}/tnr{tournamentId}.aspx?lan=1&art=1&turdet=YES";
         HttpResponseMessage response = await _httpClient.GetAsync(tournamentInfoUrl, cancellationToken);
         response.EnsureSuccessStatusCode();
 
@@ -217,7 +217,31 @@ internal class ChessResultsDataFetcher : IChessDataFetcher, IDisposable
                 }
             }
         }
-        tournament.NumberOfPlayers = htmlDocument.DocumentNode.SelectNodes("//div[@class='defaultDialog'][3]/table[@class='CRs1']/tr[position()>1]")?.Count;
+
+        var playerRows = htmlDocument.DocumentNode.SelectNodes("//div[@class='defaultDialog'][3]/table[@class='CRs1']/tr") ?? new HtmlNodeCollection(null);
+
+        List<string> playerHeaders = playerRows.FirstOrDefault()?.SelectNodes("td").Select(x => x.InnerText.Trim())?.ToList() ?? new List<string>();
+        int rankIndex = playerHeaders.IndexOf("Rk.");
+        int nameIndex = playerHeaders.IndexOf("Name");
+        int clubCityIndex = playerHeaders.IndexOf("Club/City");
+        int pointsIndex = playerHeaders.IndexOf("Pts.");
+        int tb1Index = playerHeaders.IndexOf("TB1");
+        int tb2Index = playerHeaders.IndexOf("TB2");
+        int tb3Index = playerHeaders.IndexOf("TB3");
+
+        foreach (HtmlNode playerRow in playerRows.Skip(1))
+        {
+            tournament.Players.Add(new PlayerScoreInfo
+            {
+                Rank = int.TryParse(playerRow.SelectSingleNode($"td[{rankIndex + 1}]")?.InnerText?.Trim(), out int round) ? round : null,
+                Name = _chessDataNormalizer.NormalizeName(playerRow.SelectSingleNode($"td[{nameIndex + 1}]/a")?.InnerText?.Trim() ?? playerRow.SelectSingleNode($"td[{nameIndex + 1}]")?.InnerText?.Trim()),
+                ClubCity = playerRow.SelectSingleNode($"td[{clubCityIndex + 1}]")?.InnerText?.Trim(),
+                Points = double.TryParse(playerRow.SelectSingleNode($"td[{pointsIndex + 1}]")?.InnerText?.Trim(), NumberStyles.Number, new CultureInfo("de-DE"), out double points) ? points : null,
+                TB1 = double.TryParse(playerRow.SelectSingleNode($"td[{tb1Index + 1}]")?.InnerText?.Trim(), NumberStyles.Number, new CultureInfo("de-DE"), out double tb1) ? tb1 : null,
+                TB2 = double.TryParse(playerRow.SelectSingleNode($"td[{tb2Index + 1}]")?.InnerText?.Trim(), NumberStyles.Number, new CultureInfo("de-DE"), out double tb2) ? tb2 : null,
+                TB3 = double.TryParse(playerRow.SelectSingleNode($"td[{tb3Index + 1}]")?.InnerText?.Trim(), NumberStyles.Number, new CultureInfo("de-DE"), out double tb3) ? tb3 : null,
+            });
+        }
         tournament.IsTeamTournament = htmlDocument.DocumentNode.SelectNodes("//a[text() = 'Team-Starting rank']")?.Any() ?? false;
         return tournament;
     }

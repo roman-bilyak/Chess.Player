@@ -36,7 +36,7 @@ public class TournamentInfo
 
     public int? Rating { get; set; }
 
-    public int? NumberOfPlayers { get; set; }
+    public List<PlayerScoreInfo> Players { get; set; } = new List<PlayerScoreInfo>();
 
     public bool IsTeamTournament { get; set; }
 }

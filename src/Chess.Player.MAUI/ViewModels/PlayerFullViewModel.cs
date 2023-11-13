@@ -160,6 +160,8 @@ public partial class PlayerFullViewModel : BaseViewModel, IDisposable
         try
         {
             PlayerFullInfo playerFullInfo = await _chessDataService.GetPlayerFullInfoAsync(Name, UseCache, cancellationToken);
+            bool isFavorite = playerFullInfo.Name is not null 
+                && await _playerFavoriteService.ContainsAsync(playerFullInfo.Name, cancellationToken);
             if (playerFullInfo.Tournaments.Any())
             {
                 await _playerHistoryService.AddAsync(playerFullInfo.Name, cancellationToken);
@@ -183,7 +185,7 @@ public partial class PlayerFullViewModel : BaseViewModel, IDisposable
                     viewModel.TournamentLocation = y.Tournament.Location;
                     viewModel.TournamentStartDate = y.Tournament.StartDate;
                     viewModel.TournamentEndDate = y.Tournament.EndDate;
-                    viewModel.NumberOfPlayers = y.Tournament.NumberOfPlayers;
+                    viewModel.NumberOfPlayers = y.Tournament.Players.Count;
                     viewModel.NumberOfRounds = y.Tournament.NumberOfRounds;
                     viewModel.Name = y.Player.Name;
                     viewModel.StartingRank = y.Player.StartingRank;
@@ -200,7 +202,7 @@ public partial class PlayerFullViewModel : BaseViewModel, IDisposable
             FideId = playerFullInfo.FideId;
             ClubCity = playerFullInfo.ClubCity;
             YearOfBirth = playerFullInfo.YearOfBirth;
-            IsFavorite = await _playerFavoriteService.ContainsAsync(Name, cancellationToken);
+            IsFavorite = isFavorite;
 
             TournamentYears = _allTournaments.Keys.ToList();
             TournamentYear = TournamentYears.FirstOrDefault(x => TournamentYear is null || x.Year == TournamentYear.Year);
