@@ -126,7 +126,7 @@ public partial class PlayerTournamentFullViewModel : BaseViewModel
         }
         finally
         {
-            UseCache = true;
+            UseCache = false;
             IsLoading = false;
         }
     }
