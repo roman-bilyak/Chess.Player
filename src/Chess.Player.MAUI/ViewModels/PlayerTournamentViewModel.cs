@@ -12,7 +12,7 @@ public partial class PlayerTournamentViewModel : BaseViewModel
     private int? _tournamentId;
 
     [ObservableProperty]
-    private int _tournamentIndex;
+    private int? _tournamentIndex;
 
     [ObservableProperty]
     private string _tournamentName;

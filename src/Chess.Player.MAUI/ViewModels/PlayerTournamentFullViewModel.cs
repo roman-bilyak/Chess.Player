@@ -20,22 +20,13 @@ public partial class PlayerTournamentFullViewModel : BaseViewModel
     private string _tournamentName;
 
     [ObservableProperty]
-    private DateTime? _tournamentEndDate;
-
-    [ObservableProperty]
-    private string _tournamentLocation;
-
-    [ObservableProperty]
     private int _playerStartingRank;
 
     [ObservableProperty]
     private string _playerName;
 
     [ObservableProperty]
-    private double? _playerPoints;
-
-    [ObservableProperty]
-    private int? _playerRank;
+    private PlayerTournamentViewModel _playerTournament;
 
     [ObservableProperty]
     private GameListViewModel _gameList;
@@ -55,15 +46,18 @@ public partial class PlayerTournamentFullViewModel : BaseViewModel
     public PlayerTournamentFullViewModel
     (
         IChessDataService chessDataService,
-        INavigationService navigationService
+        INavigationService navigationService,
+        IServiceProvider serviceProvider
     )
     {
         ArgumentNullException.ThrowIfNull(chessDataService);
         ArgumentNullException.ThrowIfNull(navigationService);
+        ArgumentNullException.ThrowIfNull(serviceProvider);
 
         _chessDataService = chessDataService;
         _navigationService = navigationService;
-        _gameList = new GameListViewModel(navigationService);
+        _playerTournament = serviceProvider.GetRequiredService<PlayerTournamentViewModel>();
+        _gameList = serviceProvider.GetRequiredService<GameListViewModel>();
     }
 
     [RelayCommand]
@@ -91,13 +85,18 @@ public partial class PlayerTournamentFullViewModel : BaseViewModel
         {
             PlayerTournamentInfo playerTournamentInfo = await _chessDataService.GetPlayerTournamentInfoAsync(TournamentId, PlayerStartingRank, UseCache, cancellationToken);
 
-            TournamentName = playerTournamentInfo.Tournament.Name;
-            TournamentEndDate = playerTournamentInfo.Tournament.EndDate;
-            TournamentLocation = playerTournamentInfo.Tournament.Location;
-
-            PlayerName = playerTournamentInfo.Player.Name;
-            PlayerPoints = playerTournamentInfo.Player.Points;
-            PlayerRank = playerTournamentInfo.Player.Rank;
+            PlayerTournament.TournamentId = playerTournamentInfo.Tournament.Id;
+            PlayerTournament.TournamentName = playerTournamentInfo.Tournament.Name;
+            PlayerTournament.TournamentLocation = playerTournamentInfo.Tournament.Location;
+            PlayerTournament.TournamentStartDate = playerTournamentInfo.Tournament.StartDate;
+            PlayerTournament.TournamentEndDate = playerTournamentInfo.Tournament.EndDate;
+            PlayerTournament.NumberOfPlayers = playerTournamentInfo.Tournament.Players.Count;
+            PlayerTournament.NumberOfRounds = playerTournamentInfo.Tournament.NumberOfRounds;
+            PlayerTournament.Name = playerTournamentInfo.Player.Name;
+            PlayerTournament.StartingRank = playerTournamentInfo.Player.StartingRank;
+            PlayerTournament.Title = playerTournamentInfo.Player.Title;
+            PlayerTournament.Rank = playerTournamentInfo.Player.Rank;
+            PlayerTournament.Points = playerTournamentInfo.Player.Points;
 
             GameList.Games.Clear();
             foreach(GameInfo gameInfo in playerTournamentInfo.Player.Games.OrderByDescending(x => x.Round))

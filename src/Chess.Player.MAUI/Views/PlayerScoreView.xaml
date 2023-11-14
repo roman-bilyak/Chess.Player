@@ -19,28 +19,17 @@
         <Grid ColumnSpacing="5">
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
             </Grid.RowDefinitions>
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="30" />
                 <ColumnDefinition Width="*" />
                 <ColumnDefinition Width="30" />
-                <ColumnDefinition Width="30" />
             </Grid.ColumnDefinitions>
-
-            <Label Grid.Row="0" Grid.Column="0" Text="{Binding Rank}" VerticalOptions="Start" HorizontalOptions="Center" Style="{StaticResource CardHighlightStyle}" />
-
-            <VerticalStackLayout Grid.Row="0" Grid.Column="1">
-                <Label Text="{Binding Name}" VerticalOptions="Start" HorizontalOptions="Start" Style="{StaticResource CardHighlightStyle}" />
-                <Label Text="{Binding ClubCity}" VerticalOptions="Center" HorizontalOptions="Start" Style="{StaticResource CardDetailsStyle}" />
-            </VerticalStackLayout>
-
-            <Label Grid.Row="0" Grid.Column="2" Text="{Binding Points}" VerticalOptions="Center" HorizontalOptions="Center" Style="{StaticResource CardHighlightStyle}" />
-
-            <VerticalStackLayout Grid.Row="0" Grid.Column="3">
-                <Label Text="{Binding TB1}" HorizontalOptions="Center" Style="{StaticResource CardDetailsStyle}" />
-                <Label Text="{Binding TB2}" HorizontalOptions="Center" Style="{StaticResource CardDetailsStyle}" />
-                <Label Text="{Binding TB3}" HorizontalOptions="Center" Style="{StaticResource CardDetailsStyle}" />
-            </VerticalStackLayout>
+            <Label Grid.Row="0" Grid.Column="0" Text="{Binding Rank, Mode=OneWay}" VerticalOptions="Start" HorizontalOptions="Center" Style="{StaticResource CardHighlightStyle}" />
+            <Label Grid.Row="0" Grid.Column="1" Text="{Binding Name, Mode=OneWay}" HorizontalOptions="StartAndExpand" Style="{StaticResource CardHighlightStyle}" />
+            <Label Grid.Row="1" Grid.Column="1" Text="{Binding ClubCity, Mode=OneWay}" HorizontalOptions="StartAndExpand" LineBreakMode="NoWrap" Style="{StaticResource CardDetails12Style}" />
+            <Label Grid.Row="0" Grid.Column="2" Grid.RowSpan="2" Text="{Binding Points, Mode=OneWay}" VerticalOptions="Center" HorizontalOptions="Center" Style="{StaticResource CardHighlightStyle}" />
         </Grid>
     </Border>
 </ContentView>

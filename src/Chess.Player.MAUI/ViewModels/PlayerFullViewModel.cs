@@ -242,7 +242,6 @@ public partial class PlayerFullViewModel : BaseViewModel, IDisposable
         {
             x.TournamentId = SelectedTournament.TournamentId.Value;
             x.TournamentName = SelectedTournament.TournamentName;
-            x.TournamentEndDate = SelectedTournament.TournamentEndDate;
 
             x.PlayerStartingRank = SelectedTournament.StartingRank.Value;
             x.PlayerName = SelectedTournament.Name;
@@ -258,7 +257,7 @@ public partial class PlayerFullViewModel : BaseViewModel, IDisposable
     }
 
     [RelayCommand]
-    private async Task OpenFideProfileAsync(string fideId, CancellationToken cancellationToken)
+    private static async Task OpenFideProfileAsync(string fideId, CancellationToken cancellationToken)
     {
         await Launcher.OpenAsync(new Uri($"https://ratings.fide.com/profile/{fideId}"));
     }

@@ -23,11 +23,6 @@
         <Setter Property="Margin" Value="0,5"/>
         <Setter Property="Padding" Value="15"/>
         <Setter Property="BackgroundColor" Value="{AppThemeBinding Light={StaticResource Secondary}, Dark={StaticResource Gray500}}"/>
-        <Setter Property="Shadow">
-            <Setter.Value>
-                <Shadow Opacity="0.3" Offset="3,3" Radius="3"/>
-            </Setter.Value>
-        </Setter>
     </Style>
 
     <Style TargetType="BoxView">

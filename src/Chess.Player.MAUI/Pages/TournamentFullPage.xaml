@@ -11,6 +11,9 @@
         <mct:EventToCommandBehavior Command="{Binding StartCommand}" EventName="Appearing" />
         <mct:EventToCommandBehavior Command="{Binding LoadCancelCommand}" EventName="Disappearing" />
     </ContentPage.Behaviors>
+    <ContentPage.ToolbarItems>
+        <ToolbarItem Text="Refresh" Order="Secondary" Command="{Binding RefreshCommand}" />
+    </ContentPage.ToolbarItems>
     <StackLayout Padding="10">
         <Frame BorderColor="HotPink" BackgroundColor="LightPink" CornerRadius="5" Padding="10" Margin="10" IsVisible="{Binding HasError}">
             <Label Text="{Binding Error}" HorizontalOptions="Center" VerticalOptions="Center" />
@@ -19,29 +22,7 @@
                  Command="{Binding LoadCommand}"
                  RefreshColor="Orange">
             <ScrollView>
-                <Grid RowSpacing="10" ColumnSpacing="10" Margin="10">
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="Auto" />
-                        <RowDefinition Height="Auto" />
-                        <RowDefinition Height="*" />
-                    </Grid.RowDefinitions>
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="*" />
-                        <ColumnDefinition Width="*" />
-                        <ColumnDefinition Width="*" />
-                        <ColumnDefinition Width="*" />
-                    </Grid.ColumnDefinitions>
-
-                    <Label Grid.Row="0" Grid.Column="0" Text="Tournament" FontAttributes="Bold" />
-                    <Label Grid.Row="0" Grid.Column="1" Grid.ColumnSpan="3" Text="{Binding TournamentName, Mode=OneWay}" />
-                    <Label Grid.Row="1" Grid.Column="0" Text="Location" FontAttributes="Bold" />
-                    <Label Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="3" Text="{Binding TournamentLocation, Mode=OneWay}" />
-                    
-                    <views:PlayerScoreListView BindingContext="{Binding PlayerScoreList}"
-                                        Grid.Row="2"
-                                        Grid.Column="0"
-                                        Grid.ColumnSpan="4" />
-                </Grid>
+                <views:PlayerScoreListView Margin="10" BindingContext="{Binding PlayerScoreList}" />
             </ScrollView>
         </RefreshView>
     </StackLayout>
