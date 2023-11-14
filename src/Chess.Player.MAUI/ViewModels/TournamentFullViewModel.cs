@@ -1,5 +1,4 @@
 ﻿using Chess.Player.Data;
-using Chess.Player.Services;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using System.Net;
@@ -10,6 +9,7 @@ namespace Chess.Player.MAUI.ViewModels;
 public partial class TournamentFullViewModel : BaseViewModel
 {
     private readonly IChessDataService _chessDataService;
+    private readonly IServiceProvider _serviceProvider;
 
     [ObservableProperty]
     private int _tournamentId;
@@ -41,15 +41,16 @@ public partial class TournamentFullViewModel : BaseViewModel
     public TournamentFullViewModel
     (
         IChessDataService chessDataService,
-        INavigationService navigationService
+        IServiceProvider serviceProvider
     )
     {
         ArgumentNullException.ThrowIfNull(chessDataService);
-        ArgumentNullException.ThrowIfNull(navigationService);
+        ArgumentNullException.ThrowIfNull(serviceProvider);
 
         _chessDataService = chessDataService;
+        _serviceProvider = serviceProvider;
 
-        _playerScoreList = new PlayerScoreListViewModel(navigationService);
+        _playerScoreList = new PlayerScoreListViewModel();
     }
 
     [RelayCommand]
@@ -84,16 +85,17 @@ public partial class TournamentFullViewModel : BaseViewModel
             PlayerScoreList.PlayerScores.Clear();
             foreach (PlayerScoreInfo playerScoreInfo in tournamentInfo.Players)
             {
-                PlayerScoreList.PlayerScores.Add(new PlayerScoreViewModel
-                {
-                    Rank = playerScoreInfo.Rank,
-                    Name = playerScoreInfo.Name,
-                    ClubCity = playerScoreInfo.ClubCity,
-                    Points = playerScoreInfo.Points,
-                    TB1 = playerScoreInfo.TB1,
-                    TB2 = playerScoreInfo.TB2,
-                    TB3 = playerScoreInfo.TB3,
-                });
+                PlayerScoreViewModel playerScoreViewModel = _serviceProvider.GetRequiredService<PlayerScoreViewModel>();
+
+                playerScoreViewModel.Rank = playerScoreInfo.Rank;
+                playerScoreViewModel.Name = playerScoreInfo.Name;
+                playerScoreViewModel.ClubCity = playerScoreInfo.ClubCity;
+                playerScoreViewModel.Points = playerScoreInfo.Points;
+                playerScoreViewModel.TB1 = playerScoreInfo.TB1;
+                playerScoreViewModel.TB2 = playerScoreInfo.TB2;
+                playerScoreViewModel.TB3 = playerScoreInfo.TB3;
+
+                PlayerScoreList.PlayerScores.Add(playerScoreViewModel);
             }
 
             Error = null;

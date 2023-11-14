@@ -5,17 +5,37 @@
              xmlns:vm="clr-namespace:Chess.Player.MAUI.ViewModels"
              x:Class="Chess.Player.MAUI.Views.PlayerTournamentView"
              x:DataType="vm:PlayerTournamentViewModel">
-    <VisualStateManager.VisualStateGroups>
-        <VisualStateGroup Name="CommonStates">
-            <VisualState Name="Normal"></VisualState>
-            <VisualState Name="Selected">
-                <VisualState.Setters>
-                    <Setter TargetName="border" Property="Border.BackgroundColor" Value="#CEDDF3" />
-                </VisualState.Setters>
-            </VisualState>
-        </VisualStateGroup>
-    </VisualStateManager.VisualStateGroups>
-    <Border x:Name="border" Style="{StaticResource CardBorderStyle}">
+    <ContentView.Resources>
+        <ResourceDictionary>
+            <mct:InvertedBoolConverter x:Key="InvertedBoolConverter" />
+        </ResourceDictionary>
+    </ContentView.Resources>
+    <Border Style="{StaticResource CardBorderStyle}">
+        <Border.GestureRecognizers>
+            <TapGestureRecognizer Command="{Binding ShowInfoCommand}" />
+        </Border.GestureRecognizers>
+        <VisualStateManager.VisualStateGroups>
+            <VisualStateGroupList>
+                <VisualStateGroup x:Name="CommonStates">
+                    <VisualState x:Name="Normal">
+                        <VisualState.StateTriggers>
+                            <StateTrigger IsActive="{Binding IsSelected, Converter={StaticResource InvertedBoolConverter}}" />
+                        </VisualState.StateTriggers>
+                        <VisualState.Setters>
+                            <Setter Property="BackgroundColor" Value="{AppThemeBinding Light={StaticResource Secondary}, Dark={StaticResource Tertiary}}" />
+                        </VisualState.Setters>
+                    </VisualState>
+                    <VisualState x:Name="Selected">
+                        <VisualState.StateTriggers>
+                            <StateTrigger IsActive="{Binding IsSelected}" />
+                        </VisualState.StateTriggers>
+                        <VisualState.Setters>
+                            <Setter Property="BackgroundColor" Value="{AppThemeBinding Light={StaticResource Tertiary}, Dark={StaticResource Secondary}}" />
+                        </VisualState.Setters>
+                    </VisualState>
+                </VisualStateGroup>
+            </VisualStateGroupList>
+        </VisualStateManager.VisualStateGroups>
         <Grid RowSpacing="10" ColumnSpacing="10">
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto" />

@@ -1,5 +1,8 @@
 ﻿using Chess.Player.Data;
+using Chess.Player.MAUI.Pages;
+using Chess.Player.Services;
 using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.Input;
 using System.Collections.ObjectModel;
 
 namespace Chess.Player.MAUI.ViewModels;
@@ -8,6 +11,7 @@ namespace Chess.Player.MAUI.ViewModels;
 public partial class PlayerViewModel : BaseViewModel
 {
     private readonly IDateTimeProvider _dateTimeProvider;
+    private readonly INavigationService _navigationService;
 
     public string Name => Names.FirstOrDefault()?.FullName;
 
@@ -32,13 +36,32 @@ public partial class PlayerViewModel : BaseViewModel
 
     public int Years => _dateTimeProvider.UtcNow.Year - YearOfBirth ?? 0;
 
+    [ObservableProperty]
+    private bool _isSelected;
+
     public PlayerViewModel
     (
-        IDateTimeProvider dateTimeProvider
+        IDateTimeProvider dateTimeProvider,
+        INavigationService navigationService
     )
     {
         ArgumentNullException.ThrowIfNull(dateTimeProvider);
+        ArgumentNullException.ThrowIfNull(navigationService);
 
         _dateTimeProvider = dateTimeProvider;
+        _navigationService = navigationService;
+    }
+
+    [RelayCommand]
+    private async Task ShowInfoAsync(CancellationToken cancellationToken)
+    {
+        IsSelected = true;
+
+        await _navigationService.PushAsync<PlayerFullPage, PlayerFullViewModel>(x =>
+        {
+            x.Name = Name;
+        });
+
+        IsSelected = false;
     }
 }

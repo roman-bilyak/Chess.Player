@@ -5,11 +5,7 @@
              xmlns:views="clr-namespace:Chess.Player.MAUI.Views"
              x:Class="Chess.Player.MAUI.Views.PlayerScoreListView"
              x:DataType="vm:PlayerScoreListViewModel">
-    <CollectionView ItemsSource="{Binding PlayerScores}"
-                    SelectionMode="Single"
-                    SelectedItem="{Binding SelectedPlayerScore}"
-                    SelectionChangedCommand="{Binding ItemSelectedCommand}"
-                    SelectionChangedCommandParameter="{Binding SelectedItem, Source={RelativeSource Self}}">
+    <CollectionView ItemsSource="{Binding PlayerScores}">
         <CollectionView.ItemTemplate>
             <DataTemplate x:DataType="vm:PlayerScoreViewModel">
                 <views:PlayerScoreView BindingContext="{Binding .}" />

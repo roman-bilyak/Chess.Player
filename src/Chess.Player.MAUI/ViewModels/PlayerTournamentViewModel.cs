@@ -1,5 +1,8 @@
 ﻿using Chess.Player.Data;
+using Chess.Player.MAUI.Pages;
+using Chess.Player.Services;
 using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.Input;
 
 namespace Chess.Player.MAUI.ViewModels;
 
@@ -7,6 +10,7 @@ namespace Chess.Player.MAUI.ViewModels;
 public partial class PlayerTournamentViewModel : BaseViewModel
 {
     private readonly DateTime _currentDate;
+    private readonly INavigationService _navigationService;
 
     [ObservableProperty]
     private int? _tournamentId;
@@ -78,13 +82,49 @@ public partial class PlayerTournamentViewModel : BaseViewModel
 
     public bool IsPodium => !IsActive && Rank.HasValue && Rank >= 1 && Rank <= 3;
 
+    public bool ShowFullInfo { get; set; }
+
+    [ObservableProperty]
+    private bool _isSelected;
+
     public PlayerTournamentViewModel
     (
-        IDateTimeProvider dateTimeProvider
+        IDateTimeProvider dateTimeProvider,
+        INavigationService navigationService
     )
     {
         ArgumentNullException.ThrowIfNull(dateTimeProvider);
+        ArgumentNullException.ThrowIfNull(navigationService);
 
         _currentDate = dateTimeProvider.UtcNow.Date;
+        _navigationService = navigationService;
+    }
+
+    [RelayCommand]
+    private async Task ShowInfoAsync(CancellationToken cancellationToken)
+    {
+        IsSelected = true;
+
+        if (ShowFullInfo)
+        {
+            await _navigationService.PushAsync<TournamentFullPage, TournamentFullViewModel>(x =>
+            {
+                x.TournamentId = TournamentId.Value;
+                x.TournamentName = TournamentName;
+            });
+        }
+        else
+        {
+            await _navigationService.PushAsync<PlayerTournamentFullPage, PlayerTournamentFullViewModel>(x =>
+            {
+                x.TournamentId = TournamentId.Value;
+                x.TournamentName = TournamentName;
+
+                x.PlayerStartingRank = StartingRank.Value;
+                x.PlayerName = Name;
+            });
+        }
+
+        IsSelected = false;
     }
 }

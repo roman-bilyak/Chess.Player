@@ -220,7 +220,7 @@ internal class ChessResultsDataFetcher : IChessDataFetcher, IDisposable
 
         var playerRows = htmlDocument.DocumentNode.SelectNodes("//div[@class='defaultDialog'][3]/table[@class='CRs1']/tr") ?? new HtmlNodeCollection(null);
 
-        List<string> playerHeaders = playerRows.FirstOrDefault()?.SelectNodes("td").Select(x => x.InnerText.Trim())?.ToList() ?? new List<string>();
+        List<string> playerHeaders = playerRows.FirstOrDefault()?.SelectNodes("th")?.Select(x => x.InnerText.Trim()).ToList() ?? new List<string>();
         int rankIndex = playerHeaders.IndexOf("Rk.");
         int nameIndex = playerHeaders.IndexOf("Name");
         int clubCityIndex = playerHeaders.IndexOf("Club/City");
@@ -319,7 +319,7 @@ internal class ChessResultsDataFetcher : IChessDataFetcher, IDisposable
 
         var gameRows = htmlDocument.DocumentNode.SelectNodes("//div[@class='defaultDialog']/table[@class='CRs1'][2]/tr") ?? new HtmlNodeCollection(null);
 
-        List<string> gameHeaders = gameRows.FirstOrDefault()?.SelectNodes("td").Select(x => x.InnerText.Trim())?.ToList() ?? new List<string>();
+        List<string> gameHeaders = gameRows.FirstOrDefault()?.SelectNodes("th")?.Select(x => x.InnerText.Trim()).ToList() ?? new List<string>();
         int roundIndex = gameHeaders.IndexOf("Rd.");
         int boardIndex = gameHeaders.IndexOf("Bo.");
         int nameIndex = gameHeaders.IndexOf("Name");

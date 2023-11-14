@@ -22,7 +22,6 @@
     <Style TargetType="Border" x:Key="CardBorderStyle">
         <Setter Property="Margin" Value="0,5"/>
         <Setter Property="Padding" Value="15"/>
-        <Setter Property="BackgroundColor" Value="{AppThemeBinding Light={StaticResource Secondary}, Dark={StaticResource Gray500}}"/>
     </Style>
 
     <Style TargetType="BoxView">

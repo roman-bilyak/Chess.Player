@@ -5,11 +5,7 @@
              xmlns:views="clr-namespace:Chess.Player.MAUI.Views"
              x:Class="Chess.Player.MAUI.Views.GameListView"
              x:DataType="vm:GameListViewModel">
-    <CollectionView ItemsSource="{Binding Games}"
-                    SelectionMode="Single"
-                    SelectedItem="{Binding SelectedGame}"
-                    SelectionChangedCommand="{Binding ItemSelectedCommand}"
-                    SelectionChangedCommandParameter="{Binding SelectedItem, Source={RelativeSource Self}}">
+    <CollectionView ItemsSource="{Binding Games}">
         <CollectionView.ItemTemplate>
             <DataTemplate x:DataType="vm:GameViewModel">
                 <views:GameView BindingContext="{Binding .}" />
