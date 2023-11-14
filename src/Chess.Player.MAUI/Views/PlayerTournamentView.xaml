@@ -22,7 +22,7 @@
                             <StateTrigger IsActive="{Binding IsSelected, Converter={StaticResource InvertedBoolConverter}}" />
                         </VisualState.StateTriggers>
                         <VisualState.Setters>
-                            <Setter Property="BackgroundColor" Value="{AppThemeBinding Light={StaticResource Secondary}, Dark={StaticResource Tertiary}}" />
+                            <Setter Property="BackgroundColor" Value="{AppThemeBinding Light={StaticResource Secondary}, Dark={StaticResource Gray600}}" />
                         </VisualState.Setters>
                     </VisualState>
                     <VisualState x:Name="Selected">
@@ -30,7 +30,7 @@
                             <StateTrigger IsActive="{Binding IsSelected}" />
                         </VisualState.StateTriggers>
                         <VisualState.Setters>
-                            <Setter Property="BackgroundColor" Value="{AppThemeBinding Light={StaticResource Tertiary}, Dark={StaticResource Secondary}}" />
+                            <Setter Property="BackgroundColor" Value="{AppThemeBinding Light={StaticResource Tertiary}, Dark={StaticResource Gray400}}" />
                         </VisualState.Setters>
                     </VisualState>
                 </VisualStateGroup>
