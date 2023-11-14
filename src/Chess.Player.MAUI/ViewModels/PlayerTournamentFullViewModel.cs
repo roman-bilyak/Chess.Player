@@ -1,6 +1,7 @@
 ﻿using Chess.Player.Data;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using System.Collections.ObjectModel;
 using System.Net;
 
 namespace Chess.Player.MAUI.ViewModels;
@@ -27,7 +28,7 @@ public partial class PlayerTournamentFullViewModel : BaseViewModel
     private PlayerTournamentViewModel _playerTournament;
 
     [ObservableProperty]
-    private GameListViewModel _gameList;
+    private ObservableCollection<GameViewModel> _games = new();
 
     [ObservableProperty]
     private bool _useCache;
@@ -54,7 +55,6 @@ public partial class PlayerTournamentFullViewModel : BaseViewModel
         _serviceProvider = serviceProvider;
 
         _playerTournament = serviceProvider.GetRequiredService<PlayerTournamentViewModel>();
-        _gameList = serviceProvider.GetRequiredService<GameListViewModel>();
     }
 
     [RelayCommand]
@@ -96,7 +96,7 @@ public partial class PlayerTournamentFullViewModel : BaseViewModel
             PlayerTournament.Points = playerTournamentInfo.Player.Points;
             PlayerTournament.ShowFullInfo = true;
 
-            GameList.Games.Clear();
+            Games.Clear();
             foreach(GameInfo gameInfo in playerTournamentInfo.Player.Games.OrderByDescending(x => x.Round))
             {
                 GameViewModel gameViewModel = _serviceProvider.GetRequiredService<GameViewModel>();
@@ -108,7 +108,7 @@ public partial class PlayerTournamentFullViewModel : BaseViewModel
                 gameViewModel.IsWhiteBlack = gameInfo.IsWhite;
                 gameViewModel.Result = gameInfo.Result;
 
-                GameList.Games.Add(gameViewModel);
+                Games.Add(gameViewModel);
             }
 
             Error = null;

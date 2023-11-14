@@ -20,7 +20,7 @@ public partial class HomeViewModel : BaseViewModel
     private string _searchText;
 
     [ObservableProperty]
-    private PlayerListViewModel _playerList;
+    private ObservableCollection<PlayerViewModel> _players = new();
 
     [ObservableProperty]
     private bool _useCache;
@@ -48,8 +48,6 @@ public partial class HomeViewModel : BaseViewModel
         _playerHistoryService = playerHistoryService;
         _navigationService = navigationService;
         _serviceProvider = serviceProvider;
-
-        PlayerList = _serviceProvider.GetRequiredService<PlayerListViewModel>();
     }
 
     [RelayCommand]
@@ -88,10 +86,10 @@ public partial class HomeViewModel : BaseViewModel
                 players.Add(playerViewModel);
             }
 
-            PlayerList.Players.Clear();
+            Players.Clear();
             foreach(PlayerViewModel playerViewModel in players)
             {
-                PlayerList.Players.Add(playerViewModel);
+                Players.Add(playerViewModel);
             }
 
             Error = null;

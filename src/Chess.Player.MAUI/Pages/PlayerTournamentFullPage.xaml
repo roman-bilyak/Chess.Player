@@ -33,7 +33,13 @@
 
                     <BoxView Grid.Row="1" Grid.Column="0" HeightRequest="1" Color="#F17A00" HorizontalOptions="Center" VerticalOptions="Center" />
 
-                    <views:GameListView Grid.Row="2" BindingContext="{Binding GameList}" />
+                    <CollectionView Grid.Row="2" ItemsSource="{Binding Games}">
+                        <CollectionView.ItemTemplate>
+                            <DataTemplate x:DataType="vm:GameViewModel">
+                                <views:GameView BindingContext="{Binding .}" />
+                            </DataTemplate>
+                        </CollectionView.ItemTemplate>
+                    </CollectionView>
                 </Grid>
             </ScrollView>
         </RefreshView>

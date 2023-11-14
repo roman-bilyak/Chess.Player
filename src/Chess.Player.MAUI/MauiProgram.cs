@@ -67,12 +67,9 @@ namespace Chess.Player.MAUI
             builder.Services.AddTransient<CacheViewModel>();
             builder.Services.AddTransient<AboutViewModel>();
 
-            builder.Services.AddTransient<PlayerListViewModel>();
             builder.Services.AddTransient<PlayerViewModel>();
             builder.Services.AddTransient<PlayerTournamentViewModel>();
-            builder.Services.AddTransient<GameListViewModel>();
             builder.Services.AddTransient<GameViewModel>();
-            builder.Services.AddTransient<PlayerScoreListViewModel>();
             builder.Services.AddTransient<PlayerScoreViewModel>();
 
             builder.Services.AddTransient<AppShell>();

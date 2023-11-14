@@ -25,7 +25,13 @@
                      Command="{Binding LoadCommand}"
                      RefreshColor="Orange">
             <ScrollView>
-                <views:PlayerListView BindingContext="{Binding PlayerList}" Margin="10" />
+                <CollectionView ItemsSource="{Binding Players}" Margin="10">
+                    <CollectionView.ItemTemplate>
+                        <DataTemplate x:DataType="vm:PlayerViewModel">
+                            <views:PlayerView BindingContext="{Binding .}" />
+                        </DataTemplate>
+                    </CollectionView.ItemTemplate>
+                </CollectionView>
             </ScrollView>
         </RefreshView>
     </StackLayout>

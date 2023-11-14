@@ -14,7 +14,7 @@ public partial class FavoritesViewModel : BaseViewModel
     private readonly IServiceProvider _serviceProvider;
 
     [ObservableProperty]
-    private PlayerListViewModel _playerList;
+    private ObservableCollection<PlayerViewModel> _players = new();
 
     [ObservableProperty]
     private bool _useCache;
@@ -39,8 +39,6 @@ public partial class FavoritesViewModel : BaseViewModel
 
         _playerFavoriteService = playerFavoriteService;
         _serviceProvider = serviceProvider;
-
-        PlayerList = _serviceProvider.GetRequiredService<PlayerListViewModel>();
     }
 
     [RelayCommand]
@@ -79,10 +77,10 @@ public partial class FavoritesViewModel : BaseViewModel
                 players.Add(playerViewModel);
             }
 
-            PlayerList.Players.Clear();
+            Players.Clear();
             foreach (PlayerViewModel playerViewModel in players)
             {
-                PlayerList.Players.Add(playerViewModel);
+                Players.Add(playerViewModel);
             }
 
             Error = null;
