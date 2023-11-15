@@ -5,7 +5,7 @@
              x:Class="Chess.Player.MAUI.Pages.AboutPage"
              x:DataType="vm:AboutViewModel"
              Title="About">
-    <ScrollView Padding="10" Margin="10">
+    <ScrollView Padding="10" Margin="10,0">
         <StackLayout Spacing="10">
             <Frame HeightRequest="70"
                    WidthRequest="70"
@@ -16,7 +16,7 @@
                        HorizontalOptions="Center" 
                        HeightRequest="70" 
                        WidthRequest="70" 
-                       Margin="0,20" BackgroundColor="{AppThemeBinding Light={StaticResource Primary}, Dark={StaticResource White}}">
+                       BackgroundColor="{AppThemeBinding Light={StaticResource Primary}, Dark={StaticResource White}}">
                     <Image.Behaviors>
                         <mct:IconTintColorBehavior TintColor="{AppThemeBinding Light={StaticResource White}, Dark={StaticResource Black}}" />
                     </Image.Behaviors>
@@ -24,24 +24,14 @@
             </Frame>
             
             <Label Text="Chess Player" FontSize="24" FontAttributes="Bold" HorizontalOptions="Center" />
-            <Label Text="{Binding Version}" FontSize="10" TextColor="Gray" HorizontalOptions="Center" />
+            <Label Text="{Binding Version}" FontSize="10" TextColor="{AppThemeBinding Light={StaticResource Gray600}, Dark={StaticResource White}}" HorizontalOptions="Center" />
 
-            <Label HorizontalOptions="Start">The "Chess Player" is a mobile app designed by a Ukrainian developer with the aim of popularizing chess in the world. Deep dive into the past performances of players, unraveling their strategies, successes, and challenges in various chess events.</Label>
+            <Label HorizontalOptions="Start">The app will help you to deep dive into the past, present and future performances of chess players by analyzing their strategies, successes and challenges.</Label>
 
-            <HorizontalStackLayout>
-                <Label Text="For inquiries, contact us at: " />
-                <Label Text="chess.player@gmail.com"
-                       TextDecorations="Underline">
-                    <Label.GestureRecognizers>
-                        <TapGestureRecognizer Command="{Binding SendEmailCommand}" />
-                    </Label.GestureRecognizers>
-                </Label>
-            </HorizontalStackLayout>
-
-            <Label HorizontalOptions="Start" FontAttributes="Bold">The application is free, but if you've enjoyed it and want to show your support, feel free to buy me a coffee! Positive feedback motivates, and suggestions enhance the app.</Label>
+            <Label HorizontalOptions="Start" FontAttributes="Bold">It's free, but if you've enjoyed it and want to show your support, feel free to buy me a coffee! Positive feedback motivates, and suggestions improve the app.</Label>
 
             <Label HorizontalOptions="Start">100% of all proceeds go to support of Ukraine!</Label>
-
+            
             <Button Text="Buy me a coffee"
                     Command="{Binding BuyMeACoffeeCommand}"
                     VerticalOptions="EndAndExpand"
