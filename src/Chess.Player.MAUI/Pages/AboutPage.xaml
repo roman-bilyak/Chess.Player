@@ -24,20 +24,19 @@
             </Frame>
             
             <Label Text="Chess Player" FontSize="24" FontAttributes="Bold" HorizontalOptions="Center" />
-            <Label Text="{Binding Version}" HorizontalOptions="Center" FontSize="10" TextColor="Gray" />
+            <Label Text="{Binding Version}" FontSize="10" TextColor="Gray" HorizontalOptions="Center" />
 
             <Label HorizontalOptions="Start">The "Chess Player" is a mobile app designed by a Ukrainian developer with the aim of popularizing chess in the world. Deep dive into the past performances of players, unraveling their strategies, successes, and challenges in various chess events.</Label>
 
-            <Label HorizontalOptions="Start">For inquiries, contact us at:</Label>
-
-            <Label Text="chess.player@gmail.com"
-                       Margin="0,10"
-                       HorizontalOptions="Center"
+            <HorizontalStackLayout>
+                <Label Text="For inquiries, contact us at: " />
+                <Label Text="chess.player@gmail.com"
                        TextDecorations="Underline">
-                <Label.GestureRecognizers>
-                    <TapGestureRecognizer Command="{Binding SendEmailCommand}" />
-                </Label.GestureRecognizers>
-            </Label>
+                    <Label.GestureRecognizers>
+                        <TapGestureRecognizer Command="{Binding SendEmailCommand}" />
+                    </Label.GestureRecognizers>
+                </Label>
+            </HorizontalStackLayout>
 
             <Label HorizontalOptions="Start" FontAttributes="Bold">The application is free, but if you've enjoyed it and want to show your support, feel free to buy me a coffee! Positive feedback motivates, and suggestions enhance the app.</Label>
 
@@ -50,8 +49,7 @@
                     BackgroundColor="#FFD700"
                     TextColor="Black"
                     CornerRadius="10"
-                    Padding="15,5"
-                    Margin="0,20" />
+                    Padding="30,10" />
         </StackLayout>
     </ScrollView>
 </ContentPage>
