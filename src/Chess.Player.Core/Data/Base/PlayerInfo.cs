@@ -6,7 +6,7 @@ public class PlayerInfo
 
     public string? Title { get; set; }
 
-    public int? StartingRank { get; set; }
+    public int? No { get; set; }
 
     public int? Rating { get; set; }
 

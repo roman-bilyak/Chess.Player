@@ -6,7 +6,7 @@
              xmlns:views="clr-namespace:Chess.Player.MAUI.Views"
              x:Class="Chess.Player.MAUI.Pages.PlayerTournamentFullPage"
              x:DataType="vm:PlayerTournamentFullViewModel"
-             Title="{Binding PlayerName}">
+             Title="{Binding Title}">
     <ContentPage.Behaviors>
         <mct:EventToCommandBehavior Command="{Binding StartCommand}" EventName="Appearing" />
         <mct:EventToCommandBehavior Command="{Binding LoadCancelCommand}" EventName="Disappearing" />

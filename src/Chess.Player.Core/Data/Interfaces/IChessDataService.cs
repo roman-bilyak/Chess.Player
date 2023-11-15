@@ -8,5 +8,5 @@ public interface IChessDataService
 
     Task<TournamentInfo> GetTournamentInfoAsync(int tournamentId, bool useCache, CancellationToken cancellationToken);
 
-    Task<PlayerTournamentInfo> GetPlayerTournamentInfoAsync(int tournamentId, int playerStartingRank, bool useCache, CancellationToken cancellationToken);
+    Task<PlayerTournamentInfo> GetPlayerTournamentInfoAsync(int tournamentId, int playerNo, bool useCache, CancellationToken cancellationToken);
 }

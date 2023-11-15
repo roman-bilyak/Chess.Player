@@ -26,11 +26,9 @@
             <Label Text="Chess Player" FontSize="24" FontAttributes="Bold" HorizontalOptions="Center" />
             <Label Text="{Binding Version}" HorizontalOptions="Center" FontSize="10" TextColor="Gray" />
 
-            <Label HorizontalOptions="Start">The "Chess Player" is your go-to application for comprehensive player information and in-depth tournament history. It provides insight into chess players by showing essential details such as club affiliation, city, title, and class. Whether you're interested in a local chess talent or a renowned player, this app offers a rich repository of profiles.</Label>
+            <Label HorizontalOptions="Start">The "Chess Player" is a mobile app designed by a Ukrainian developer with the aim of popularizing chess in the world. Deep dive into the past performances of players, unraveling their strategies, successes, and challenges in various chess events.</Label>
 
-            <Label HorizontalOptions="Start">Deep dive into the past performances of players, unraveling their strategies, successes, and challenges in various chess events.</Label>
-
-            <Label HorizontalOptions="Start" HorizontalTextAlignment="Start">For inquiries and support, contact us at:</Label>
+            <Label HorizontalOptions="Start">For inquiries, contact us at:</Label>
 
             <Label Text="chess.player@gmail.com"
                        Margin="0,10"
@@ -41,11 +39,13 @@
                 </Label.GestureRecognizers>
             </Label>
 
-            <Label FontAttributes="Bold" HorizontalOptions="Start">The application is free, but if my work has had a positive impact and you want to show your support, feel free to buy me a coffee!</Label>
+            <Label HorizontalOptions="Start" FontAttributes="Bold">The application is free, but if you've enjoyed it and want to show your support, feel free to buy me a coffee! Positive feedback motivates, and suggestions enhance the app.</Label>
 
+            <Label HorizontalOptions="Start">100% of all proceeds go to support of Ukraine!</Label>
 
             <Button Text="Buy me a coffee"
                     Command="{Binding BuyMeACoffeeCommand}"
+                    VerticalOptions="EndAndExpand"
                     HorizontalOptions="Center"
                     BackgroundColor="#FFD700"
                     TextColor="Black"

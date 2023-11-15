@@ -6,5 +6,5 @@ internal interface IChessDataFetcher
 
     Task<TournamentInfo> GetTournamentInfoAsync(int tornamentId, CancellationToken cancellationToken);
 
-    Task<PlayerInfo> GetPlayerInfoAsync(int tornamentId, int startingRank, CancellationToken cancellationToken);
+    Task<PlayerInfo> GetPlayerInfoAsync(int tornamentId, int playerNo, CancellationToken cancellationToken);
 }

@@ -65,7 +65,7 @@ public partial class PlayerTournamentViewModel : BaseViewModel
     private int? _numberOfRounds;
 
     [ObservableProperty]
-    private int? _startingRank;
+    private int? _no;
 
     [ObservableProperty]
     private string _name;
@@ -103,6 +103,11 @@ public partial class PlayerTournamentViewModel : BaseViewModel
     [RelayCommand]
     private async Task ShowInfoAsync(CancellationToken cancellationToken)
     {
+        if (!TournamentId.HasValue || !No.HasValue)
+        {
+            return;
+        }
+
         IsSelected = true;
 
         if (ShowFullInfo)
@@ -120,7 +125,7 @@ public partial class PlayerTournamentViewModel : BaseViewModel
                 x.TournamentId = TournamentId.Value;
                 x.TournamentName = TournamentName;
 
-                x.PlayerStartingRank = StartingRank.Value;
+                x.PlayerNo = No.Value;
                 x.PlayerName = Name;
             });
         }

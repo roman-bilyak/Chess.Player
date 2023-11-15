@@ -77,7 +77,7 @@ internal class ChessResultsDataFetcher : IChessDataFetcher, IDisposable
             }
 
             int? tournamentId = null;
-            int? startingRank = null;
+            int? playerNo = null;
 
             string? playerUrl = node.SelectSingleNode("td[1]/a")?.GetAttributeValue("href", "");
             if (playerUrl != null)
@@ -91,14 +91,14 @@ internal class ChessResultsDataFetcher : IChessDataFetcher, IDisposable
                 match = Regex.Match(playerUrl, @"snr=(\d+)");
                 if (match.Success && int.TryParse(match.Groups[1].Value, out int snr))
                 {
-                    startingRank = snr;
+                    playerNo = snr;
                 }
             }
 
             string? endDateStr = node.SelectSingleNode("td[7]")?.InnerText?.Trim();
-            if (tournamentId.HasValue && startingRank.HasValue && DateTime.TryParse(endDateStr, out DateTime endDate))
+            if (tournamentId.HasValue && playerNo.HasValue && DateTime.TryParse(endDateStr, out DateTime endDate))
             {
-                playerTournamentList.Items.Add(new PlayerTournament(tournamentId.Value, startingRank.Value, endDate));
+                playerTournamentList.Items.Add(new PlayerTournament(tournamentId.Value, playerNo.Value, endDate));
             }
         }
         return playerTournamentList;
@@ -222,6 +222,7 @@ internal class ChessResultsDataFetcher : IChessDataFetcher, IDisposable
 
         List<string> playerHeaders = playerRows.FirstOrDefault()?.SelectNodes("th")?.Select(x => x.InnerText.Trim()).ToList() ?? new List<string>();
         int rankIndex = playerHeaders.IndexOf("Rk.");
+        int noIndex = playerHeaders.IndexOf("SNo");
         int nameIndex = playerHeaders.IndexOf("Name");
         int clubCityIndex = playerHeaders.IndexOf("Club/City");
         int pointsIndex = playerHeaders.IndexOf("Pts.");
@@ -234,6 +235,7 @@ internal class ChessResultsDataFetcher : IChessDataFetcher, IDisposable
             tournament.Players.Add(new PlayerScoreInfo
             {
                 Rank = int.TryParse(playerRow.SelectSingleNode($"td[{rankIndex + 1}]")?.InnerText?.Trim(), out int round) ? round : null,
+                No = int.TryParse(playerRow.SelectSingleNode($"td[{noIndex + 1}]")?.InnerText?.Trim(), out int no) ? no : null,
                 Name = _chessDataNormalizer.NormalizeName(playerRow.SelectSingleNode($"td[{nameIndex + 1}]/a")?.InnerText?.Trim() ?? playerRow.SelectSingleNode($"td[{nameIndex + 1}]")?.InnerText?.Trim()),
                 ClubCity = playerRow.SelectSingleNode($"td[{clubCityIndex + 1}]")?.InnerText?.Trim(),
                 Points = double.TryParse(playerRow.SelectSingleNode($"td[{pointsIndex + 1}]")?.InnerText?.Trim(), NumberStyles.Number, new CultureInfo("de-DE"), out double points) ? points : null,
@@ -246,9 +248,9 @@ internal class ChessResultsDataFetcher : IChessDataFetcher, IDisposable
         return tournament;
     }
 
-    public async Task<PlayerInfo> GetPlayerInfoAsync(int tournamentId, int startingRank, CancellationToken cancellationToken)
+    public async Task<PlayerInfo> GetPlayerInfoAsync(int tournamentId, int playerNo, CancellationToken cancellationToken)
     {
-        string playerInfoUrl = $"{BaseUrl}/tnr{tournamentId}.aspx?lan=1&art=9&snr={startingRank}";
+        string playerInfoUrl = $"{BaseUrl}/tnr{tournamentId}.aspx?lan=1&art=9&snr={playerNo}";
         HttpResponseMessage response = await _httpClient.GetAsync(playerInfoUrl, cancellationToken);
         response.EnsureSuccessStatusCode();
 
@@ -273,7 +275,7 @@ internal class ChessResultsDataFetcher : IChessDataFetcher, IDisposable
                     player.Title = NormalizeTitle(fieldValue);
                     break;
                 case "Starting rank":
-                    player.StartingRank = int.TryParse(fieldValue, out int staringRank) ? staringRank : null; ;
+                    player.No = int.TryParse(fieldValue, out int no) ? no : null; ;
                     break;
                 case "Rating":
                     player.Rating = int.TryParse(fieldValue, out int rating) ? rating : null;
@@ -322,6 +324,7 @@ internal class ChessResultsDataFetcher : IChessDataFetcher, IDisposable
         List<string> gameHeaders = gameRows.FirstOrDefault()?.SelectNodes("th")?.Select(x => x.InnerText.Trim()).ToList() ?? new List<string>();
         int roundIndex = gameHeaders.IndexOf("Rd.");
         int boardIndex = gameHeaders.IndexOf("Bo.");
+        int noIndex = gameHeaders.IndexOf("SNo");
         int nameIndex = gameHeaders.IndexOf("Name");
         int clubCityIndex = gameHeaders.IndexOf("Club/City");
         int resultIndex = gameHeaders.IndexOf("Res.");
@@ -334,6 +337,7 @@ internal class ChessResultsDataFetcher : IChessDataFetcher, IDisposable
             {
                 Round = int.TryParse(gameRow.SelectSingleNode($"td[{roundIndex + 1}]")?.InnerText?.Trim(), out int round) ? round : null,
                 Board = int.TryParse(gameRow.SelectSingleNode($"td[{boardIndex + 1}]")?.InnerText?.Trim(), out int board) ? board : null,
+                No = int.TryParse(gameRow.SelectSingleNode($"td[{noIndex + 1}]")?.InnerText?.Trim(), out int no) ? no : null,
                 Name = _chessDataNormalizer.NormalizeName(gameRow.SelectSingleNode($"td[{nameIndex + 1}]/a")?.InnerText?.Trim() ?? gameRow.SelectSingleNode($"td[{nameIndex + 1}]")?.InnerText),
                 ClubCity = gameRow.SelectSingleNode($"td[{clubCityIndex + 1}]")?.InnerText,
                 IsWhite = resultNode?.SelectSingleNode("td[1]/div[@class='FarbewT']") is not null,

@@ -180,7 +180,7 @@ public partial class PlayerFullViewModel : BaseViewModel, IDisposable
                     viewModel.NumberOfPlayers = y.Tournament.Players.Count;
                     viewModel.NumberOfRounds = y.Tournament.NumberOfRounds;
                     viewModel.Name = y.Player.Name;
-                    viewModel.StartingRank = y.Player.StartingRank;
+                    viewModel.No = y.Player.No;
                     viewModel.Title = y.Player.Title;
                     viewModel.Rank = y.Player.Rank;
                     viewModel.Points = y.Player.Points;

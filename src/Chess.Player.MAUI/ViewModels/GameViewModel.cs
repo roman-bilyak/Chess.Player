@@ -12,6 +12,12 @@ public partial class GameViewModel : BaseViewModel
     private readonly INavigationService _navigationService;
 
     [ObservableProperty]
+    private int? _tournamentId;
+
+    [ObservableProperty]
+    private string _tournamentName;
+
+    [ObservableProperty]
     [NotifyPropertyChangedFor(nameof(RoundName))]
     private int? _round;
 
@@ -19,6 +25,9 @@ public partial class GameViewModel : BaseViewModel
 
     [ObservableProperty]
     private int? _board;
+
+    [ObservableProperty]
+    private int? _no;
 
     [ObservableProperty]
     private string _name;
@@ -52,11 +61,19 @@ public partial class GameViewModel : BaseViewModel
     [RelayCommand]
     private async Task ShowInfoAsync(CancellationToken cancellationToken)
     {
+        if (!TournamentId.HasValue || !No.HasValue)
+        {
+            return;
+        }
+
         IsSelected = true;
 
-        await _navigationService.PushAsync<PlayerFullPage, PlayerFullViewModel>(x =>
+        await _navigationService.PushAsync<PlayerTournamentFullPage, PlayerTournamentFullViewModel>(x =>
         {
-            x.Name = Name;
+            x.TournamentId = TournamentId.Value;
+            x.TournamentName = TournamentName;
+            x.PlayerNo = No.Value;
+            x.PlayerName = Name;
         });
 
         IsSelected = false;

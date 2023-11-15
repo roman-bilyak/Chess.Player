@@ -16,13 +16,17 @@ public partial class PlayerTournamentFullViewModel : BaseViewModel
     private int _tournamentId;
 
     [ObservableProperty]
+    [NotifyPropertyChangedFor(nameof(Title))]
     private string _tournamentName;
 
     [ObservableProperty]
-    private int _playerStartingRank;
+    private int _playerNo;
 
     [ObservableProperty]
+    [NotifyPropertyChangedFor(nameof(Title))]
     private string _playerName;
+
+    public string Title => $"{PlayerName} - {TournamentName}";
 
     [ObservableProperty]
     private PlayerTournamentViewModel _playerTournament;
@@ -80,7 +84,7 @@ public partial class PlayerTournamentFullViewModel : BaseViewModel
     {
         try
         {
-            PlayerTournamentInfo playerTournamentInfo = await _chessDataService.GetPlayerTournamentInfoAsync(TournamentId, PlayerStartingRank, UseCache, cancellationToken);
+            PlayerTournamentInfo playerTournamentInfo = await _chessDataService.GetPlayerTournamentInfoAsync(TournamentId, PlayerNo, UseCache, cancellationToken);
 
             PlayerTournament.TournamentId = playerTournamentInfo.Tournament.Id;
             PlayerTournament.TournamentName = playerTournamentInfo.Tournament.Name;
@@ -90,7 +94,7 @@ public partial class PlayerTournamentFullViewModel : BaseViewModel
             PlayerTournament.NumberOfPlayers = playerTournamentInfo.Tournament.Players.Count;
             PlayerTournament.NumberOfRounds = playerTournamentInfo.Tournament.NumberOfRounds;
             PlayerTournament.Name = playerTournamentInfo.Player.Name;
-            PlayerTournament.StartingRank = playerTournamentInfo.Player.StartingRank;
+            PlayerTournament.No = playerTournamentInfo.Player.No;
             PlayerTournament.Title = playerTournamentInfo.Player.Title;
             PlayerTournament.Rank = playerTournamentInfo.Player.Rank;
             PlayerTournament.Points = playerTournamentInfo.Player.Points;
@@ -101,8 +105,11 @@ public partial class PlayerTournamentFullViewModel : BaseViewModel
             {
                 GameViewModel gameViewModel = _serviceProvider.GetRequiredService<GameViewModel>();
 
+                gameViewModel.TournamentId = playerTournamentInfo.Tournament.Id;
+                gameViewModel.TournamentName = playerTournamentInfo.Tournament.Name;
                 gameViewModel.Round = gameInfo.Round;
                 gameViewModel.Board = gameInfo.Board;
+                gameViewModel.No = gameInfo.No;
                 gameViewModel.Name = gameInfo.Name;
                 gameViewModel.ClubCity = gameInfo.ClubCity;
                 gameViewModel.IsWhiteBlack = gameInfo.IsWhite;

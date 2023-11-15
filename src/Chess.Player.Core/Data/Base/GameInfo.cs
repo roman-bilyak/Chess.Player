@@ -6,6 +6,8 @@ public class GameInfo
 
     public int? Board { get; set; }
 
+    public int? No { get; set; }
+
     public string? Name { get; set; }
 
     public string? ClubCity { get; set; }

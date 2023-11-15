@@ -59,7 +59,7 @@ internal class ChessDataManager : IChessDataManager
         {
             index++;
 
-            PlayerTournamentInfo playerTournamentInfo = await GetPlayerTournamentInfoAsync(playerTournament.TournamentId, playerTournament.PlayerStartingRank, useCache, cancellationToken);
+            PlayerTournamentInfo playerTournamentInfo = await GetPlayerTournamentInfoAsync(playerTournament.TournamentId, playerTournament.PlayerNo, useCache, cancellationToken);
             playerTournamentInfos.Add(playerTournamentInfo);
 
             int progressPercentage = index * (PercentageFinish - PercentageStart) / playerTournaments.Count + PercentageStart;
@@ -82,13 +82,13 @@ internal class ChessDataManager : IChessDataManager
             cancellationToken);
     }
 
-    public async Task<PlayerTournamentInfo> GetPlayerTournamentInfoAsync(int tournamentId, int playerStartingRank, bool useCache, CancellationToken cancellationToken)
+    public async Task<PlayerTournamentInfo> GetPlayerTournamentInfoAsync(int tournamentId, int playerNo, bool useCache, CancellationToken cancellationToken)
     {
         TournamentInfo tournamentInfo = await GetTournamentInfoAsync(tournamentId, useCache, cancellationToken);
 
-        PlayerInfo playerInfo = await _cacheManager.GetOrAddAsync($"{tournamentId}_{playerStartingRank}",
+        PlayerInfo playerInfo = await _cacheManager.GetOrAddAsync($"{tournamentId}_{playerNo}",
             useCache,
-            () => _chessDataFetcher.GetPlayerInfoAsync(tournamentId, playerStartingRank, cancellationToken),
+            () => _chessDataFetcher.GetPlayerInfoAsync(tournamentId, playerNo, cancellationToken),
             x => GetExpirationDate(tournamentInfo),
             cancellationToken);
 
