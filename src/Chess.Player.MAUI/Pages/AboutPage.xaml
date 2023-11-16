@@ -26,9 +26,9 @@
             <Label Text="Chess Player" FontSize="24" FontAttributes="Bold" HorizontalOptions="Center" />
             <Label Text="{Binding Version}" FontSize="10" TextColor="{AppThemeBinding Light={StaticResource Gray600}, Dark={StaticResource White}}" HorizontalOptions="Center" />
 
-            <Label HorizontalOptions="Start">The app will help you to deep dive into the past, present and future performances of chess players by analyzing their strategies, successes and challenges.</Label>
+            <Label HorizontalOptions="Start">The "Chess Player" will help you to deep dive into the past, present and future performances of players by analyzing their strategies, successes and challenges.</Label>
 
-            <Label HorizontalOptions="Start" FontAttributes="Bold">It's free, but if you've enjoyed it and want to show your support, feel free to buy me a coffee! Positive feedback motivates, and suggestions improve the app.</Label>
+            <Label HorizontalOptions="Start" FontAttributes="Bold">The app is free, but if you've enjoyed it and want to show your support, feel free to buy me a coffee! Positive feedback motivates, and suggestions improve it.</Label>
 
             <Label HorizontalOptions="Start">100% of all proceeds go to support of Ukraine!</Label>
             
