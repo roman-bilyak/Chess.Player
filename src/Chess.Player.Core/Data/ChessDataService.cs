@@ -48,7 +48,7 @@ internal class ChessDataService : IChessDataService
         string cacheKey = string.Join("_", searchCriterias.Select(x => x.Name));
         return await _cacheManager.GetOrAddAsync(cacheKey, 
             useCache, 
-            () => _chessDataManager.GetPlayerFullInfoAsync(searchCriterias, useCache, cancellationToken), 
+            async () => await _chessDataManager.GetPlayerFullInfoAsync(searchCriterias, useCache, cancellationToken), 
             x => _dateTimeProvider.UtcNow.AddMinutes(1), 
             cancellationToken);
     }

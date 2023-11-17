@@ -39,8 +39,7 @@ public class FileCache<T> : BaseCache<T>
             DefaultValueHandling = DefaultValueHandling.Ignore
         });
         string? cacheFileDirectory = Path.GetDirectoryName(cacheFilePath);
-        if (cacheFileDirectory is not null
-            && !Directory.Exists(cacheFileDirectory))
+        if (cacheFileDirectory is not null)
         {
             Directory.CreateDirectory(cacheFileDirectory);
         }
