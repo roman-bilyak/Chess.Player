@@ -20,7 +20,7 @@ public partial class HomeViewModel : BaseViewModel
     private string _searchText;
 
     [ObservableProperty]
-    private ObservableCollection<PlayerViewModel> _players = new();
+    private ObservableCollection<PlayerViewModel> _players = [];
 
     [ObservableProperty]
     private bool _useCache;

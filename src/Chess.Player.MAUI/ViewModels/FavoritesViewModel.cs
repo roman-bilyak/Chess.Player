@@ -14,7 +14,7 @@ public partial class FavoritesViewModel : BaseViewModel
     private readonly IServiceProvider _serviceProvider;
 
     [ObservableProperty]
-    private ObservableCollection<PlayerViewModel> _players = new();
+    private ObservableCollection<PlayerViewModel> _players = [];
 
     [ObservableProperty]
     private bool _useCache;

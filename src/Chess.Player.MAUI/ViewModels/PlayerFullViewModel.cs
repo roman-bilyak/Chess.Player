@@ -24,7 +24,7 @@ public partial class PlayerFullViewModel : BaseViewModel, IDisposable
 
     [ObservableProperty]
     [NotifyPropertyChangedFor(nameof(HasNames))]
-    private ObservableCollection<NameViewModel> _names = new();
+    private ObservableCollection<NameViewModel> _names = [];
 
     public bool HasNames => Names.Any();
 
@@ -54,19 +54,18 @@ public partial class PlayerFullViewModel : BaseViewModel, IDisposable
 
     public int Years => _dateTimeProvider.UtcNow.Year - YearOfBirth ?? 0;
 
+    private Dictionary<TournamentYearViewModel, List<PlayerTournamentViewModel>> _allTournaments;
+
     [ObservableProperty]
-    [NotifyPropertyChangedFor(nameof(HasTournamentYears))]
-    private List<TournamentYearViewModel> _tournamentYears;
+    private ObservableCollection<TournamentYearViewModel> _tournamentYears = [];
 
     public bool HasTournamentYears => TournamentYears?.Any() ?? false;
 
     [ObservableProperty]
-    [NotifyPropertyChangedFor(nameof(Tournaments))]
     private TournamentYearViewModel _tournamentYear;
 
-    private Dictionary<TournamentYearViewModel, List<PlayerTournamentViewModel>> _allTournaments;
-
-    public List<PlayerTournamentViewModel> Tournaments => _allTournaments?.GetValueOrDefault(TournamentYear) ?? new List<PlayerTournamentViewModel>();
+    [ObservableProperty]
+    private ObservableCollection<PlayerTournamentViewModel> _tournaments = [];
 
     [ObservableProperty]
     [NotifyPropertyChangedFor(nameof(ToggleFavoriteButtonName))]
@@ -196,7 +195,13 @@ public partial class PlayerFullViewModel : BaseViewModel, IDisposable
             YearOfBirth = playerFullInfo.YearOfBirth;
             IsFavorite = isFavorite;
 
-            TournamentYears = _allTournaments.Keys.ToList();
+            TournamentYears.Clear();
+            foreach(TournamentYearViewModel tournamentYear in _allTournaments.Keys.ToList())
+            {
+                TournamentYears.Add(tournamentYear);
+            }
+            OnPropertyChanged(nameof(HasTournamentYears));
+
             TournamentYear = TournamentYears.FirstOrDefault(x => TournamentYear is null || x.Year == TournamentYear.Year);
 
             Error = null;
@@ -217,6 +222,16 @@ public partial class PlayerFullViewModel : BaseViewModel, IDisposable
         {
             UseCache = false;
             IsLoading = false;
+        }
+    }
+
+    [RelayCommand]
+    private void ChangeTournamentYear()
+    {
+        Tournaments.Clear();
+        foreach (PlayerTournamentViewModel viewModel in _allTournaments.GetValueOrDefault(TournamentYear) ?? [])
+        {
+            Tournaments.Add(viewModel);
         }
     }
 

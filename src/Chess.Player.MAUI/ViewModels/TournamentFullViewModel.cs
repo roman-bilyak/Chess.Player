@@ -25,7 +25,7 @@ public partial class TournamentFullViewModel : BaseViewModel
     private string _tournamentLocation;
 
     [ObservableProperty]
-    private ObservableCollection<PlayerScoreViewModel> _playerScores = new();
+    private ObservableCollection<PlayerScoreViewModel> _playerScores = [];
 
     [ObservableProperty]
     private bool _useCache;

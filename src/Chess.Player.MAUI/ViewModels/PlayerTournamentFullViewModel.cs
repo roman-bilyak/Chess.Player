@@ -88,23 +88,6 @@ public partial class PlayerTournamentFullViewModel : BaseViewModel
         try
         {
             PlayerTournamentInfo playerTournamentInfo = await _chessDataService.GetPlayerTournamentInfoAsync(TournamentId, PlayerNo, UseCache, cancellationToken);
-            ObservableCollection<GameViewModel> games = [];
-            foreach (GameInfo gameInfo in playerTournamentInfo.Player.Games.OrderByDescending(x => x.Round))
-            {
-                GameViewModel gameViewModel = _serviceProvider.GetRequiredService<GameViewModel>();
-
-                gameViewModel.TournamentId = playerTournamentInfo.Tournament.Id;
-                gameViewModel.TournamentName = playerTournamentInfo.Tournament.Name;
-                gameViewModel.Round = gameInfo.Round;
-                gameViewModel.Board = gameInfo.Board;
-                gameViewModel.No = gameInfo.No;
-                gameViewModel.Name = gameInfo.Name;
-                gameViewModel.ClubCity = gameInfo.ClubCity;
-                gameViewModel.IsWhiteBlack = gameInfo.IsWhite;
-                gameViewModel.Result = gameInfo.Result;
-
-                games.Add(gameViewModel);
-            }
 
             PlayerTournament.TournamentId = playerTournamentInfo.Tournament.Id;
             PlayerTournament.TournamentName = playerTournamentInfo.Tournament.Name;
@@ -120,7 +103,24 @@ public partial class PlayerTournamentFullViewModel : BaseViewModel
             PlayerTournament.Points = playerTournamentInfo.Player.Points;
             PlayerTournament.ShowFullInfo = true;
 
-            Games = games;
+            Games.Clear();
+            foreach (GameInfo gameInfo in playerTournamentInfo.Player.Games.OrderByDescending(x => x.Round))
+            {
+                GameViewModel gameViewModel = _serviceProvider.GetRequiredService<GameViewModel>();
+
+                gameViewModel.TournamentId = playerTournamentInfo.Tournament.Id;
+                gameViewModel.TournamentName = playerTournamentInfo.Tournament.Name;
+                gameViewModel.Round = gameInfo.Round;
+                gameViewModel.Board = gameInfo.Board;
+                gameViewModel.No = gameInfo.No;
+                gameViewModel.Name = gameInfo.Name;
+                gameViewModel.ClubCity = gameInfo.ClubCity;
+                gameViewModel.IsWhiteBlack = gameInfo.IsWhite;
+                gameViewModel.Result = gameInfo.Result;
+
+                Games.Add(gameViewModel);
+            }
+            OnPropertyChanged(nameof(HasGames));
 
             Error = null;
         }
