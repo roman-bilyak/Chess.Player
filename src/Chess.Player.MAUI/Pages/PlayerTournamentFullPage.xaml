@@ -31,7 +31,7 @@
 
                     <views:PlayerTournamentView Grid.Row="0" BindingContext="{Binding PlayerTournament}" />
 
-                    <BoxView Grid.Row="1" Grid.Column="0" Color="#F17A00" HeightRequest="1" WidthRequest="500" HorizontalOptions="Center" VerticalOptions="Center" IsVisible="{Binding HasGames}" />
+                    <BoxView Grid.Row="1" Grid.Column="0" Color="#F17A00" HeightRequest="1" HorizontalOptions="Fill" VerticalOptions="Center" IsVisible="{Binding HasGames}" />
 
                     <CollectionView Grid.Row="2" ItemsSource="{Binding Games}">
                         <CollectionView.ItemTemplate>
