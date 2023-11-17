@@ -89,7 +89,7 @@
                         </CollectionView.ItemTemplate>
                     </CollectionView>
 
-                    <BoxView Grid.Row="4" Grid.Column="0" Grid.ColumnSpan="4" HeightRequest="1" Color="#F17A00" HorizontalOptions="Center" VerticalOptions="Center" IsVisible="{Binding HasTournamentYears}" />
+                    <BoxView Grid.Row="4" Grid.Column="0" Grid.ColumnSpan="4" Color="#F17A00" HeightRequest="1" WidthRequest="500" HorizontalOptions="Center" VerticalOptions="Center" IsVisible="{Binding HasTournamentYears}" />
 
                     <CollectionView ItemsSource="{Binding Tournaments, Mode=OneWay}"
                                     Grid.Row="5"
