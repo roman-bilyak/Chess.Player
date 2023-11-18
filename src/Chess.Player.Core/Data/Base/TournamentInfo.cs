@@ -39,4 +39,14 @@ public class TournamentInfo
     public List<PlayerScoreInfo> Players { get; set; } = new List<PlayerScoreInfo>();
 
     public bool IsTeamTournament { get; set; }
+
+    public bool IsOnline(DateTime currentDate)
+    {
+        return (!StartDate.HasValue || currentDate >= StartDate.Value) && (!EndDate.HasValue || currentDate <= EndDate.Value);
+    }
+
+    public bool IsFuture(DateTime currentDate)
+    {
+        return StartDate.HasValue && currentDate < StartDate.Value;
+    }
 }

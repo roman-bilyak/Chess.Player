@@ -56,8 +56,18 @@
                 <Label Text="{Binding ClubCity}" IsVisible="{Binding HasClubCity}" Style="{StaticResource CardDetailsStyle}" />
                 <Label Text="{Binding YearOfBirth}" IsVisible="{Binding HasYearOfBirth}" Style="{StaticResource CardDetailsStyle}" />
             </VerticalStackLayout>
-            <Label Grid.Row="0" Grid.Column="1" Text="{Binding Title}" VerticalOptions="Start" HorizontalOptions="End" Style="{StaticResource CardHighlightStyle}" />
-            <Label Grid.Row="0" Grid.Column="1" Text="{Binding Years}" IsVisible="{Binding HasYearOfBirth}" VerticalOptions="End" HorizontalOptions="End" Style="{StaticResource CardDetailsStyle}" />
+            <Image Grid.Row="0" Grid.Column="1" Source="online.svg" VerticalOptions="Start" HorizontalOptions="Center" WidthRequest="25" HeightRequest="25" IsVisible="{Binding HasFutureTournaments, Mode=OneWay}">
+                <Image.Behaviors>
+                    <mct:IconTintColorBehavior TintColor="#888888" />
+                </Image.Behaviors>
+            </Image>
+            <Image Grid.Row="0" Grid.Column="1" Source="online.svg" VerticalOptions="Start" HorizontalOptions="Center" WidthRequest="25" HeightRequest="25" IsVisible="{Binding HasOnlineTournaments, Mode=OneWay}">
+                <Image.Behaviors>
+                    <mct:IconTintColorBehavior TintColor="#F17A00" />
+                </Image.Behaviors>
+            </Image>
+            <Label Grid.Row="0" Grid.Column="1" Text="{Binding Title}" VerticalOptions="Center" HorizontalOptions="Center" Style="{StaticResource CardHighlightStyle}" />
+            <Label Grid.Row="0" Grid.Column="1" Text="{Binding Years}" IsVisible="{Binding HasYearOfBirth}" VerticalOptions="End" HorizontalOptions="Center" Style="{StaticResource CardDetailsStyle}" />
         </Grid>
     </Border>
 </ContentView>

@@ -10,6 +10,7 @@ namespace Chess.Player.MAUI.ViewModels;
 public partial class PlayerTournamentFullViewModel : BaseViewModel
 {
     private readonly IChessDataService _chessDataService;
+    private readonly IDateTimeProvider _dateTimeProvider;
     private readonly IServiceProvider _serviceProvider;
 
     [ObservableProperty]
@@ -52,13 +53,16 @@ public partial class PlayerTournamentFullViewModel : BaseViewModel
     public PlayerTournamentFullViewModel
     (
         IChessDataService chessDataService,
+        IDateTimeProvider dateTimeProvider,
         IServiceProvider serviceProvider
     )
     {
         ArgumentNullException.ThrowIfNull(chessDataService);
+        ArgumentNullException.ThrowIfNull(dateTimeProvider);
         ArgumentNullException.ThrowIfNull(serviceProvider);
 
         _chessDataService = chessDataService;
+        _dateTimeProvider = dateTimeProvider;
         _serviceProvider = serviceProvider;
 
         _playerTournament = serviceProvider.GetRequiredService<PlayerTournamentViewModel>();
@@ -87,6 +91,8 @@ public partial class PlayerTournamentFullViewModel : BaseViewModel
     {
         try
         {
+            DateTime currentDate = _dateTimeProvider.UtcNow.Date;
+
             PlayerTournamentInfo playerTournamentInfo = await _chessDataService.GetPlayerTournamentInfoAsync(TournamentId, PlayerNo, UseCache, cancellationToken);
 
             PlayerTournament.TournamentId = playerTournamentInfo.Tournament.Id;
@@ -94,6 +100,8 @@ public partial class PlayerTournamentFullViewModel : BaseViewModel
             PlayerTournament.TournamentLocation = playerTournamentInfo.Tournament.Location;
             PlayerTournament.TournamentStartDate = playerTournamentInfo.Tournament.StartDate;
             PlayerTournament.TournamentEndDate = playerTournamentInfo.Tournament.EndDate;
+            PlayerTournament.IsOnline = playerTournamentInfo.Tournament.IsOnline(currentDate);
+            PlayerTournament.IsFuture = playerTournamentInfo.Tournament.IsFuture(currentDate);
             PlayerTournament.NumberOfPlayers = playerTournamentInfo.Tournament.Players.Count;
             PlayerTournament.NumberOfRounds = playerTournamentInfo.Tournament.NumberOfRounds;
             PlayerTournament.Name = playerTournamentInfo.Player.Name;

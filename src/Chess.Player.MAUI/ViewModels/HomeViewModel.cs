@@ -14,6 +14,7 @@ public partial class HomeViewModel : BaseViewModel
 {
     private readonly IPlayerHistoryService _playerHistoryService;
     private readonly INavigationService _navigationService;
+    private readonly IDateTimeProvider _dateTimeProvider;
     private readonly IServiceProvider _serviceProvider;
 
     [ObservableProperty]
@@ -38,15 +39,18 @@ public partial class HomeViewModel : BaseViewModel
     (
         IPlayerHistoryService playerHistoryService,
         INavigationService navigationService,
+        IDateTimeProvider dateTimeProvider,
         IServiceProvider serviceProvider
     )
     {
         ArgumentNullException.ThrowIfNull(playerHistoryService);
         ArgumentNullException.ThrowIfNull(navigationService);
+        ArgumentNullException.ThrowIfNull(dateTimeProvider);
         ArgumentNullException.ThrowIfNull(serviceProvider);
 
         _playerHistoryService = playerHistoryService;
         _navigationService = navigationService;
+        _dateTimeProvider = dateTimeProvider;
         _serviceProvider = serviceProvider;
     }
 
@@ -73,7 +77,8 @@ public partial class HomeViewModel : BaseViewModel
     {
         try
         {
-            List<PlayerViewModel> players = new();
+            List<PlayerViewModel> players = [];
+            DateTime currentDate = _dateTimeProvider.UtcNow.Date;
             foreach (PlayerFullInfo player in await _playerHistoryService.GetAllAsync(UseCache, cancellationToken))
             {
                 PlayerViewModel playerViewModel = _serviceProvider.GetRequiredService<PlayerViewModel>();
@@ -82,6 +87,8 @@ public partial class HomeViewModel : BaseViewModel
                 playerViewModel.Title = player.Title;
                 playerViewModel.ClubCity = player.ClubCity;
                 playerViewModel.YearOfBirth = player.YearOfBirth;
+                playerViewModel.HasOnlineTournaments = player.HasOnlineTournaments(currentDate);
+                playerViewModel.HasFutureTournaments = player.HasFutureTournaments(currentDate);
 
                 players.Add(playerViewModel);
             }

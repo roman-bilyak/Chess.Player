@@ -37,6 +37,12 @@ public partial class PlayerViewModel : BaseViewModel
     public int Years => _dateTimeProvider.UtcNow.Year - YearOfBirth ?? 0;
 
     [ObservableProperty]
+    private bool _hasOnlineTournaments;
+
+    [ObservableProperty]
+    private bool _hasFutureTournaments;
+
+    [ObservableProperty]
     private bool _isSelected;
 
     public PlayerViewModel

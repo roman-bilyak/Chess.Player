@@ -15,4 +15,14 @@ public class PlayerFullInfo
     public List<NameInfo> Names { get; set; } = new List<NameInfo>();
 
     public List<PlayerTournamentInfo> Tournaments { get; set; } = new List<PlayerTournamentInfo>();
+
+    public bool HasOnlineTournaments(DateTime currentDate)
+    {
+        return this.Tournaments.Any(x => x.Tournament.IsOnline(currentDate));
+    }
+
+    public bool HasFutureTournaments(DateTime currentDate)
+    {
+        return this.Tournaments.Any(x => x.Tournament.IsFuture(currentDate));
+    }
 }

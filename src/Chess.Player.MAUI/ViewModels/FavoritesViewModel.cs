@@ -11,6 +11,7 @@ namespace Chess.Player.MAUI.ViewModels;
 public partial class FavoritesViewModel : BaseViewModel
 {
     private readonly IPlayerFavoriteService _playerFavoriteService;
+    private readonly IDateTimeProvider _dateTimeProvider;
     private readonly IServiceProvider _serviceProvider;
 
     [ObservableProperty]
@@ -31,13 +32,16 @@ public partial class FavoritesViewModel : BaseViewModel
     public FavoritesViewModel
     (
         IPlayerFavoriteService playerFavoriteService,
+        IDateTimeProvider dateTimeProvider,
         IServiceProvider serviceProvider
     )
     {
         ArgumentNullException.ThrowIfNull(playerFavoriteService);
+        ArgumentNullException.ThrowIfNull(dateTimeProvider);
         ArgumentNullException.ThrowIfNull(serviceProvider);
 
         _playerFavoriteService = playerFavoriteService;
+        _dateTimeProvider = dateTimeProvider;
         _serviceProvider = serviceProvider;
     }
 
@@ -64,7 +68,8 @@ public partial class FavoritesViewModel : BaseViewModel
     {
         try
         {
-            List<PlayerViewModel> players = new();
+            List<PlayerViewModel> players = [];
+            DateTime currentDate = _dateTimeProvider.UtcNow.Date;
             foreach (PlayerFullInfo player in await _playerFavoriteService.GetAllAsync(UseCache, cancellationToken))
             {
                 PlayerViewModel playerViewModel = _serviceProvider.GetRequiredService<PlayerViewModel>();
@@ -73,6 +78,8 @@ public partial class FavoritesViewModel : BaseViewModel
                 playerViewModel.Title = player.Title;
                 playerViewModel.ClubCity = player.ClubCity;
                 playerViewModel.YearOfBirth = player.YearOfBirth;
+                playerViewModel.HasOnlineTournaments = player.HasOnlineTournaments(currentDate);
+                playerViewModel.HasFutureTournaments = player.HasFutureTournaments(currentDate);
 
                 players.Add(playerViewModel);
             }

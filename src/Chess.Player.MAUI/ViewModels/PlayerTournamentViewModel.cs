@@ -1,5 +1,4 @@
-﻿using Chess.Player.Data;
-using Chess.Player.MAUI.Pages;
+﻿using Chess.Player.MAUI.Pages;
 using Chess.Player.Services;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
@@ -9,7 +8,6 @@ namespace Chess.Player.MAUI.ViewModels;
 [INotifyPropertyChanged]
 public partial class PlayerTournamentViewModel : BaseViewModel
 {
-    private readonly DateTime _currentDate;
     private readonly INavigationService _navigationService;
 
     [ObservableProperty]
@@ -22,29 +20,20 @@ public partial class PlayerTournamentViewModel : BaseViewModel
     private string _tournamentName;
 
     [ObservableProperty]
-    [NotifyPropertyChangedFor(nameof(TournamentDateAndLocation), nameof(IsOnline), nameof(IsFuture), nameof(IsNotFuture), nameof(IsActive), nameof(IsPodium))]
+    [NotifyPropertyChangedFor(nameof(TournamentDateAndLocation))]
     private DateTime? _tournamentStartDate;
 
     [ObservableProperty]
-    [NotifyPropertyChangedFor(nameof(TournamentDateAndLocation), nameof(IsOnline), nameof(IsFuture), nameof(IsNotFuture), nameof(IsActive), nameof(IsPodium))]
+    [NotifyPropertyChangedFor(nameof(TournamentDateAndLocation))]
     private DateTime? _tournamentEndDate;
 
-    public bool IsOnline
-    {
-        get
-        {
-            return (!TournamentStartDate.HasValue || _currentDate >= TournamentStartDate.Value)
-                && (!TournamentEndDate.HasValue || _currentDate <= TournamentEndDate.Value);
-        }
-    }
+    [ObservableProperty]
+    [NotifyPropertyChangedFor(nameof(IsActive), nameof(IsPodium))]
+    private bool _isOnline;
 
-    public bool IsFuture
-    {
-        get
-        {
-            return TournamentStartDate.HasValue && _currentDate < TournamentStartDate.Value;
-        }
-    }
+    [ObservableProperty]
+    [NotifyPropertyChangedFor(nameof(IsActive), nameof(IsPodium))]
+    private bool _isFuture;
 
     public bool IsNotFuture => !IsFuture;
 
@@ -89,14 +78,11 @@ public partial class PlayerTournamentViewModel : BaseViewModel
 
     public PlayerTournamentViewModel
     (
-        IDateTimeProvider dateTimeProvider,
         INavigationService navigationService
     )
     {
-        ArgumentNullException.ThrowIfNull(dateTimeProvider);
         ArgumentNullException.ThrowIfNull(navigationService);
 
-        _currentDate = dateTimeProvider.UtcNow.Date;
         _navigationService = navigationService;
     }
 

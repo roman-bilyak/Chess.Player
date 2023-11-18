@@ -150,6 +150,8 @@ public partial class PlayerFullViewModel : BaseViewModel, IDisposable
     {
         try
         {
+            DateTime currentDate = _dateTimeProvider.UtcNow.Date;
+
             PlayerFullInfo playerFullInfo = await _chessDataService.GetPlayerFullInfoAsync(Name, UseCache, cancellationToken);
             bool isFavorite = playerFullInfo.Name is not null 
                 && await _playerFavoriteService.ContainsAsync(playerFullInfo.Name, cancellationToken);
@@ -176,6 +178,8 @@ public partial class PlayerFullViewModel : BaseViewModel, IDisposable
                     viewModel.TournamentLocation = y.Tournament.Location;
                     viewModel.TournamentStartDate = y.Tournament.StartDate;
                     viewModel.TournamentEndDate = y.Tournament.EndDate;
+                    viewModel.IsOnline = y.Tournament.IsOnline(currentDate);
+                    viewModel.IsFuture = y.Tournament.IsFuture(currentDate);
                     viewModel.NumberOfPlayers = y.Tournament.Players.Count;
                     viewModel.NumberOfRounds = y.Tournament.NumberOfRounds;
                     viewModel.Name = y.Player.Name;
