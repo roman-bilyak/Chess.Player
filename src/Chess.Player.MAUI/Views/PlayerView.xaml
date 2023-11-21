@@ -10,64 +10,71 @@
             <mct:InvertedBoolConverter x:Key="InvertedBoolConverter" />
         </ResourceDictionary>
     </ContentView.Resources>
-    <Border Style="{StaticResource CardBorderStyle}">
-        <Border.GestureRecognizers>
-            <TapGestureRecognizer Command="{Binding ShowInfoCommand}" />
-        </Border.GestureRecognizers>
-        <VisualStateManager.VisualStateGroups>
-            <VisualStateGroupList>
-                <VisualStateGroup x:Name="CommonStates">
-                    <VisualState x:Name="Normal">
-                        <VisualState.StateTriggers>
-                            <StateTrigger IsActive="{Binding IsSelected, Converter={StaticResource InvertedBoolConverter}}" />
-                        </VisualState.StateTriggers>
-                        <VisualState.Setters>
-                            <Setter Property="BackgroundColor" Value="{AppThemeBinding Light={StaticResource Secondary}, Dark={StaticResource Gray600}}" />
-                        </VisualState.Setters>
-                    </VisualState>
-                    <VisualState x:Name="Selected">
-                        <VisualState.StateTriggers>
-                            <StateTrigger IsActive="{Binding IsSelected}" />
-                        </VisualState.StateTriggers>
-                        <VisualState.Setters>
-                            <Setter Property="BackgroundColor" Value="{AppThemeBinding Light={StaticResource Tertiary}, Dark={StaticResource Gray400}}" />
-                        </VisualState.Setters>
-                    </VisualState>
-                </VisualStateGroup>
-            </VisualStateGroupList>
-        </VisualStateManager.VisualStateGroups>
-        <Grid RowSpacing="10" ColumnSpacing="10">
-            <Grid.RowDefinitions>
-                <RowDefinition Height="Auto" />
-            </Grid.RowDefinitions>
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="*" />
-                <ColumnDefinition Width="Auto" />
-            </Grid.ColumnDefinitions>
+    <SwipeView>
+        <SwipeView.RightItems>
+            <SwipeItems>
+                <SwipeItem Text="Info" BackgroundColor="{AppThemeBinding Light={StaticResource Secondary}, Dark={StaticResource Gray600}}" Command="{Binding ShowInfoCommand}" />
+            </SwipeItems>
+        </SwipeView.RightItems>
+        <Border Style="{StaticResource CardBorderStyle}">
+            <Border.GestureRecognizers>
+                <TapGestureRecognizer Command="{Binding ShowInfoCommand}" />
+            </Border.GestureRecognizers>
+            <VisualStateManager.VisualStateGroups>
+                <VisualStateGroupList>
+                    <VisualStateGroup x:Name="CommonStates">
+                        <VisualState x:Name="Normal">
+                            <VisualState.StateTriggers>
+                                <StateTrigger IsActive="{Binding IsSelected, Converter={StaticResource InvertedBoolConverter}}" />
+                            </VisualState.StateTriggers>
+                            <VisualState.Setters>
+                                <Setter Property="BackgroundColor" Value="{AppThemeBinding Light={StaticResource Secondary}, Dark={StaticResource Gray600}}" />
+                            </VisualState.Setters>
+                        </VisualState>
+                        <VisualState x:Name="Selected">
+                            <VisualState.StateTriggers>
+                                <StateTrigger IsActive="{Binding IsSelected}" />
+                            </VisualState.StateTriggers>
+                            <VisualState.Setters>
+                                <Setter Property="BackgroundColor" Value="{AppThemeBinding Light={StaticResource Tertiary}, Dark={StaticResource Gray400}}" />
+                            </VisualState.Setters>
+                        </VisualState>
+                    </VisualStateGroup>
+                </VisualStateGroupList>
+            </VisualStateManager.VisualStateGroups>
+            <Grid RowSpacing="10" ColumnSpacing="10">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="Auto" />
+                </Grid.ColumnDefinitions>
 
-            <VerticalStackLayout Grid.Row="0" Grid.Column="0">
-                <VerticalStackLayout BindableLayout.ItemsSource="{Binding Names, Mode=OneWay}">
-                    <BindableLayout.ItemTemplate>
-                        <DataTemplate x:DataType="vm:NameViewModel">
-                            <Label Text="{Binding FullName}" Style="{StaticResource CardHighlightStyle}"/>
-                        </DataTemplate>
-                    </BindableLayout.ItemTemplate>
+                <VerticalStackLayout Grid.Row="0" Grid.Column="0">
+                    <VerticalStackLayout BindableLayout.ItemsSource="{Binding Names, Mode=OneWay}">
+                        <BindableLayout.ItemTemplate>
+                            <DataTemplate x:DataType="vm:NameViewModel">
+                                <Label Text="{Binding FullName}" Style="{StaticResource CardHighlightStyle}"/>
+                            </DataTemplate>
+                        </BindableLayout.ItemTemplate>
+                    </VerticalStackLayout>
+                    <Label Text="{Binding ClubCity}" IsVisible="{Binding HasClubCity}" Style="{StaticResource CardDetailsStyle}" />
+                    <Label Text="{Binding YearOfBirth}" IsVisible="{Binding HasYearOfBirth}" Style="{StaticResource CardDetailsStyle}" />
                 </VerticalStackLayout>
-                <Label Text="{Binding ClubCity}" IsVisible="{Binding HasClubCity}" Style="{StaticResource CardDetailsStyle}" />
-                <Label Text="{Binding YearOfBirth}" IsVisible="{Binding HasYearOfBirth}" Style="{StaticResource CardDetailsStyle}" />
-            </VerticalStackLayout>
-            <Image Grid.Row="0" Grid.Column="1" Source="online.svg" VerticalOptions="Start" HorizontalOptions="Center" WidthRequest="25" HeightRequest="25" IsVisible="{Binding HasFutureTournaments, Mode=OneWay}">
-                <Image.Behaviors>
-                    <mct:IconTintColorBehavior TintColor="#888888" />
-                </Image.Behaviors>
-            </Image>
-            <Image Grid.Row="0" Grid.Column="1" Source="online.svg" VerticalOptions="Start" HorizontalOptions="Center" WidthRequest="25" HeightRequest="25" IsVisible="{Binding HasOnlineTournaments, Mode=OneWay}">
-                <Image.Behaviors>
-                    <mct:IconTintColorBehavior TintColor="#F17A00" />
-                </Image.Behaviors>
-            </Image>
-            <Label Grid.Row="0" Grid.Column="1" Text="{Binding Title}" VerticalOptions="Center" HorizontalOptions="Center" Style="{StaticResource CardHighlightStyle}" />
-            <Label Grid.Row="0" Grid.Column="1" Text="{Binding Years}" IsVisible="{Binding HasYearOfBirth}" VerticalOptions="End" HorizontalOptions="Center" Style="{StaticResource CardDetailsStyle}" />
-        </Grid>
-    </Border>
+                <Image Grid.Row="0" Grid.Column="1" Source="online.svg" VerticalOptions="Start" HorizontalOptions="Center" WidthRequest="25" HeightRequest="25" IsVisible="{Binding HasFutureTournaments, Mode=OneWay}">
+                    <Image.Behaviors>
+                        <mct:IconTintColorBehavior TintColor="#888888" />
+                    </Image.Behaviors>
+                </Image>
+                <Image Grid.Row="0" Grid.Column="1" Source="online.svg" VerticalOptions="Start" HorizontalOptions="Center" WidthRequest="25" HeightRequest="25" IsVisible="{Binding HasOnlineTournaments, Mode=OneWay}">
+                    <Image.Behaviors>
+                        <mct:IconTintColorBehavior TintColor="#F17A00" />
+                    </Image.Behaviors>
+                </Image>
+                <Label Grid.Row="0" Grid.Column="1" Text="{Binding Title}" VerticalOptions="Center" HorizontalOptions="Center" Style="{StaticResource CardHighlightStyle}" />
+                <Label Grid.Row="0" Grid.Column="1" Text="{Binding Years}" IsVisible="{Binding HasYearOfBirth}" VerticalOptions="End" HorizontalOptions="Center" Style="{StaticResource CardDetailsStyle}" />
+            </Grid>
+        </Border>
+    </SwipeView>
 </ContentView>

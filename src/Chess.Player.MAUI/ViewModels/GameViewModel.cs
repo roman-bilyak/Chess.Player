@@ -78,4 +78,17 @@ public partial class GameViewModel : BaseViewModel
 
         IsSelected = false;
     }
+
+    [RelayCommand]
+    private async Task ShowPlayerInfoAsync(CancellationToken cancellationToken)
+    {
+        IsSelected = true;
+
+        await _navigationService.PushAsync<PlayerFullPage, PlayerFullViewModel>(x =>
+        {
+            x.Name = Name;
+        });
+
+        IsSelected = false;
+    }
 }

@@ -118,4 +118,23 @@ public partial class PlayerTournamentViewModel : BaseViewModel
 
         IsSelected = false;
     }
+
+    [RelayCommand]
+    private async Task ShowTournamentInfoAsync(CancellationToken cancellationToken)
+    {
+        if (!TournamentId.HasValue)
+        {
+            return;
+        }
+
+        IsSelected = true;
+
+        await _navigationService.PushAsync<TournamentFullPage, TournamentFullViewModel>(x =>
+        {
+            x.TournamentId = TournamentId.Value;
+            x.TournamentName = TournamentName;
+        });
+
+        IsSelected = false;
+    }
 }

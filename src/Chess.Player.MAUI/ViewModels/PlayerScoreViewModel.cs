@@ -33,13 +33,22 @@ public partial class PlayerScoreViewModel : BaseViewModel
     private double? _points;
 
     [ObservableProperty]
+    [NotifyPropertyChangedFor(nameof(TB1Format))]
     private double? _tB1;
 
     [ObservableProperty]
+    [NotifyPropertyChangedFor(nameof(TB2Format))]
     private double? _tB2;
 
     [ObservableProperty]
+    [NotifyPropertyChangedFor(nameof(TB3Format))]
     private double? _tB3;
+
+    public string TB1Format => $"{TB1:F01}";
+
+    public string TB2Format => $"{TB2:F01}";
+
+    public string TB3Format => $"{TB3:F01}";
 
     [ObservableProperty]
     private bool _isSelected;
@@ -70,6 +79,19 @@ public partial class PlayerScoreViewModel : BaseViewModel
             x.TournamentName = TournamentName;
             x.PlayerNo = No.Value;
             x.PlayerName = Name;
+        });
+
+        IsSelected = false;
+    }
+
+    [RelayCommand]
+    private async Task ShowPlayerInfoAsync(CancellationToken cancellationToken)
+    {
+        IsSelected = true;
+
+        await _navigationService.PushAsync<PlayerFullPage, PlayerFullViewModel>(x =>
+        {
+            x.Name = Name;
         });
 
         IsSelected = false;
