@@ -155,7 +155,7 @@ public partial class PlayerFullViewModel : BaseViewModel, IDisposable
             PlayerFullInfo playerFullInfo = await _chessDataService.GetPlayerFullInfoAsync(Name, UseCache, cancellationToken);
             bool isFavorite = playerFullInfo.Name is not null 
                 && await _playerFavoriteService.ContainsAsync(playerFullInfo.Name, cancellationToken);
-            if (playerFullInfo.Tournaments.Any())
+            if (playerFullInfo.Tournaments.Count > 0)
             {
                 await _playerHistoryService.AddAsync(playerFullInfo.Name, cancellationToken);
             }

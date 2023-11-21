@@ -36,10 +36,7 @@ internal class PlayerFavoriteService : IPlayerFavoriteService
     {
         await EnsureLoadedAsync(cancellationToken);
 
-        if (_playerFavoriteList.Contains(name))
-        {
-            _playerFavoriteList.Remove(name);
-        }
+        _playerFavoriteList.Remove(name);
 
         await SaveAsync(cancellationToken);
     }
