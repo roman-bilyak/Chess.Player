@@ -1,5 +1,6 @@
 ﻿using Chess.Player.Cache;
 using Chess.Player.Data;
+using System.Diagnostics.CodeAnalysis;
 
 namespace Chess.Player.MAUI.Services;
 
@@ -10,7 +11,7 @@ internal class PlayerHistoryService : IPlayerHistoryService
     private readonly IChessDataService _chessDataService;
     private readonly ICacheManager _cacheManager;
 
-    private PlayerHistoryList _playerHistoryList;
+    private PlayerHistoryList? _playerHistoryList;
 
     public PlayerHistoryService
     (
@@ -44,7 +45,7 @@ internal class PlayerHistoryService : IPlayerHistoryService
     {
         await EnsureLoadedAsync(cancellationToken);
 
-        List<PlayerFullInfo> result = new();
+        List<PlayerFullInfo> result = [];
         foreach (var player in _playerHistoryList)
         {
             PlayerFullInfo playerInfo = await _chessDataService.GetPlayerFullInfoAsync(player, useCache, cancellationToken);
@@ -56,16 +57,17 @@ internal class PlayerHistoryService : IPlayerHistoryService
 
     public async Task ClearAsync(CancellationToken cancellationToken)
     {
-        _playerHistoryList = new PlayerHistoryList();
+        _playerHistoryList = [];
 
         await SaveAsync(cancellationToken);
     }
 
     #region helper methods
 
+    [MemberNotNull(nameof(_playerHistoryList))]
     private async Task EnsureLoadedAsync(CancellationToken cancellationToken)
     {
-        _playerHistoryList ??= await _cacheManager.GetAsync<PlayerHistoryList>(includeExpired: false, cancellationToken) ?? new PlayerHistoryList();
+        _playerHistoryList ??= await _cacheManager.GetAsync<PlayerHistoryList>(includeExpired: false, cancellationToken) ?? [];
     }
 
     private async Task SaveAsync(CancellationToken cancellationToken)

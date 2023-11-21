@@ -18,7 +18,7 @@ public partial class HomeViewModel : BaseViewModel
     private readonly IServiceProvider _serviceProvider;
 
     [ObservableProperty]
-    private string _searchText;
+    private string? _searchText;
 
     [ObservableProperty]
     private ObservableCollection<PlayerViewModel> _players = [];
@@ -31,7 +31,7 @@ public partial class HomeViewModel : BaseViewModel
 
     [ObservableProperty]
     [NotifyPropertyChangedFor(nameof(HasError))]
-    private string _error;
+    private string? _error;
 
     public bool HasError => !string.IsNullOrWhiteSpace(Error);
 

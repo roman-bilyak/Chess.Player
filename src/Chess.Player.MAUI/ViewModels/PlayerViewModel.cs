@@ -13,18 +13,18 @@ public partial class PlayerViewModel : BaseViewModel
     private readonly IDateTimeProvider _dateTimeProvider;
     private readonly INavigationService _navigationService;
 
-    public string Name => Names.FirstOrDefault()?.FullName;
+    public string? Name => Names.FirstOrDefault()?.FullName;
 
     [ObservableProperty]
     [NotifyPropertyChangedFor(nameof(Name))]
     private ObservableCollection<NameViewModel> _names = [];
 
     [ObservableProperty]
-    private string _title;
+    private string? _title;
 
     [ObservableProperty]
     [NotifyPropertyChangedFor(nameof(HasClubCity))]
-    private string _clubCity;
+    private string? _clubCity;
 
     public bool HasClubCity => !string.IsNullOrEmpty(ClubCity);
 

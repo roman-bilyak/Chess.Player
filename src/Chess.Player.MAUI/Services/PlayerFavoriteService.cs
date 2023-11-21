@@ -1,5 +1,6 @@
 ﻿using Chess.Player.Cache;
 using Chess.Player.Data;
+using System.Diagnostics.CodeAnalysis;
 
 namespace Chess.Player.MAUI.Services;
 
@@ -8,7 +9,7 @@ internal class PlayerFavoriteService : IPlayerFavoriteService
     private readonly IChessDataService _chessDataService;
     private readonly ICacheManager _cacheManager;
 
-    private PlayerFavoriteList _playerFavoriteList;
+    private PlayerFavoriteList? _playerFavoriteList;
 
     public PlayerFavoriteService
     (
@@ -83,6 +84,7 @@ internal class PlayerFavoriteService : IPlayerFavoriteService
 
     #region helper methods
 
+    [MemberNotNull(nameof(_playerFavoriteList))]
     private async Task EnsureLoadedAsync(CancellationToken cancellationToken)
     {
         _playerFavoriteList ??= await _cacheManager.GetAsync<PlayerFavoriteList>(includeExpired: false, cancellationToken) ?? [];

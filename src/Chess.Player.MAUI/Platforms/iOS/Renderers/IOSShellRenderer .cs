@@ -8,17 +8,15 @@ internal class IOSShellRenderer : ShellRenderer
     protected override IShellSectionRenderer CreateShellSectionRenderer(ShellSection shellSection)
     {
         var renderer = base.CreateShellSectionRenderer(shellSection);
-        if (renderer != null)
-        {
-            var tabbarController = (renderer as ShellSectionRenderer).TabBarController;
-            if (null != tabbarController)
-            {
-                tabbarController.ViewControllerSelected += async (o, e) => {
-                    await shellSection?.Navigation.PopToRootAsync();
 
-                };
-            }
+        var tabbarController = (renderer as ShellSectionRenderer)?.TabBarController;
+        if (tabbarController is not null)
+        {
+            tabbarController.ViewControllerSelected += async (o, e) => {
+                await shellSection.Navigation.PopToRootAsync();
+            };
         }
+
         return renderer;
     }
 }

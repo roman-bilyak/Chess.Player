@@ -20,7 +20,7 @@ public partial class PlayerFullViewModel : BaseViewModel, IDisposable
     private readonly IServiceProvider _serviceProvider;
 
     [ObservableProperty]
-    private string _name;
+    private string? _name;
 
     [ObservableProperty]
     [NotifyPropertyChangedFor(nameof(HasNames))]
@@ -30,19 +30,19 @@ public partial class PlayerFullViewModel : BaseViewModel, IDisposable
 
     [ObservableProperty]
     [NotifyPropertyChangedFor(nameof(HasTitle))]
-    private string _title;
+    private string? _title;
 
     public bool HasTitle => !string.IsNullOrEmpty(Title);
 
     [ObservableProperty]
     [NotifyPropertyChangedFor(nameof(HasFideId))]
-    private string _fideId;
+    private string? _fideId;
 
     public bool HasFideId => !string.IsNullOrEmpty(FideId);
 
     [ObservableProperty]
     [NotifyPropertyChangedFor(nameof(HasClubCity))]
-    private string _clubCity;
+    private string? _clubCity;
 
     public bool HasClubCity => !string.IsNullOrEmpty(ClubCity);
 
@@ -54,7 +54,7 @@ public partial class PlayerFullViewModel : BaseViewModel, IDisposable
 
     public int Years => _dateTimeProvider.UtcNow.Year - YearOfBirth ?? 0;
 
-    private Dictionary<TournamentYearViewModel, List<PlayerTournamentViewModel>> _allTournaments;
+    private Dictionary<TournamentYearViewModel, List<PlayerTournamentViewModel>> _allTournaments = [];
 
     [ObservableProperty]
     private ObservableCollection<TournamentYearViewModel> _tournamentYears = [];
@@ -62,7 +62,7 @@ public partial class PlayerFullViewModel : BaseViewModel, IDisposable
     public bool HasTournamentYears => TournamentYears?.Any() ?? false;
 
     [ObservableProperty]
-    private TournamentYearViewModel _tournamentYear;
+    private TournamentYearViewModel? _tournamentYear;
 
     [ObservableProperty]
     private ObservableCollection<PlayerTournamentViewModel> _tournaments = [];
@@ -84,7 +84,7 @@ public partial class PlayerFullViewModel : BaseViewModel, IDisposable
 
     [ObservableProperty]
     [NotifyPropertyChangedFor(nameof(HasError))]
-    private string _error;
+    private string? _error;
 
     public bool HasError => !string.IsNullOrWhiteSpace(Error);
 
@@ -139,6 +139,11 @@ public partial class PlayerFullViewModel : BaseViewModel, IDisposable
     [RelayCommand]
     private async Task AddNameAsync(CancellationToken cancellationToken)
     {
+        if (string.IsNullOrEmpty(Name))
+        {
+            return;
+        }
+
         string name = await _popupService.DisplayPromptAsync("Add Name", placeholder: "Example: Smith John");
         await _playerGroupService.AddToGroupAsync(Name, name, cancellationToken);
 
@@ -150,12 +155,17 @@ public partial class PlayerFullViewModel : BaseViewModel, IDisposable
     {
         try
         {
+            if (string.IsNullOrEmpty(Name))
+            {
+                return;
+            }
+
             DateTime currentDate = _dateTimeProvider.UtcNow.Date;
 
             PlayerFullInfo playerFullInfo = await _chessDataService.GetPlayerFullInfoAsync(Name, UseCache, cancellationToken);
             bool isFavorite = playerFullInfo.Name is not null 
                 && await _playerFavoriteService.ContainsAsync(playerFullInfo.Name, cancellationToken);
-            if (playerFullInfo.Tournaments.Count > 0)
+            if (playerFullInfo.Tournaments.Count > 0 && !string.IsNullOrEmpty(playerFullInfo.Name))
             {
                 await _playerHistoryService.AddAsync(playerFullInfo.Name, cancellationToken);
             }
@@ -233,6 +243,12 @@ public partial class PlayerFullViewModel : BaseViewModel, IDisposable
     private void ChangeTournamentYear()
     {
         Tournaments.Clear();
+
+        if (TournamentYear is null)
+        {
+            return;
+        }
+
         foreach (PlayerTournamentViewModel viewModel in _allTournaments.GetValueOrDefault(TournamentYear) ?? [])
         {
             Tournaments.Add(viewModel);
@@ -242,6 +258,11 @@ public partial class PlayerFullViewModel : BaseViewModel, IDisposable
     [RelayCommand]
     private async Task ToggleFavoriteAsync(CancellationToken cancellationToken)
     {
+        if (string.IsNullOrEmpty(Name))
+        {
+            return;
+        }
+
         IsFavorite = await _playerFavoriteService.ToggleAsync(Name, cancellationToken);
     }
 
@@ -261,6 +282,15 @@ public partial class PlayerFullViewModel : BaseViewModel, IDisposable
 
     public void Dispose()
     {
-        _chessDataService.ProgressChanged -= OnProgressChanged;
+        Dispose(true);
+        GC.SuppressFinalize(this);
+    }
+
+    protected virtual void Dispose(bool disposing)
+    {
+        if (disposing)
+        {
+            _chessDataService.ProgressChanged -= OnProgressChanged;
+        }
     }
 }

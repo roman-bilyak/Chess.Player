@@ -2,17 +2,13 @@
 
 namespace Chess.Player.MAUI;
 
-internal class AndroidShellItemRenderer : ShellItemRenderer
+internal class AndroidShellItemRenderer(IShellContext shellContext) : ShellItemRenderer(shellContext)
 {
-    public AndroidShellItemRenderer(IShellContext shellContext) : base(shellContext)
-    {
-    }
-
     protected override void OnTabReselected(ShellSection shellSection)
     {
         MainThread.BeginInvokeOnMainThread(async () =>
         {
-            await shellSection?.Navigation.PopToRootAsync();
+            await shellSection.Navigation.PopToRootAsync();
         });
     }
 
@@ -20,8 +16,9 @@ internal class AndroidShellItemRenderer : ShellItemRenderer
     {
         MainThread.BeginInvokeOnMainThread(async () =>
         {
-            await shellSection?.Navigation.PopToRootAsync();
+            await shellSection.Navigation.PopToRootAsync();
         });
+
         return base.ChangeSection(shellSection);
     }
 }

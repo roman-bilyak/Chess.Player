@@ -1,10 +1,11 @@
 ﻿using Chess.Player.Cache;
+using System.Diagnostics.CodeAnalysis;
 
 namespace Chess.Player.MAUI.Services;
 
 internal class SettingsService : ISettingsService
 {
-    private SettingsInfo _settingsInfo;
+    private SettingsInfo? _settingsInfo;
 
     private readonly ICacheManager _cacheManager;
 
@@ -18,7 +19,7 @@ internal class SettingsService : ISettingsService
         _cacheManager = cacheManager;
     }
 
-    public event ThemeChangedEventHandler ThemeChanged;
+    public event ThemeChangedEventHandler? ThemeChanged;
 
     public async Task<AppTheme> GetThemeAsync(CancellationToken cancellationToken)
     {
@@ -43,6 +44,7 @@ internal class SettingsService : ISettingsService
 
     #region helper methods
 
+    [MemberNotNull(nameof(_settingsInfo))]
     private async Task EnsureLoadedAsync(CancellationToken cancellationToken)
     {
         _settingsInfo ??= await _cacheManager.GetAsync<SettingsInfo>(includeExpired: false, cancellationToken) ?? new SettingsInfo { Theme = AppTheme.Unspecified };

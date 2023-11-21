@@ -25,7 +25,7 @@ public partial class FavoritesViewModel : BaseViewModel
 
     [ObservableProperty]
     [NotifyPropertyChangedFor(nameof(HasError))]
-    private string _error;
+    private string? _error;
 
     public bool HasError => !string.IsNullOrWhiteSpace(Error);
 

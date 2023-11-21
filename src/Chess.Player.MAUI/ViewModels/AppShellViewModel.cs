@@ -23,6 +23,11 @@ public partial class AppShellViewModel : BaseViewModel
     [RelayCommand(IncludeCancelCommand = true)]
     private async Task LoadThemeAsync(CancellationToken cancellationToken)
     {
+        if (Application.Current is null)
+        {
+            return;
+        }
+
         Application.Current.UserAppTheme = await _settingsService.GetThemeAsync(cancellationToken);
     }
 }

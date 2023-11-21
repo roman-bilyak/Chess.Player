@@ -15,7 +15,7 @@ public partial class PlayerScoreViewModel : BaseViewModel
     private int? _tournametId;
 
     [ObservableProperty]
-    private string _tournamentName;
+    private string? _tournamentName;
 
     [ObservableProperty]
     private int? _rank;
@@ -24,10 +24,10 @@ public partial class PlayerScoreViewModel : BaseViewModel
     private int? _no;
 
     [ObservableProperty]
-    private string _name;
+    private string? _name;
 
     [ObservableProperty]
-    private string _clubCity;
+    private string? _clubCity;
 
     [ObservableProperty]
     private double? _points;

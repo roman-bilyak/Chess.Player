@@ -16,13 +16,13 @@ public partial class TournamentFullViewModel : BaseViewModel
     private int _tournamentId;
 
     [ObservableProperty]
-    private string _tournamentName;
+    private string? _tournamentName;
 
     [ObservableProperty]
     private DateTime? _tournamentEndDate;
 
     [ObservableProperty]
-    private string _tournamentLocation;
+    private string? _tournamentLocation;
 
     [ObservableProperty]
     private ObservableCollection<PlayerScoreViewModel> _playerScores = [];
@@ -35,7 +35,7 @@ public partial class TournamentFullViewModel : BaseViewModel
 
     [ObservableProperty]
     [NotifyPropertyChangedFor(nameof(HasError))]
-    private string _error;
+    private string? _error;
 
     public bool HasError => !string.IsNullOrWhiteSpace(Error);
 

@@ -15,7 +15,7 @@ public partial class GameViewModel : BaseViewModel
     private int? _tournamentId;
 
     [ObservableProperty]
-    private string _tournamentName;
+    private string? _tournamentName;
 
     [ObservableProperty]
     [NotifyPropertyChangedFor(nameof(RoundName))]
@@ -30,10 +30,10 @@ public partial class GameViewModel : BaseViewModel
     private int? _no;
 
     [ObservableProperty]
-    private string _name;
+    private string? _name;
 
     [ObservableProperty]
-    private string _clubCity;
+    private string? _clubCity;
 
     [ObservableProperty]
     private bool? _isWhiteBlack;

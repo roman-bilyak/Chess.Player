@@ -17,7 +17,7 @@ public partial class PlayerTournamentViewModel : BaseViewModel
     private int? _tournamentIndex;
 
     [ObservableProperty]
-    private string _tournamentName;
+    private string? _tournamentName;
 
     [ObservableProperty]
     [NotifyPropertyChangedFor(nameof(TournamentDateAndLocation))]
@@ -41,7 +41,7 @@ public partial class PlayerTournamentViewModel : BaseViewModel
 
     [ObservableProperty]
     [NotifyPropertyChangedFor(nameof(TournamentDateAndLocation))]
-    private string _tournamentLocation;
+    private string? _tournamentLocation;
 
     public string TournamentDateAndLocation => TournamentStartDate == TournamentEndDate
         ? $"{TournamentEndDate:dd.MM} - {TournamentLocation}"
@@ -57,10 +57,10 @@ public partial class PlayerTournamentViewModel : BaseViewModel
     private int? _no;
 
     [ObservableProperty]
-    private string _name;
+    private string? _name;
 
     [ObservableProperty]
-    private string _title;
+    private string? _title;
 
     [ObservableProperty]
     [NotifyPropertyChangedFor(nameof(IsPodium))]

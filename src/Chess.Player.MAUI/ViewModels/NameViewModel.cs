@@ -7,11 +7,11 @@ public partial class NameViewModel: BaseViewModel
 {
     [ObservableProperty]
     [NotifyPropertyChangedFor(nameof(FullName))]
-    private string _lastName;
+    private string? _lastName;
 
     [ObservableProperty]
     [NotifyPropertyChangedFor(nameof(FullName))]
-    private string _firstName;
+    private string? _firstName;
 
     public string FullName => $"{LastName} {FirstName}";
 }

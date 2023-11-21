@@ -18,14 +18,14 @@ public partial class PlayerTournamentFullViewModel : BaseViewModel
 
     [ObservableProperty]
     [NotifyPropertyChangedFor(nameof(Title))]
-    private string _tournamentName;
+    private string? _tournamentName;
 
     [ObservableProperty]
     private int _playerNo;
 
     [ObservableProperty]
     [NotifyPropertyChangedFor(nameof(Title))]
-    private string _playerName;
+    private string? _playerName;
 
     public string Title => $"{PlayerName} - {TournamentName}";
 
@@ -46,7 +46,7 @@ public partial class PlayerTournamentFullViewModel : BaseViewModel
 
     [ObservableProperty]
     [NotifyPropertyChangedFor(nameof(HasError))]
-    private string _error;
+    private string? _error;
 
     public bool HasError => !string.IsNullOrWhiteSpace(Error);
 
