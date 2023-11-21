@@ -19,27 +19,22 @@
             <Label Text="{Binding Error}" HorizontalOptions="Center" VerticalOptions="Center" />
         </Frame>
         <RefreshView IsRefreshing="{Binding IsLoading}" Command="{Binding LoadCommand}" RefreshColor="Orange">
-            <Grid RowSpacing="10">
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="Auto" />
-                    <RowDefinition Height="Auto" />
-                    <RowDefinition Height="*" />
-                </Grid.RowDefinitions>
-
-                <views:PlayerTournamentView Grid.Row="0" BindingContext="{Binding PlayerTournament}" />
-
-                <BoxView Grid.Row="1" Grid.Column="0" Color="#F17A00" HeightRequest="1" HorizontalOptions="Fill" VerticalOptions="Center" IsVisible="{Binding HasGames}" />
-
-                <CollectionView Grid.Row="2" 
-                                ItemsSource="{Binding Games}"
-                                SelectionMode="None">
-                    <CollectionView.ItemTemplate>
-                        <DataTemplate x:DataType="vm:GameViewModel">
-                            <views:GameView BindingContext="{Binding .}" />
-                        </DataTemplate>
-                    </CollectionView.ItemTemplate>
-                </CollectionView>
-            </Grid>
+            <CollectionView ItemsSource="{Binding Games}" Header="{Binding .}" SelectionMode="None">
+                <CollectionView.HeaderTemplate>
+                    <DataTemplate x:DataType="vm:PlayerTournamentFullViewModel">
+                        <VerticalStackLayout>
+                            <views:PlayerTournamentView BindingContext="{Binding PlayerTournament}" />
+                            
+                            <BoxView Color="#F17A00" HeightRequest="1" HorizontalOptions="Fill" VerticalOptions="Start" IsVisible="{Binding HasGames}" Margin="0,10" />
+                        </VerticalStackLayout>
+                    </DataTemplate>
+                </CollectionView.HeaderTemplate>
+                <CollectionView.ItemTemplate>
+                    <DataTemplate x:DataType="vm:GameViewModel">
+                        <views:GameView BindingContext="{Binding .}" />
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
         </RefreshView>
     </StackLayout>
 </ContentPage>

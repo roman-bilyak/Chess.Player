@@ -18,11 +18,13 @@
         <Frame BorderColor="HotPink" BackgroundColor="LightPink" CornerRadius="10" IsVisible="{Binding HasError}">
             <Label Text="{Binding Error}" HorizontalOptions="Center" VerticalOptions="Center" />
         </Frame>
-        
-        <SearchBar Text="{Binding SearchText}" SearchCommand="{Binding SearchCommand}" Placeholder="Example: Smith John" HorizontalOptions="StartAndExpand" />
-
         <RefreshView IsRefreshing="{Binding IsLoading}" Command="{Binding LoadCommand}" RefreshColor="Orange">
-            <CollectionView ItemsSource="{Binding Players}" SelectionMode="None">
+            <CollectionView ItemsSource="{Binding Players}" Header="{Binding .}" SelectionMode="None">
+                <CollectionView.HeaderTemplate>
+                    <DataTemplate x:DataType="vm:HomeViewModel">
+                        <SearchBar Text="{Binding SearchText}" SearchCommand="{Binding SearchCommand}" Placeholder="Example: Carlsen Magnus" HorizontalOptions="StartAndExpand" />
+                    </DataTemplate>
+                </CollectionView.HeaderTemplate>
                 <CollectionView.ItemTemplate>
                     <DataTemplate x:DataType="vm:PlayerViewModel">
                         <views:PlayerView BindingContext="{Binding .}" />
