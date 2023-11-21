@@ -67,7 +67,7 @@ internal class PlayerFavoriteService : IPlayerFavoriteService
     {
         await EnsureLoadedAsync(cancellationToken);
 
-        List<PlayerFullInfo> result = new();
+        List<PlayerFullInfo> result = [];
         foreach(var player in _playerFavoriteList)
         {
             PlayerFullInfo playerInfo = await _chessDataService.GetPlayerFullInfoAsync(player, useCache, cancellationToken);
@@ -79,7 +79,7 @@ internal class PlayerFavoriteService : IPlayerFavoriteService
 
     public async Task ClearAsync(CancellationToken cancellationToken)
     {
-        _playerFavoriteList = new PlayerFavoriteList();
+        _playerFavoriteList = [];
 
         await SaveAsync(cancellationToken);
     }
@@ -88,7 +88,7 @@ internal class PlayerFavoriteService : IPlayerFavoriteService
 
     private async Task EnsureLoadedAsync(CancellationToken cancellationToken)
     {
-        _playerFavoriteList ??= await _cacheManager.GetAsync<PlayerFavoriteList>(includeExpired: false, cancellationToken) ?? new PlayerFavoriteList();
+        _playerFavoriteList ??= await _cacheManager.GetAsync<PlayerFavoriteList>(includeExpired: false, cancellationToken) ?? [];
     }
 
     private async Task SaveAsync(CancellationToken cancellationToken)

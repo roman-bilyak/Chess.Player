@@ -17,7 +17,7 @@ public partial class PlayerViewModel : BaseViewModel
 
     [ObservableProperty]
     [NotifyPropertyChangedFor(nameof(Name))]
-    private ObservableCollection<NameViewModel> _names = new();
+    private ObservableCollection<NameViewModel> _names = [];
 
     [ObservableProperty]
     private string _title;
