@@ -80,8 +80,8 @@ namespace Chess.Player.MAUI
             builder.Services.AddTransient<PlayerTournamentFullPage>();
             builder.Services.AddTransient<TournamentFullPage>();
             builder.Services.AddTransient<FavoritesView>();
-            builder.Services.AddTransient<SettingsPage>();
-            builder.Services.AddTransient<CachePage>();
+            builder.Services.AddTransient<SettingsView>();
+            builder.Services.AddTransient<CacheView>();
             builder.Services.AddTransient<InfoView>();
 
             return builder.Build();

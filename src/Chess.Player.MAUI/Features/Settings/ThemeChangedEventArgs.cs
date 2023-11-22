@@ -1,11 +1,6 @@
 ﻿namespace Chess.Player.MAUI.Features.Settings;
 
-public class ThemeChangedEventArgs : EventArgs
+public class ThemeChangedEventArgs(AppTheme theme) : EventArgs
 {
-    public AppTheme Theme { get; }
-
-    public ThemeChangedEventArgs(AppTheme theme)
-    {
-        Theme = theme;
-    }
+    public AppTheme Theme { get; } = theme;
 }

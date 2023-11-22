@@ -8,7 +8,7 @@
     xmlns:favorites="clr-namespace:Chess.Player.MAUI.Features.Favorites"
     xmlns:home="clr-namespace:Chess.Player.MAUI.Features.Home"
     xmlns:info="clr-namespace:Chess.Player.MAUI.Features.Info"
-    xmlns:pages="clr-namespace:Chess.Player.MAUI.Pages"
+    xmlns:settings="clr-namespace:Chess.Player.MAUI.Features.Settings"
     x:DataType="vm:AppShellViewModel"
     Shell.FlyoutBehavior="Disabled">
     <Shell.Behaviors>
@@ -23,8 +23,8 @@
             <ShellContent ContentTemplate="{DataTemplate favorites:FavoritesView}" />
         </Tab>
         <Tab Title="Settings" Icon="settings.svg">
-            <ShellContent Title="Settings" ContentTemplate="{DataTemplate pages:SettingsPage}" Shell.NavBarIsVisible="false" />
-            <ShellContent Title="Cache" ContentTemplate="{DataTemplate pages:CachePage}" Shell.NavBarIsVisible="false" />
+            <ShellContent Title="Settings" ContentTemplate="{DataTemplate settings:SettingsView}" Shell.NavBarIsVisible="false" />
+            <ShellContent Title="Cache" ContentTemplate="{DataTemplate settings:CacheView}" Shell.NavBarIsVisible="false" />
         </Tab>
         <Tab Title="About" Icon="info.svg">
             <ShellContent ContentTemplate="{DataTemplate info:InfoView}" />

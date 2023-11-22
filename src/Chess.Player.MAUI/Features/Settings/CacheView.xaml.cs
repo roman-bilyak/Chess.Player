@@ -1,8 +1,8 @@
 namespace Chess.Player.MAUI.Features.Settings;
 
-public partial class CachePage : ContentPage
+public partial class CacheView : ContentPage
 {
-    public CachePage(CacheViewModel viewModel)
+    public CacheView(CacheViewModel viewModel)
     {
         InitializeComponent();
 

@@ -7,7 +7,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Chess.Player.MAUI", "Chess.
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Chess.Player.Console", "Chess.Player.Console\Chess.Player.Console.csproj", "{24735387-9A80-4AC1-9CF1-F9662F3FFE1E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Chess.Player.Core", "Chess.Player.Core\Chess.Player.Core.csproj", "{BF927654-E929-450F-8376-DCE0F8EAD87C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Chess.Player.Core", "Chess.Player.Core\Chess.Player.Core.csproj", "{BF927654-E929-450F-8376-DCE0F8EAD87C}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

@@ -1,8 +1,8 @@
 namespace Chess.Player.MAUI.Features.Settings;
 
-public partial class SettingsPage : ContentPage
+public partial class SettingsView : ContentPage
 {
-	public SettingsPage(SettingsViewModel viewModel)
+	public SettingsView(SettingsViewModel viewModel)
 	{
 		InitializeComponent();
 
