@@ -5,7 +5,7 @@ using CommunityToolkit.Mvvm.Input;
 namespace Chess.Player.MAUI.ViewModels;
 
 [INotifyPropertyChanged]
-public partial class PlayerTournamentViewModel : BaseViewModel
+public partial class PlayerTournamentShortViewModel : BaseViewModel
 {
     private readonly INavigationService _navigationService;
 
@@ -75,7 +75,7 @@ public partial class PlayerTournamentViewModel : BaseViewModel
     [ObservableProperty]
     private bool _isSelected;
 
-    public PlayerTournamentViewModel
+    public PlayerTournamentShortViewModel
     (
         INavigationService navigationService
     )

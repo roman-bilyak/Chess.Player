@@ -55,7 +55,7 @@ public partial class PlayerFullViewModel : BaseViewModel, IDisposable
 
     public int Years => _dateTimeProvider.UtcNow.Year - YearOfBirth ?? 0;
 
-    private Dictionary<TournamentYearViewModel, List<PlayerTournamentViewModel>> _allTournaments = [];
+    private Dictionary<TournamentYearViewModel, List<PlayerTournamentShortViewModel>> _allTournaments = [];
 
     [ObservableProperty]
     private ObservableCollection<TournamentYearViewModel> _tournamentYears = [];
@@ -66,7 +66,7 @@ public partial class PlayerFullViewModel : BaseViewModel, IDisposable
     private TournamentYearViewModel? _tournamentYear;
 
     [ObservableProperty]
-    private ObservableCollection<PlayerTournamentViewModel> _tournaments = [];
+    private ObservableCollection<PlayerTournamentShortViewModel> _tournaments = [];
 
     [ObservableProperty]
     [NotifyPropertyChangedFor(nameof(ToggleFavoriteButtonName))]
@@ -181,7 +181,7 @@ public partial class PlayerFullViewModel : BaseViewModel, IDisposable
                 },
                 x => x.Select(y =>
                 {
-                    PlayerTournamentViewModel viewModel = _serviceProvider.GetRequiredService<PlayerTournamentViewModel>();
+                    PlayerTournamentShortViewModel viewModel = _serviceProvider.GetRequiredService<PlayerTournamentShortViewModel>();
 
                     viewModel.TournamentIndex = index--;
                     viewModel.TournamentId = y.Tournament.Id;
@@ -250,7 +250,7 @@ public partial class PlayerFullViewModel : BaseViewModel, IDisposable
             return;
         }
 
-        foreach (PlayerTournamentViewModel viewModel in _allTournaments.GetValueOrDefault(TournamentYear) ?? [])
+        foreach (PlayerTournamentShortViewModel viewModel in _allTournaments.GetValueOrDefault(TournamentYear) ?? [])
         {
             Tournaments.Add(viewModel);
         }

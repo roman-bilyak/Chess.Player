@@ -70,7 +70,7 @@ namespace Chess.Player.MAUI
             builder.Services.AddTransient<InfoViewModel>();
 
             builder.Services.AddTransient<PlayerViewModel>();
-            builder.Services.AddTransient<PlayerTournamentViewModel>();
+            builder.Services.AddTransient<PlayerTournamentShortViewModel>();
             builder.Services.AddTransient<GameViewModel>();
             builder.Services.AddTransient<PlayerScoreViewModel>();
 

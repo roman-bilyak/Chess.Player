@@ -1,8 +1,8 @@
 namespace Chess.Player.MAUI.Views;
 
-public partial class PlayerTournamentView : ContentView
+public partial class PlayerTournamentShortView : ContentView
 {
-	public PlayerTournamentView()
+	public PlayerTournamentShortView()
 	{
 		InitializeComponent();
 	}

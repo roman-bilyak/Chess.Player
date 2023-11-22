@@ -31,7 +31,7 @@ public partial class PlayerTournamentFullViewModel : BaseViewModel
     public string Title => $"{PlayerName} - {TournamentName}";
 
     [ObservableProperty]
-    private PlayerTournamentViewModel _playerTournament;
+    private PlayerTournamentShortViewModel _playerTournament;
 
     public bool HasGames => Games?.Any() ?? false;
 
@@ -66,7 +66,7 @@ public partial class PlayerTournamentFullViewModel : BaseViewModel
         _dateTimeProvider = dateTimeProvider;
         _serviceProvider = serviceProvider;
 
-        _playerTournament = serviceProvider.GetRequiredService<PlayerTournamentViewModel>();
+        _playerTournament = serviceProvider.GetRequiredService<PlayerTournamentShortViewModel>();
     }
 
     [RelayCommand]
