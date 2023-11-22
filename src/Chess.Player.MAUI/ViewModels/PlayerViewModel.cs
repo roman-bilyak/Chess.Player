@@ -1,5 +1,4 @@
 ﻿using Chess.Player.Data;
-using Chess.Player.MAUI.Pages;
 using Chess.Player.Services;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
@@ -61,12 +60,14 @@ public partial class PlayerViewModel : BaseViewModel
     [RelayCommand]
     private async Task ShowInfoAsync(CancellationToken cancellationToken)
     {
+        if (string.IsNullOrEmpty(Name))
+        {
+            return;
+        }
+
         IsSelected = true;
 
-        await _navigationService.PushAsync<PlayerFullPage, PlayerFullViewModel>(x =>
-        {
-            x.Name = Name;
-        });
+        await _navigationService.NavigateToPlayerAsync(Name);
 
         IsSelected = false;
     }

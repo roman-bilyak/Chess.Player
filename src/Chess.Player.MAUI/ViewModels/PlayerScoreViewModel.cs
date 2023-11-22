@@ -1,5 +1,4 @@
-﻿using Chess.Player.MAUI.Pages;
-using Chess.Player.Services;
+﻿using Chess.Player.Services;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using System.ComponentModel;
@@ -12,7 +11,7 @@ public partial class PlayerScoreViewModel : BaseViewModel
     private readonly INavigationService _navigationService;
 
     [ObservableProperty]
-    private int? _tournametId;
+    private int? _tournamentId;
 
     [ObservableProperty]
     private string? _tournamentName;
@@ -66,20 +65,14 @@ public partial class PlayerScoreViewModel : BaseViewModel
     [RelayCommand]
     private async Task ShowInfoAsync(CancellationToken cancellationToken)
     {
-        if (!TournametId.HasValue || !No.HasValue)
+        if (!TournamentId.HasValue || !No.HasValue)
         {
             return;
         }
 
         IsSelected = true;
 
-        await _navigationService.PushAsync<PlayerTournamentFullPage, PlayerTournamentFullViewModel>(x =>
-        {
-            x.TournamentId = TournametId.Value;
-            x.TournamentName = TournamentName;
-            x.PlayerNo = No.Value;
-            x.PlayerName = Name;
-        });
+        await _navigationService.NavigateToPlayerTournamentAsync(TournamentId.Value, TournamentName, No.Value, Name);
 
         IsSelected = false;
     }
@@ -87,12 +80,14 @@ public partial class PlayerScoreViewModel : BaseViewModel
     [RelayCommand]
     private async Task ShowPlayerInfoAsync(CancellationToken cancellationToken)
     {
+        if (string.IsNullOrEmpty(Name))
+        {
+            return;
+        }
+
         IsSelected = true;
 
-        await _navigationService.PushAsync<PlayerFullPage, PlayerFullViewModel>(x =>
-        {
-            x.Name = Name;
-        });
+        await _navigationService.NavigateToPlayerAsync(Name);
 
         IsSelected = false;
     }

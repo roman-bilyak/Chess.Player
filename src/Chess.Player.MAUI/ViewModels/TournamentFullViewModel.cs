@@ -86,7 +86,7 @@ public partial class TournamentFullViewModel : BaseViewModel
             {
                 PlayerScoreViewModel playerScoreViewModel = _serviceProvider.GetRequiredService<PlayerScoreViewModel>();
 
-                playerScoreViewModel.TournametId = TournamentId;
+                playerScoreViewModel.TournamentId = TournamentId;
                 playerScoreViewModel.TournamentName = TournamentName;
                 playerScoreViewModel.Rank = playerScoreInfo.Rank;
                 playerScoreViewModel.No = playerScoreInfo.No;

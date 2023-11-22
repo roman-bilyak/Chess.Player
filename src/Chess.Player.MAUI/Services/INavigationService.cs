@@ -1,16 +1,11 @@
-﻿using Chess.Player.MAUI.ViewModels;
-
-namespace Chess.Player.Services
+﻿namespace Chess.Player.Services
 {
     public interface INavigationService
     {
-        Task PushAsync<TPage>()
-            where TPage : Page;
+        Task NavigateToPlayerAsync(string playerName);
 
-        Task PushAsync<TPage, TViewModel>(Action<TViewModel> init)
-            where TPage : Page
-            where TViewModel : BaseViewModel;
+        Task NavigateToTournamentAsync(int tournamentId, string? tournamentName);
 
-        Task PopAsync();
+        Task NavigateToPlayerTournamentAsync(int tournamentId, string? tournamentName, int playerNo, string? playerName);
     }
 }

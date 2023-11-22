@@ -1,5 +1,4 @@
-﻿using Chess.Player.MAUI.Pages;
-using Chess.Player.Services;
+﻿using Chess.Player.Services;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using System.ComponentModel;
@@ -68,13 +67,7 @@ public partial class GameViewModel : BaseViewModel
 
         IsSelected = true;
 
-        await _navigationService.PushAsync<PlayerTournamentFullPage, PlayerTournamentFullViewModel>(x =>
-        {
-            x.TournamentId = TournamentId.Value;
-            x.TournamentName = TournamentName;
-            x.PlayerNo = No.Value;
-            x.PlayerName = Name;
-        });
+        await _navigationService.NavigateToPlayerTournamentAsync(TournamentId.Value, TournamentName, No.Value, Name);
 
         IsSelected = false;
     }
@@ -82,12 +75,14 @@ public partial class GameViewModel : BaseViewModel
     [RelayCommand]
     private async Task ShowPlayerInfoAsync(CancellationToken cancellationToken)
     {
+        if (string.IsNullOrEmpty(Name))
+        {
+            return;
+        }
+
         IsSelected = true;
 
-        await _navigationService.PushAsync<PlayerFullPage, PlayerFullViewModel>(x =>
-        {
-            x.Name = Name;
-        });
+        await _navigationService.NavigateToPlayerAsync(Name);
 
         IsSelected = false;
     }

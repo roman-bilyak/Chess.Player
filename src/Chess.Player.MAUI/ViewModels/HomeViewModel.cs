@@ -1,5 +1,4 @@
 ﻿using Chess.Player.Data;
-using Chess.Player.MAUI.Pages;
 using Chess.Player.MAUI.Services;
 using Chess.Player.Services;
 using CommunityToolkit.Mvvm.ComponentModel;
@@ -123,10 +122,12 @@ public partial class HomeViewModel : BaseViewModel
     [RelayCommand]
     private async Task SearchAsync(CancellationToken cancellationToken)
     {
-        await _navigationService.PushAsync<PlayerFullPage, PlayerFullViewModel>(x =>
+        if (string.IsNullOrEmpty(SearchText))
         {
-            x.Name = SearchText;
-        });
+            return;
+        }
+
+        await _navigationService.NavigateToPlayerAsync(SearchText);
 
         SearchText = null;
     }
