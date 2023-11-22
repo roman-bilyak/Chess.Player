@@ -1,0 +1,45 @@
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:mct="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
+             xmlns:info="clr-namespace:Chess.Player.MAUI.Features.Info"
+             x:Class="Chess.Player.MAUI.Features.Info.InfoView"
+             x:DataType="info:InfoViewModel"
+             Title="Info">
+    <ScrollView Padding="10" Margin="10,0">
+        <StackLayout Spacing="10">
+            <Frame HeightRequest="70"
+                   WidthRequest="70"
+                   CornerRadius="35">
+                <Image Source="logo.svg" 
+                       Aspect="AspectFit"
+                       VerticalOptions="Center"
+                       HorizontalOptions="Center" 
+                       HeightRequest="70" 
+                       WidthRequest="70" 
+                       BackgroundColor="{AppThemeBinding Light={StaticResource Primary}, Dark={StaticResource White}}">
+                    <Image.Behaviors>
+                        <mct:IconTintColorBehavior TintColor="{AppThemeBinding Light={StaticResource White}, Dark={StaticResource Black}}" />
+                    </Image.Behaviors>
+                </Image>
+            </Frame>
+            
+            <Label Text="Chess Player" FontSize="24" FontAttributes="Bold" HorizontalOptions="Center" />
+            <Label Text="{Binding Version}" FontSize="10" TextColor="{AppThemeBinding Light={StaticResource Gray600}, Dark={StaticResource White}}" HorizontalOptions="Center" />
+
+            <Label HorizontalOptions="Start">The "Chess Player" will help you to deep dive into the past, present and future performances of players by analyzing their strategies, successes and challenges.</Label>
+
+            <Label HorizontalOptions="Start" FontAttributes="Bold">The app is free, but if you've enjoyed it and want to show your support, feel free to buy me a coffee! Positive feedback motivates, and suggestions improve it.</Label>
+
+            <Label HorizontalOptions="Start">100% of all proceeds go to support of Ukraine!</Label>
+            
+            <Button Text="Buy me a coffee"
+                    Command="{Binding BuyMeACoffeeCommand}"
+                    VerticalOptions="EndAndExpand"
+                    HorizontalOptions="Center"
+                    BackgroundColor="#FFD700"
+                    TextColor="Black"
+                    CornerRadius="10"
+                    Padding="30,10" />
+        </StackLayout>
+    </ScrollView>
+</ContentPage>

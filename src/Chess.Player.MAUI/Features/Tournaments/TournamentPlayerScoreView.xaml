@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentView xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:mct="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
+             xmlns:tournaments="clr-namespace:Chess.Player.MAUI.Features.Tournaments"
+             x:Class="Chess.Player.MAUI.Features.Tournaments.TournamentPlayerScoreView"
+             x:DataType="tournaments:TournamentPlayerScoreViewModel">
+    <ContentView.Resources>
+        <ResourceDictionary>
+            <mct:InvertedBoolConverter x:Key="InvertedBoolConverter" />
+        </ResourceDictionary>
+    </ContentView.Resources>
+    <SwipeView>
+        <SwipeView.RightItems>
+            <SwipeItems>
+                <SwipeItem Text="Info" BackgroundColor="{AppThemeBinding Light={StaticResource Secondary}, Dark={StaticResource Gray600}}" Command="{Binding ShowInfoCommand}" />
+                <SwipeItem Text="Player" BackgroundColor="{AppThemeBinding Light={StaticResource Secondary}, Dark={StaticResource Gray600}}" Command="{Binding ShowPlayerInfoCommand}" />
+            </SwipeItems>
+        </SwipeView.RightItems>
+        <Border Style="{StaticResource CardBorderStyle}">
+            <Border.GestureRecognizers>
+                <TapGestureRecognizer Command="{Binding ShowInfoCommand}" />
+            </Border.GestureRecognizers>
+            <VisualStateManager.VisualStateGroups>
+                <VisualStateGroupList>
+                    <VisualStateGroup x:Name="CommonStates">
+                        <VisualState x:Name="Normal">
+                            <VisualState.StateTriggers>
+                                <StateTrigger IsActive="{Binding IsSelected, Converter={StaticResource InvertedBoolConverter}}" />
+                            </VisualState.StateTriggers>
+                            <VisualState.Setters>
+                                <Setter Property="BackgroundColor" Value="{AppThemeBinding Light={StaticResource Secondary}, Dark={StaticResource Gray600}}" />
+                            </VisualState.Setters>
+                        </VisualState>
+                        <VisualState x:Name="Selected">
+                            <VisualState.StateTriggers>
+                                <StateTrigger IsActive="{Binding IsSelected}" />
+                            </VisualState.StateTriggers>
+                            <VisualState.Setters>
+                                <Setter Property="BackgroundColor" Value="{AppThemeBinding Light={StaticResource Tertiary}, Dark={StaticResource Gray400}}" />
+                            </VisualState.Setters>
+                        </VisualState>
+                    </VisualStateGroup>
+                </VisualStateGroupList>
+            </VisualStateManager.VisualStateGroups>
+            <Grid ColumnSpacing="5">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="30" />
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="30" />
+                    <ColumnDefinition Width="30" />
+                </Grid.ColumnDefinitions>
+                <Label Grid.Row="0" Grid.Column="0" Text="{Binding Rank, Mode=OneWay}" VerticalOptions="Start" HorizontalOptions="Center" Style="{StaticResource CardHighlightStyle}" />
+                <Label Grid.Row="0" Grid.Column="1" Text="{Binding Name, Mode=OneWay}" HorizontalOptions="StartAndExpand" Style="{StaticResource CardHighlightStyle}" />
+                <Label Grid.Row="1" Grid.Column="1" Text="{Binding ClubCity, Mode=OneWay}" HorizontalOptions="StartAndExpand" LineBreakMode="NoWrap" Style="{StaticResource CardDetails12Style}" />
+                <VerticalStackLayout  Grid.Row="0" Grid.Column="2" Grid.RowSpan="2" >
+                    <Label Grid.Row="1" Grid.Column="1" Text="{Binding TB1Format, Mode=OneWay}" HorizontalOptions="Start" Style="{StaticResource CardDetails12Style}" />
+                    <Label Grid.Row="1" Grid.Column="1" Text="{Binding TB2Format, Mode=OneWay}" HorizontalOptions="Start" Style="{StaticResource CardDetails12Style}" />
+                    <Label Grid.Row="1" Grid.Column="1" Text="{Binding TB3Format, Mode=OneWay}" HorizontalOptions="Start" Style="{StaticResource CardDetails12Style}" />
+                </VerticalStackLayout>
+                <Label Grid.Row="0" Grid.Column="3" Grid.RowSpan="2" Text="{Binding Points, Mode=OneWay}" VerticalOptions="Center" HorizontalOptions="Center" Style="{StaticResource CardHighlightStyle}" />
+            </Grid>
+        </Border>
+    </SwipeView>
+</ContentView>
