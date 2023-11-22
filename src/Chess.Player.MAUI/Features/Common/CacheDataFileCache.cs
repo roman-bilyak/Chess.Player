@@ -3,12 +3,7 @@ using Chess.Player.Data;
 
 namespace Chess.Player.MAUI.Features;
 
-internal class CacheDataFileCache<T> : FileCache<T>
+internal class CacheDataFileCache<T>(IDateTimeProvider dateTimeProvider) : FileCache<T>(dateTimeProvider)
 {
-    public CacheDataFileCache(IDateTimeProvider dateTimeProvider)
-        : base(dateTimeProvider)
-    {
-    }
-
     protected override string RootPath => FileSystem.Current.CacheDirectory;
 }
