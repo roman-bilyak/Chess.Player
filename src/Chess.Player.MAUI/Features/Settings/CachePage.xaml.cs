@@ -1,6 +1,4 @@
-using Chess.Player.MAUI.ViewModels;
-
-namespace Chess.Player.MAUI.Pages;
+namespace Chess.Player.MAUI.Features.Settings;
 
 public partial class CachePage : ContentPage
 {

@@ -4,8 +4,8 @@ using Chess.Player.MAUI.Features;
 using Chess.Player.MAUI.Features.Favorites;
 using Chess.Player.MAUI.Features.Home;
 using Chess.Player.MAUI.Features.Info;
+using Chess.Player.MAUI.Features.Settings;
 using Chess.Player.MAUI.Pages;
-using Chess.Player.MAUI.Services;
 using Chess.Player.MAUI.ViewModels;
 using CommunityToolkit.Maui;
 

@@ -1,11 +1,9 @@
-﻿using Chess.Player.MAUI.Features;
-using Chess.Player.MAUI.Services;
-using CommunityToolkit.Mvvm.ComponentModel;
+﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 
-namespace Chess.Player.MAUI.ViewModels;
+namespace Chess.Player.MAUI.Features.Settings;
 
 [INotifyPropertyChanged]
 public partial class SettingsViewModel : BaseViewModel

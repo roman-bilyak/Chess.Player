@@ -1,4 +1,4 @@
-﻿namespace Chess.Player.MAUI.Services;
+﻿namespace Chess.Player.MAUI.Features.Settings;
 
 internal class SettingsInfo
 {

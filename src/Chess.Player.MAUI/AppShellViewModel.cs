@@ -1,5 +1,5 @@
 ﻿using Chess.Player.MAUI.Features;
-using Chess.Player.MAUI.Services;
+using Chess.Player.MAUI.Features.Settings;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 

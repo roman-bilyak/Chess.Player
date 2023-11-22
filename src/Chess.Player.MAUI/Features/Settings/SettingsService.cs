@@ -1,7 +1,7 @@
 ﻿using Chess.Player.Cache;
 using System.Diagnostics.CodeAnalysis;
 
-namespace Chess.Player.MAUI.Services;
+namespace Chess.Player.MAUI.Features.Settings;
 
 internal class SettingsService : ISettingsService
 {

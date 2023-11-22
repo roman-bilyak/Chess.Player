@@ -1,4 +1,4 @@
-﻿using Chess.Player.MAUI.Services;
+﻿using Chess.Player.MAUI.Features.Settings;
 
 namespace Chess.Player.MAUI
 {
