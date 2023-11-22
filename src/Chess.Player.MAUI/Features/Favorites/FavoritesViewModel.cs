@@ -74,7 +74,7 @@ public partial class FavoritesViewModel : BaseViewModel
             {
                 PlayerShortViewModel playerViewModel = _serviceProvider.GetRequiredService<PlayerShortViewModel>();
 
-                playerViewModel.Names = new ObservableCollection<NameViewModel>(player.Names.Select(x => new NameViewModel { LastName = x.LastName, FirstName = x.FirstName }));
+                playerViewModel.Names = new ObservableCollection<PlayerNameViewModel>(player.Names.Select(x => new PlayerNameViewModel { LastName = x.LastName, FirstName = x.FirstName }));
                 playerViewModel.Title = player.Title;
                 playerViewModel.ClubCity = player.ClubCity;
                 playerViewModel.YearOfBirth = player.YearOfBirth;

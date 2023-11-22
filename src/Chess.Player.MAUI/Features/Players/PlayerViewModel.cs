@@ -25,7 +25,7 @@ public partial class PlayerViewModel : BaseViewModel, IDisposable
 
     [ObservableProperty]
     [NotifyPropertyChangedFor(nameof(HasNames))]
-    private ObservableCollection<NameViewModel> _names = [];
+    private ObservableCollection<PlayerNameViewModel> _names = [];
 
     public bool HasNames => Names.Any();
 
@@ -203,7 +203,7 @@ public partial class PlayerViewModel : BaseViewModel, IDisposable
                 }).ToList());
 
             Name = playerFullInfo.Name ?? Name;
-            Names = new ObservableCollection<NameViewModel>(playerFullInfo.Names.Select(x => new NameViewModel { LastName = x.LastName, FirstName = x.FirstName}));
+            Names = new ObservableCollection<PlayerNameViewModel>(playerFullInfo.Names.Select(x => new PlayerNameViewModel { LastName = x.LastName, FirstName = x.FirstName}));
             Title = playerFullInfo.Title;
             FideId = playerFullInfo.FideId;
             ClubCity = playerFullInfo.ClubCity;

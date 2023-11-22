@@ -54,7 +54,7 @@
                 <VerticalStackLayout Grid.Row="0" Grid.Column="0">
                     <VerticalStackLayout BindableLayout.ItemsSource="{Binding Names, Mode=OneWay}">
                         <BindableLayout.ItemTemplate>
-                            <DataTemplate x:DataType="players:NameViewModel">
+                            <DataTemplate x:DataType="players:PlayerNameViewModel">
                                 <Label Text="{Binding FullName}" Style="{StaticResource CardHighlightStyle}"/>
                             </DataTemplate>
                         </BindableLayout.ItemTemplate>
