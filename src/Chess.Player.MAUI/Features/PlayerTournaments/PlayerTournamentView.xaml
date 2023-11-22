@@ -29,8 +29,8 @@
                     </DataTemplate>
                 </CollectionView.HeaderTemplate>
                 <CollectionView.ItemTemplate>
-                    <DataTemplate x:DataType="playerTournaments:GameViewModel">
-                        <playerTournaments:GameView BindingContext="{Binding .}" />
+                    <DataTemplate x:DataType="playerTournaments:PlayerTournamentGameViewModel">
+                        <playerTournaments:PlayerTournamentGameView BindingContext="{Binding .}" />
                     </DataTemplate>
                 </CollectionView.ItemTemplate>
             </CollectionView>

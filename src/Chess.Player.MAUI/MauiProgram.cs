@@ -75,8 +75,8 @@ public static class MauiProgram
         builder.Services.AddTransient<PlayerTournamentViewModel>();
         builder.Services.AddTransient<PlayerTournamentShortView>();
         builder.Services.AddTransient<PlayerTournamentShortViewModel>();
-        builder.Services.AddTransient<GameView>();
-        builder.Services.AddTransient<GameViewModel>();
+        builder.Services.AddTransient<PlayerTournamentGameView>();
+        builder.Services.AddTransient<PlayerTournamentGameViewModel>();
 
         builder.Services.AddTransient<TournamentView>();
         builder.Services.AddTransient<TournamentViewModel>();

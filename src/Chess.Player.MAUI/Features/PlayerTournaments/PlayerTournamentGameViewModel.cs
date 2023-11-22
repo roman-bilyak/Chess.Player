@@ -6,7 +6,7 @@ using System.ComponentModel;
 namespace Chess.Player.MAUI.Features.PlayerTournaments;
 
 [INotifyPropertyChanged]
-public partial class GameViewModel : BaseViewModel
+public partial class PlayerTournamentGameViewModel : BaseViewModel
 {
     private readonly INavigationService _navigationService;
 
@@ -47,7 +47,7 @@ public partial class GameViewModel : BaseViewModel
     [ObservableProperty]
     private bool _isSelected;
 
-    public GameViewModel
+    public PlayerTournamentGameViewModel
     (
         INavigationService navigationService
     )

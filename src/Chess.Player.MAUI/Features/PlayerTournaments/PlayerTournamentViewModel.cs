@@ -36,7 +36,7 @@ public partial class PlayerTournamentViewModel : BaseViewModel
 
     [ObservableProperty]
     [NotifyPropertyChangedFor(nameof(HasGames))]
-    private ObservableCollection<GameViewModel> _games = [];
+    private ObservableCollection<PlayerTournamentGameViewModel> _games = [];
 
     [ObservableProperty]
     private bool _useCache;
@@ -114,7 +114,7 @@ public partial class PlayerTournamentViewModel : BaseViewModel
             Games.Clear();
             foreach (GameInfo gameInfo in playerTournamentInfo.Player.Games.OrderByDescending(x => x.Round))
             {
-                GameViewModel gameViewModel = _serviceProvider.GetRequiredService<GameViewModel>();
+                PlayerTournamentGameViewModel gameViewModel = _serviceProvider.GetRequiredService<PlayerTournamentGameViewModel>();
 
                 gameViewModel.TournamentId = playerTournamentInfo.Tournament.Id;
                 gameViewModel.TournamentName = playerTournamentInfo.Tournament.Name;

@@ -3,8 +3,8 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:mct="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
              xmlns:playerTournaments="clr-namespace:Chess.Player.MAUI.Features.PlayerTournaments"
-             x:Class="Chess.Player.MAUI.Features.PlayerTournaments.GameView"
-             x:DataType="playerTournaments:GameViewModel">
+             x:Class="Chess.Player.MAUI.Features.PlayerTournaments.PlayerTournamentGameView"
+             x:DataType="playerTournaments:PlayerTournamentGameViewModel">
     <ContentView.Resources>
         <ResourceDictionary>
             <mct:InvertedBoolConverter x:Key="InvertedBoolConverter" />
