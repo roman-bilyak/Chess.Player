@@ -1,10 +1,8 @@
-using Chess.Player.MAUI.ViewModels;
+namespace Chess.Player.MAUI.Features.Info;
 
-namespace Chess.Player.MAUI.Pages;
-
-public partial class AboutPage : ContentPage
+public partial class InfoView : ContentPage
 {
-	public AboutPage(AboutViewModel viewModel)
+	public InfoView(InfoViewModel viewModel)
     {
 		InitializeComponent();
 

@@ -1,17 +1,16 @@
-﻿using Chess.Player.MAUI.Features;
-using CommunityToolkit.Mvvm.ComponentModel;
+﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 
-namespace Chess.Player.MAUI.ViewModels;
+namespace Chess.Player.MAUI.Features.Info;
 
 [INotifyPropertyChanged]
 
-public partial class AboutViewModel : BaseViewModel
+public partial class InfoViewModel : BaseViewModel
 {
     [ObservableProperty]
     private string _version;
 
-    public AboutViewModel()
+    public InfoViewModel()
     {
         Version = $"v{AppInfo.VersionString} ({AppInfo.BuildString})";
     }
@@ -31,7 +30,7 @@ public partial class AboutViewModel : BaseViewModel
             {
                 Subject = "Support Inquiry",
                 Body = "Hello, I have a question or need support regarding the Chess Player app.",
-                To = new List<string> { "chess.player@gmail.com" },
+                To = ["chess.player@gmail.com"],
             };
 
             await Email.ComposeAsync(message);

@@ -5,8 +5,9 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:mct="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
     xmlns:vm="clr-namespace:Chess.Player.MAUI.ViewModels"
-    xmlns:home="clr-namespace:Chess.Player.MAUI.Features.Home"
     xmlns:favorites="clr-namespace:Chess.Player.MAUI.Features.Favorites"
+    xmlns:home="clr-namespace:Chess.Player.MAUI.Features.Home"
+    xmlns:info="clr-namespace:Chess.Player.MAUI.Features.Info"
     xmlns:pages="clr-namespace:Chess.Player.MAUI.Pages"
     x:DataType="vm:AppShellViewModel"
     Shell.FlyoutBehavior="Disabled">
@@ -25,8 +26,8 @@
             <ShellContent Title="Settings" ContentTemplate="{DataTemplate pages:SettingsPage}" Shell.NavBarIsVisible="false" />
             <ShellContent Title="Cache" ContentTemplate="{DataTemplate pages:CachePage}" Shell.NavBarIsVisible="false" />
         </Tab>
-        <Tab Title="About" Icon="about.svg">
-            <ShellContent ContentTemplate="{DataTemplate pages:AboutPage}" />
+        <Tab Title="About" Icon="info.svg">
+            <ShellContent ContentTemplate="{DataTemplate info:InfoView}" />
         </Tab>
     </TabBar>
 </Shell>
