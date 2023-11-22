@@ -25,7 +25,7 @@ public partial class TournamentViewModel : BaseViewModel
     private string? _tournamentLocation;
 
     [ObservableProperty]
-    private ObservableCollection<PlayerScoreViewModel> _playerScores = [];
+    private ObservableCollection<TournamentPlayerScoreViewModel> _playerScores = [];
 
     [ObservableProperty]
     private bool _useCache;
@@ -84,7 +84,7 @@ public partial class TournamentViewModel : BaseViewModel
             PlayerScores.Clear();
             foreach (PlayerScoreInfo playerScoreInfo in tournamentInfo.Players)
             {
-                PlayerScoreViewModel playerScoreViewModel = _serviceProvider.GetRequiredService<PlayerScoreViewModel>();
+                TournamentPlayerScoreViewModel playerScoreViewModel = _serviceProvider.GetRequiredService<TournamentPlayerScoreViewModel>();
 
                 playerScoreViewModel.TournamentId = TournamentId;
                 playerScoreViewModel.TournamentName = TournamentName;

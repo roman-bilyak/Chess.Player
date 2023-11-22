@@ -20,8 +20,8 @@
         <RefreshView IsRefreshing="{Binding IsLoading}" Command="{Binding LoadCommand}" RefreshColor="Orange">
             <CollectionView ItemsSource="{Binding PlayerScores}" SelectionMode="None">
                 <CollectionView.ItemTemplate>
-                    <DataTemplate x:DataType="tournaments:PlayerScoreViewModel">
-                        <tournaments:PlayerScoreView BindingContext="{Binding .}" />
+                    <DataTemplate x:DataType="tournaments:TournamentPlayerScoreViewModel">
+                        <tournaments:TournamentPlayerScoreView BindingContext="{Binding .}" />
                     </DataTemplate>
                 </CollectionView.ItemTemplate>
             </CollectionView>

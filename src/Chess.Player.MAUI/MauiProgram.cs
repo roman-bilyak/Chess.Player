@@ -80,7 +80,7 @@ public static class MauiProgram
 
         builder.Services.AddTransient<TournamentView>();
         builder.Services.AddTransient<TournamentViewModel>();
-        builder.Services.AddTransient<PlayerScoreViewModel>();
+        builder.Services.AddTransient<TournamentPlayerScoreViewModel>();
 
         builder.Services.AddTransient<SettingsView>();
         builder.Services.AddTransient<SettingsViewModel>();
