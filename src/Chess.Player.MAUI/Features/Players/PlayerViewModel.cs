@@ -2,6 +2,7 @@
 using Chess.Player.MAUI.Features.Favorites;
 using Chess.Player.MAUI.Features.Home;
 using Chess.Player.MAUI.Features.PlayerTournaments;
+using Chess.Player.MAUI.Navigation;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using System.Collections.ObjectModel;

@@ -1,4 +1,4 @@
-﻿namespace Chess.Player.MAUI.Features;
+﻿namespace Chess.Player.MAUI;
 
 public abstract class BaseViewModel
 {

@@ -1,4 +1,4 @@
-﻿namespace Chess.Player.MAUI.Features;
+﻿namespace Chess.Player.MAUI.Navigation;
 
 internal class MAUIPopupService : IPopupService
 {

@@ -2,7 +2,7 @@
 using Chess.Player.MAUI.Features.PlayerTournaments;
 using Chess.Player.MAUI.Features.Tournaments;
 
-namespace Chess.Player.MAUI.Features;
+namespace Chess.Player.MAUI.Navigation;
 
 internal class MAUINavigationService : INavigationService
 {

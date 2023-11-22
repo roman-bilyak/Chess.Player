@@ -1,6 +1,6 @@
 ﻿using Chess.Player.Cache;
 using Chess.Player.Data;
-using Chess.Player.MAUI.Features;
+using Chess.Player.MAUI.Cache;
 using Chess.Player.MAUI.Features.Favorites;
 using Chess.Player.MAUI.Features.Home;
 using Chess.Player.MAUI.Features.Info;
@@ -8,6 +8,7 @@ using Chess.Player.MAUI.Features.Players;
 using Chess.Player.MAUI.Features.PlayerTournaments;
 using Chess.Player.MAUI.Features.Settings;
 using Chess.Player.MAUI.Features.Tournaments;
+using Chess.Player.MAUI.Navigation;
 using CommunityToolkit.Maui;
 
 #if DEBUG
