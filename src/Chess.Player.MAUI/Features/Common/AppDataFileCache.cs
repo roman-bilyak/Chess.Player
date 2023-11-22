@@ -1,7 +1,7 @@
 ﻿using Chess.Player.Cache;
 using Chess.Player.Data;
 
-namespace Chess.Player.MAUI.Cache;
+namespace Chess.Player.MAUI.Features;
 
 internal class AppDataFileCache<T> : FileCache<T>
 {

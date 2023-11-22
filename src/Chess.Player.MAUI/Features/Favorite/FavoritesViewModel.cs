@@ -1,11 +1,11 @@
 ﻿using Chess.Player.Data;
-using Chess.Player.MAUI.Services;
+using Chess.Player.MAUI.ViewModels;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using System.Collections.ObjectModel;
 using System.Net;
 
-namespace Chess.Player.MAUI.ViewModels;
+namespace Chess.Player.MAUI.Features.Favorite;
 
 [INotifyPropertyChanged]
 public partial class FavoritesViewModel : BaseViewModel

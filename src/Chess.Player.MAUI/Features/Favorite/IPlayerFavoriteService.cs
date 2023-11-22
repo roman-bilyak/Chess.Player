@@ -1,6 +1,6 @@
 ﻿using Chess.Player.Data;
 
-namespace Chess.Player.MAUI.Services;
+namespace Chess.Player.MAUI.Features.Favorite;
 
 public interface IPlayerFavoriteService
 {

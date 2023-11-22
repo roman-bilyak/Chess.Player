@@ -1,6 +1,6 @@
 using Chess.Player.MAUI.ViewModels;
 
-namespace Chess.Player.MAUI.Pages;
+namespace Chess.Player.MAUI.Features.Favorite;
 
 public partial class FavoritesPage : ContentPage
 {

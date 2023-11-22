@@ -1,10 +1,10 @@
 ﻿using Chess.Player.Cache;
 using Chess.Player.Data;
-using Chess.Player.MAUI.Cache;
+using Chess.Player.MAUI.Features;
+using Chess.Player.MAUI.Features.Favorite;
 using Chess.Player.MAUI.Pages;
 using Chess.Player.MAUI.Services;
 using Chess.Player.MAUI.ViewModels;
-using Chess.Player.Services;
 using CommunityToolkit.Maui;
 
 #if DEBUG

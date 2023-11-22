@@ -1,4 +1,5 @@
-﻿using CommunityToolkit.Mvvm.ComponentModel;
+﻿using Chess.Player.MAUI.Features;
+using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace Chess.Player.MAUI.ViewModels;
 

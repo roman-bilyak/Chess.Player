@@ -1,7 +1,6 @@
-﻿namespace Chess.Player.Services
+﻿namespace Chess.Player.MAUI.Features;
+
+public interface IPopupService
 {
-    public interface IPopupService
-    {
-        Task<string> DisplayPromptAsync(string title, string? message = null, string accept = "OK", string cancel = "Cancel", string? placeholder = null, int maxLength = -1);
-    }
+    Task<string> DisplayPromptAsync(string title, string? message = null, string accept = "OK", string cancel = "Cancel", string? placeholder = null, int maxLength = -1);
 }

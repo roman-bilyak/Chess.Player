@@ -2,7 +2,7 @@
 using Chess.Player.Data;
 using System.Diagnostics.CodeAnalysis;
 
-namespace Chess.Player.MAUI.Services;
+namespace Chess.Player.MAUI.Features.Favorite;
 
 internal class PlayerFavoriteService : IPlayerFavoriteService
 {
@@ -66,7 +66,7 @@ internal class PlayerFavoriteService : IPlayerFavoriteService
         await EnsureLoadedAsync(cancellationToken);
 
         List<PlayerFullInfo> result = [];
-        foreach(var player in _playerFavoriteList)
+        foreach (var player in _playerFavoriteList)
         {
             PlayerFullInfo playerInfo = await _chessDataService.GetPlayerFullInfoAsync(player, useCache, cancellationToken);
             result.Add(playerInfo);
