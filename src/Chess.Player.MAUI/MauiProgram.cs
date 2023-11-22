@@ -4,7 +4,9 @@ using Chess.Player.MAUI.Features;
 using Chess.Player.MAUI.Features.Favorites;
 using Chess.Player.MAUI.Features.Home;
 using Chess.Player.MAUI.Features.Info;
+using Chess.Player.MAUI.Features.PlayerTournaments;
 using Chess.Player.MAUI.Features.Settings;
+using Chess.Player.MAUI.Features.Tournaments;
 using Chess.Player.MAUI.Pages;
 using Chess.Player.MAUI.ViewModels;
 using CommunityToolkit.Maui;
@@ -40,7 +42,6 @@ namespace Chess.Player.MAUI
 #if DEBUG
             builder.Logging.AddDebug();
 #endif
-
             builder.Services.AddChessServices();
 
             builder.Services.AddTransient<ICache<SettingsInfo>, AppDataFileCache<SettingsInfo>>();
@@ -62,8 +63,8 @@ namespace Chess.Player.MAUI
             builder.Services.AddTransient<AppShellViewModel>();
             builder.Services.AddTransient<HomeViewModel>();
             builder.Services.AddTransient<PlayerFullViewModel>();
-            builder.Services.AddTransient<PlayerTournamentFullViewModel>();
-            builder.Services.AddTransient<TournamentFullViewModel>();
+            builder.Services.AddTransient<PlayerTournamentViewModel>();
+            builder.Services.AddTransient<TournamentViewModel>();
             builder.Services.AddTransient<FavoritesViewModel>();
             builder.Services.AddTransient<SettingsViewModel>();
             builder.Services.AddTransient<CacheViewModel>();
@@ -77,8 +78,8 @@ namespace Chess.Player.MAUI
             builder.Services.AddTransient<AppShell>();
             builder.Services.AddTransient<HomeView>();
             builder.Services.AddTransient<PlayerFullPage>();
-            builder.Services.AddTransient<PlayerTournamentFullPage>();
-            builder.Services.AddTransient<TournamentFullPage>();
+            builder.Services.AddTransient<PlayerTournamentView>();
+            builder.Services.AddTransient<TournamentView>();
             builder.Services.AddTransient<FavoritesView>();
             builder.Services.AddTransient<SettingsView>();
             builder.Services.AddTransient<CacheView>();

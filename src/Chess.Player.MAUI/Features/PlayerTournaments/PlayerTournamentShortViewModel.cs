@@ -2,7 +2,7 @@
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 
-namespace Chess.Player.MAUI.ViewModels;
+namespace Chess.Player.MAUI.Features.PlayerTournaments;
 
 [INotifyPropertyChanged]
 public partial class PlayerTournamentShortViewModel : BaseViewModel

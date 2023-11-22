@@ -1,10 +1,8 @@
-using Chess.Player.MAUI.ViewModels;
+namespace Chess.Player.MAUI.Features.PlayerTournaments;
 
-namespace Chess.Player.MAUI.Pages;
-
-public partial class PlayerTournamentFullPage : ContentPage
+public partial class PlayerTournamentView : ContentPage
 {
-	public PlayerTournamentFullPage(PlayerTournamentFullViewModel viewModel)
+	public PlayerTournamentView(PlayerTournamentViewModel viewModel)
     {
 		InitializeComponent();
 

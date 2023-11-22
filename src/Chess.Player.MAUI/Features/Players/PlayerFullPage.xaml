@@ -3,7 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:mct="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
              xmlns:vm="clr-namespace:Chess.Player.MAUI.ViewModels"
-             xmlns:views="clr-namespace:Chess.Player.MAUI.Views"
+             xmlns:playerTournaments="clr-namespace:Chess.Player.MAUI.Features.PlayerTournaments"
              x:Class="Chess.Player.MAUI.Pages.PlayerFullPage"
              x:DataType="vm:PlayerFullViewModel"
              Title="{Binding Name}">
@@ -93,8 +93,8 @@
                     </DataTemplate>
                 </CollectionView.HeaderTemplate>
                 <CollectionView.ItemTemplate>
-                    <DataTemplate x:DataType="vm:PlayerTournamentViewModel">
-                        <views:PlayerTournamentView BindingContext="{Binding .}" />
+                    <DataTemplate x:DataType="playerTournaments:PlayerTournamentShortViewModel">
+                        <playerTournaments:PlayerTournamentShortView BindingContext="{Binding .}" />
                     </DataTemplate>
                 </CollectionView.ItemTemplate>
             </CollectionView>

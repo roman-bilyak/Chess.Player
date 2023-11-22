@@ -1,4 +1,4 @@
-namespace Chess.Player.MAUI.Views;
+namespace Chess.Player.MAUI.Features.PlayerTournaments;
 
 public partial class GameView : ContentView
 {
