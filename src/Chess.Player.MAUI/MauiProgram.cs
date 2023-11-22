@@ -43,46 +43,53 @@ public static class MauiProgram
 #endif
         builder.Services.AddChessServices();
 
-        builder.Services.AddTransient<ICache<SettingsInfo>, AppDataFileCache<SettingsInfo>>();
-        builder.Services.AddTransient<ICache<FavoriteList>, AppDataFileCache<FavoriteList>>();
-        builder.Services.AddTransient<ICache<HistoryList>, AppDataFileCache<HistoryList>>();
-        builder.Services.AddTransient<ICache<PlayerGroupInfo>, AppDataFileCache<PlayerGroupInfo>>();
+        builder.Services.AddTransient<AppShell>();
+        builder.Services.AddTransient<AppShellViewModel>();
 
+        builder.Services.AddTransient<ICache<PlayerGroupInfo>, AppDataFileCache<PlayerGroupInfo>>();
         builder.Services.AddTransient<ICache<PlayerFullInfo>, CacheDataFileCache<PlayerFullInfo>>();
         builder.Services.AddTransient<ICache<PlayerTournamentList>, CacheDataFileCache<PlayerTournamentList>>();
-        builder.Services.AddTransient<ICache<TournamentInfo>, CacheDataFileCache<TournamentInfo>>();
         builder.Services.AddTransient<ICache<PlayerInfo>, CacheDataFileCache<PlayerInfo>>();
+        builder.Services.AddTransient<ICache<TournamentInfo>, CacheDataFileCache<TournamentInfo>>();
 
-        builder.Services.AddSingleton<ISettingsService, SettingsService>();
-        builder.Services.AddSingleton<IHistoryService, HistoryService>();
-        builder.Services.AddSingleton<IFavoriteService, FavoriteService>();
         builder.Services.AddTransient<INavigationService, MAUINavigationService>();
         builder.Services.AddTransient<IPopupService, MAUIPopupService>();
 
-        builder.Services.AddTransient<AppShellViewModel>();
+        builder.Services.AddTransient<HomeView>();
         builder.Services.AddTransient<HomeViewModel>();
-        builder.Services.AddTransient<PlayerViewModel>();
-        builder.Services.AddTransient<PlayerTournamentViewModel>();
-        builder.Services.AddTransient<TournamentViewModel>();
-        builder.Services.AddTransient<FavoritesViewModel>();
-        builder.Services.AddTransient<SettingsViewModel>();
-        builder.Services.AddTransient<CacheViewModel>();
-        builder.Services.AddTransient<InfoViewModel>();
+        builder.Services.AddSingleton<IHistoryService, HistoryService>();
+        builder.Services.AddTransient<ICache<HistoryList>, AppDataFileCache<HistoryList>>();
 
+        builder.Services.AddTransient<FavoritesView>();
+        builder.Services.AddTransient<FavoritesViewModel>();
+        builder.Services.AddSingleton<IFavoriteService, FavoriteService>();
+        builder.Services.AddTransient<ICache<FavoriteList>, AppDataFileCache<FavoriteList>>();
+
+        builder.Services.AddTransient<PlayerView>();
+        builder.Services.AddTransient<PlayerViewModel>();
+        builder.Services.AddTransient<PlayerShortView>();
         builder.Services.AddTransient<PlayerShortViewModel>();
+
+        builder.Services.AddTransient<PlayerTournamentView>();
+        builder.Services.AddTransient<PlayerTournamentViewModel>();
+        builder.Services.AddTransient<PlayerTournamentShortView>();
         builder.Services.AddTransient<PlayerTournamentShortViewModel>();
+        builder.Services.AddTransient<GameView>();
         builder.Services.AddTransient<GameViewModel>();
+
+        builder.Services.AddTransient<TournamentView>();
+        builder.Services.AddTransient<TournamentViewModel>();
         builder.Services.AddTransient<PlayerScoreViewModel>();
 
-        builder.Services.AddTransient<AppShell>();
-        builder.Services.AddTransient<HomeView>();
-        builder.Services.AddTransient<PlayerView>();
-        builder.Services.AddTransient<PlayerTournamentView>();
-        builder.Services.AddTransient<TournamentView>();
-        builder.Services.AddTransient<FavoritesView>();
         builder.Services.AddTransient<SettingsView>();
+        builder.Services.AddTransient<SettingsViewModel>();
+        builder.Services.AddSingleton<ISettingsService, SettingsService>();
+        builder.Services.AddTransient<ICache<SettingsInfo>, AppDataFileCache<SettingsInfo>>();
         builder.Services.AddTransient<CacheView>();
+        builder.Services.AddTransient<CacheViewModel>();
+
         builder.Services.AddTransient<InfoView>();
+        builder.Services.AddTransient<InfoViewModel>();
 
         return builder.Build();
     }
