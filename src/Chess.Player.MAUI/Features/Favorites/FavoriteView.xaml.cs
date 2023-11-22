@@ -1,10 +1,10 @@
 using Chess.Player.MAUI.ViewModels;
 
-namespace Chess.Player.MAUI.Features.Favorite;
+namespace Chess.Player.MAUI.Features.Favorites;
 
-public partial class FavoritesPage : ContentPage
+public partial class FavoritesView : ContentPage
 {
-	public FavoritesPage(FavoritesViewModel viewModel)
+	public FavoritesView(FavoritesViewModel viewModel)
 	{
 		InitializeComponent();
 

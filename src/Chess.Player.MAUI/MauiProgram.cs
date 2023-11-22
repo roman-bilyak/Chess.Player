@@ -1,7 +1,7 @@
 ﻿using Chess.Player.Cache;
 using Chess.Player.Data;
 using Chess.Player.MAUI.Features;
-using Chess.Player.MAUI.Features.Favorite;
+using Chess.Player.MAUI.Features.Favorites;
 using Chess.Player.MAUI.Pages;
 using Chess.Player.MAUI.Services;
 using Chess.Player.MAUI.ViewModels;
@@ -77,7 +77,7 @@ namespace Chess.Player.MAUI
             builder.Services.AddTransient<PlayerFullPage>();
             builder.Services.AddTransient<PlayerTournamentFullPage>();
             builder.Services.AddTransient<TournamentFullPage>();
-            builder.Services.AddTransient<FavoritesPage>();
+            builder.Services.AddTransient<FavoritesView>();
             builder.Services.AddTransient<SettingsPage>();
             builder.Services.AddTransient<CachePage>();
             builder.Services.AddTransient<AboutPage>();

@@ -2,7 +2,7 @@
 using Chess.Player.Data;
 using System.Diagnostics.CodeAnalysis;
 
-namespace Chess.Player.MAUI.Features.Favorite;
+namespace Chess.Player.MAUI.Features.Favorites;
 
 internal class PlayerFavoriteService : IPlayerFavoriteService
 {

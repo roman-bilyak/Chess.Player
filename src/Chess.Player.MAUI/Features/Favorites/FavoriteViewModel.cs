@@ -5,7 +5,7 @@ using CommunityToolkit.Mvvm.Input;
 using System.Collections.ObjectModel;
 using System.Net;
 
-namespace Chess.Player.MAUI.Features.Favorite;
+namespace Chess.Player.MAUI.Features.Favorites;
 
 [INotifyPropertyChanged]
 public partial class FavoritesViewModel : BaseViewModel

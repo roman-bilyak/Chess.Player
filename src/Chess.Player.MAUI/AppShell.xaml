@@ -5,6 +5,7 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:mct="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
     xmlns:vm="clr-namespace:Chess.Player.MAUI.ViewModels"
+    xmlns:favorites="clr-namespace:Chess.Player.MAUI.Features.Favorites"
     xmlns:pages="clr-namespace:Chess.Player.MAUI.Pages"
     x:DataType="vm:AppShellViewModel"
     Shell.FlyoutBehavior="Disabled">
@@ -17,7 +18,7 @@
             <ShellContent ContentTemplate="{DataTemplate pages:HomePage}" />
         </Tab>
         <Tab Title="Favorites" Icon="favorites.svg">
-            <ShellContent ContentTemplate="{DataTemplate pages:FavoritesPage}" />
+            <ShellContent ContentTemplate="{DataTemplate favorites:FavoritesView}" />
         </Tab>
         <Tab Title="Settings" Icon="settings.svg">
             <ShellContent Title="Settings" ContentTemplate="{DataTemplate pages:SettingsPage}" Shell.NavBarIsVisible="false" />
