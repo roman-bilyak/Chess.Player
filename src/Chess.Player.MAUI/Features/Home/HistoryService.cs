@@ -4,16 +4,16 @@ using System.Diagnostics.CodeAnalysis;
 
 namespace Chess.Player.MAUI.Features.Home;
 
-internal class PlayerHistoryService : IPlayerHistoryService
+internal class HistoryService : IHistoryService
 {
     private const int MaxCount = 5;
 
     private readonly IChessDataService _chessDataService;
     private readonly ICacheManager _cacheManager;
 
-    private PlayerHistoryList? _playerHistoryList;
+    private HistoryList? _playerHistoryList;
 
-    public PlayerHistoryService
+    public HistoryService
     (
         IChessDataService chessDataService,
         ICacheManager cacheManager
@@ -67,7 +67,7 @@ internal class PlayerHistoryService : IPlayerHistoryService
     [MemberNotNull(nameof(_playerHistoryList))]
     private async Task EnsureLoadedAsync(CancellationToken cancellationToken)
     {
-        _playerHistoryList ??= await _cacheManager.GetAsync<PlayerHistoryList>(includeExpired: false, cancellationToken) ?? [];
+        _playerHistoryList ??= await _cacheManager.GetAsync<HistoryList>(includeExpired: false, cancellationToken) ?? [];
     }
 
     private async Task SaveAsync(CancellationToken cancellationToken)

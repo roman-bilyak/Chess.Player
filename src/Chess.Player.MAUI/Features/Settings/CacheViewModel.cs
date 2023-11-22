@@ -11,36 +11,36 @@ namespace Chess.Player.MAUI.Features.Settings;
 [INotifyPropertyChanged]
 public partial class CacheViewModel : BaseViewModel
 {
-    private readonly IPlayerFavoriteService _playerFavoriteService;
-    private readonly IPlayerHistoryService _playerHistoryService;
+    private readonly IFavoriteService _favoriteService;
+    private readonly IHistoryService _historyService;
     private readonly ICacheManager _cacheManager;
 
     public CacheViewModel
     (
-        IPlayerFavoriteService playerFavoriteService,
-        IPlayerHistoryService playerHistoryService,
+        IFavoriteService favoriteService,
+        IHistoryService historyService,
         ICacheManager cacheManager
     )
     {
-        ArgumentNullException.ThrowIfNull(playerFavoriteService);
-        ArgumentNullException.ThrowIfNull(playerHistoryService);
+        ArgumentNullException.ThrowIfNull(favoriteService);
+        ArgumentNullException.ThrowIfNull(historyService);
         ArgumentNullException.ThrowIfNull(cacheManager);
 
-        _playerFavoriteService = playerFavoriteService;
-        _playerHistoryService = playerHistoryService;
+        _favoriteService = favoriteService;
+        _historyService = historyService;
         _cacheManager = cacheManager;
     }
 
     [RelayCommand]
     private async Task ClearFavoritesAsync(CancellationToken cancellationToken)
     {
-        await _playerFavoriteService.ClearAsync(cancellationToken);
+        await _favoriteService.ClearAsync(cancellationToken);
     }
 
     [RelayCommand]
     private async Task ClearHistoryAsync(CancellationToken cancellationToken)
     {
-        await _playerHistoryService.ClearAsync(cancellationToken);
+        await _historyService.ClearAsync(cancellationToken);
     }
 
     [RelayCommand]

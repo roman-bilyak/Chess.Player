@@ -10,7 +10,7 @@ namespace Chess.Player.MAUI.Features.Home;
 [INotifyPropertyChanged]
 public partial class HomeViewModel : BaseViewModel
 {
-    private readonly IPlayerHistoryService _playerHistoryService;
+    private readonly IHistoryService _historyService;
     private readonly INavigationService _navigationService;
     private readonly IDateTimeProvider _dateTimeProvider;
     private readonly IServiceProvider _serviceProvider;
@@ -35,7 +35,7 @@ public partial class HomeViewModel : BaseViewModel
 
     public HomeViewModel
     (
-        IPlayerHistoryService playerHistoryService,
+        IHistoryService playerHistoryService,
         INavigationService navigationService,
         IDateTimeProvider dateTimeProvider,
         IServiceProvider serviceProvider
@@ -46,7 +46,7 @@ public partial class HomeViewModel : BaseViewModel
         ArgumentNullException.ThrowIfNull(dateTimeProvider);
         ArgumentNullException.ThrowIfNull(serviceProvider);
 
-        _playerHistoryService = playerHistoryService;
+        _historyService = playerHistoryService;
         _navigationService = navigationService;
         _dateTimeProvider = dateTimeProvider;
         _serviceProvider = serviceProvider;
@@ -77,7 +77,7 @@ public partial class HomeViewModel : BaseViewModel
         {
             List<PlayerShortViewModel> players = [];
             DateTime currentDate = _dateTimeProvider.UtcNow.Date;
-            foreach (PlayerFullInfo player in await _playerHistoryService.GetAllAsync(UseCache, cancellationToken))
+            foreach (PlayerFullInfo player in await _historyService.GetAllAsync(UseCache, cancellationToken))
             {
                 PlayerShortViewModel playerViewModel = _serviceProvider.GetRequiredService<PlayerShortViewModel>();
 

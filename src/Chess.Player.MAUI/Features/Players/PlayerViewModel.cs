@@ -14,8 +14,8 @@ public partial class PlayerViewModel : BaseViewModel, IDisposable
 {
     private readonly IChessDataService _chessDataService;
     private readonly IPlayerGroupService _playerGroupService;
-    private readonly IPlayerHistoryService _playerHistoryService;
-    private readonly IPlayerFavoriteService _playerFavoriteService;
+    private readonly IHistoryService _historyService;
+    private readonly IFavoriteService _favoriteService;
     private readonly IDateTimeProvider _dateTimeProvider;
     private readonly IPopupService _popupService;
     private readonly IServiceProvider _serviceProvider;
@@ -93,8 +93,8 @@ public partial class PlayerViewModel : BaseViewModel, IDisposable
     (
         IChessDataService chessDataService,
         IPlayerGroupService playerGroupService,
-        IPlayerHistoryService historyService,
-        IPlayerFavoriteService playerFavoriteService,
+        IHistoryService historyService,
+        IFavoriteService favoriteService,
         IDateTimeProvider dateTimeProvider,
         IPopupService popupService,
         IServiceProvider serviceProvider
@@ -103,15 +103,15 @@ public partial class PlayerViewModel : BaseViewModel, IDisposable
         ArgumentNullException.ThrowIfNull(chessDataService);
         ArgumentNullException.ThrowIfNull(playerGroupService);
         ArgumentNullException.ThrowIfNull(historyService);
-        ArgumentNullException.ThrowIfNull(playerFavoriteService);
+        ArgumentNullException.ThrowIfNull(favoriteService);
         ArgumentNullException.ThrowIfNull(dateTimeProvider);
         ArgumentNullException.ThrowIfNull(popupService);
         ArgumentNullException.ThrowIfNull(serviceProvider);
 
         _chessDataService = chessDataService;
         _playerGroupService = playerGroupService;
-        _playerHistoryService = historyService;
-        _playerFavoriteService = playerFavoriteService;
+        _historyService = historyService;
+        _favoriteService = favoriteService;
         _dateTimeProvider = dateTimeProvider;
         _popupService = popupService;
         _serviceProvider = serviceProvider;
@@ -165,10 +165,10 @@ public partial class PlayerViewModel : BaseViewModel, IDisposable
 
             PlayerFullInfo playerFullInfo = await _chessDataService.GetPlayerFullInfoAsync(Name, UseCache, cancellationToken);
             bool isFavorite = playerFullInfo.Name is not null 
-                && await _playerFavoriteService.ContainsAsync(playerFullInfo.Name, cancellationToken);
+                && await _favoriteService.ContainsAsync(playerFullInfo.Name, cancellationToken);
             if (playerFullInfo.Tournaments.Count > 0 && !string.IsNullOrEmpty(playerFullInfo.Name))
             {
-                await _playerHistoryService.AddAsync(playerFullInfo.Name, cancellationToken);
+                await _historyService.AddAsync(playerFullInfo.Name, cancellationToken);
             }
 
             int index = playerFullInfo.Tournaments.Count;
@@ -264,7 +264,7 @@ public partial class PlayerViewModel : BaseViewModel, IDisposable
             return;
         }
 
-        IsFavorite = await _playerFavoriteService.ToggleAsync(Name, cancellationToken);
+        IsFavorite = await _favoriteService.ToggleAsync(Name, cancellationToken);
     }
 
     [RelayCommand]

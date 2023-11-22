@@ -2,7 +2,7 @@
 
 namespace Chess.Player.MAUI.Features.Favorites;
 
-public interface IPlayerFavoriteService
+public interface IFavoriteService
 {
     Task AddAsync(string name, CancellationToken cancellationToken);
 

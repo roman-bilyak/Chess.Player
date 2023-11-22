@@ -1,5 +1,5 @@
 ﻿namespace Chess.Player.MAUI.Features.Favorites;
 
-internal class PlayerFavoriteList : List<string>
+internal class FavoriteList : List<string>
 {
 }

@@ -10,7 +10,7 @@ namespace Chess.Player.MAUI.Features.Favorites;
 [INotifyPropertyChanged]
 public partial class FavoritesViewModel : BaseViewModel
 {
-    private readonly IPlayerFavoriteService _playerFavoriteService;
+    private readonly IFavoriteService _favoriteService;
     private readonly IDateTimeProvider _dateTimeProvider;
     private readonly IServiceProvider _serviceProvider;
 
@@ -31,16 +31,16 @@ public partial class FavoritesViewModel : BaseViewModel
 
     public FavoritesViewModel
     (
-        IPlayerFavoriteService playerFavoriteService,
+        IFavoriteService favoriteService,
         IDateTimeProvider dateTimeProvider,
         IServiceProvider serviceProvider
     )
     {
-        ArgumentNullException.ThrowIfNull(playerFavoriteService);
+        ArgumentNullException.ThrowIfNull(favoriteService);
         ArgumentNullException.ThrowIfNull(dateTimeProvider);
         ArgumentNullException.ThrowIfNull(serviceProvider);
 
-        _playerFavoriteService = playerFavoriteService;
+        _favoriteService = favoriteService;
         _dateTimeProvider = dateTimeProvider;
         _serviceProvider = serviceProvider;
     }
@@ -70,7 +70,7 @@ public partial class FavoritesViewModel : BaseViewModel
         {
             List<PlayerShortViewModel> players = [];
             DateTime currentDate = _dateTimeProvider.UtcNow.Date;
-            foreach (PlayerFullInfo player in await _playerFavoriteService.GetAllAsync(UseCache, cancellationToken))
+            foreach (PlayerFullInfo player in await _favoriteService.GetAllAsync(UseCache, cancellationToken))
             {
                 PlayerShortViewModel playerViewModel = _serviceProvider.GetRequiredService<PlayerShortViewModel>();
 

@@ -1,5 +1,5 @@
 ﻿namespace Chess.Player.MAUI.Features.Home;
 
-internal class PlayerHistoryList : List<string>
+internal class HistoryList : List<string>
 {
 }

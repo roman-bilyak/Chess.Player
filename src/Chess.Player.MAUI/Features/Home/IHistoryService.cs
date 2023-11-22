@@ -2,7 +2,7 @@
 
 namespace Chess.Player.MAUI.Features.Home;
 
-public interface IPlayerHistoryService
+public interface IHistoryService
 {
     Task AddAsync(string name, CancellationToken cancellationToken);
 

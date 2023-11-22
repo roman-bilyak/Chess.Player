@@ -44,8 +44,8 @@ public static class MauiProgram
         builder.Services.AddChessServices();
 
         builder.Services.AddTransient<ICache<SettingsInfo>, AppDataFileCache<SettingsInfo>>();
-        builder.Services.AddTransient<ICache<PlayerFavoriteList>, AppDataFileCache<PlayerFavoriteList>>();
-        builder.Services.AddTransient<ICache<PlayerHistoryList>, AppDataFileCache<PlayerHistoryList>>();
+        builder.Services.AddTransient<ICache<FavoriteList>, AppDataFileCache<FavoriteList>>();
+        builder.Services.AddTransient<ICache<HistoryList>, AppDataFileCache<HistoryList>>();
         builder.Services.AddTransient<ICache<PlayerGroupInfo>, AppDataFileCache<PlayerGroupInfo>>();
 
         builder.Services.AddTransient<ICache<PlayerFullInfo>, CacheDataFileCache<PlayerFullInfo>>();
@@ -54,8 +54,8 @@ public static class MauiProgram
         builder.Services.AddTransient<ICache<PlayerInfo>, CacheDataFileCache<PlayerInfo>>();
 
         builder.Services.AddSingleton<ISettingsService, SettingsService>();
-        builder.Services.AddSingleton<IPlayerHistoryService, PlayerHistoryService>();
-        builder.Services.AddSingleton<IPlayerFavoriteService, PlayerFavoriteService>();
+        builder.Services.AddSingleton<IHistoryService, HistoryService>();
+        builder.Services.AddSingleton<IFavoriteService, FavoriteService>();
         builder.Services.AddTransient<INavigationService, MAUINavigationService>();
         builder.Services.AddTransient<IPopupService, MAUIPopupService>();
 
