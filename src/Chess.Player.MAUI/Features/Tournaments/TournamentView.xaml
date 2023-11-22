@@ -2,10 +2,9 @@
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:mct="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
-             xmlns:vm="clr-namespace:Chess.Player.MAUI.ViewModels"
-             xmlns:views="clr-namespace:Chess.Player.MAUI.Views"
-             x:Class="Chess.Player.MAUI.Pages.TournamentFullPage"
-             x:DataType="vm:TournamentFullViewModel"
+             xmlns:tournaments="clr-namespace:Chess.Player.MAUI.Features.Tournaments"
+             x:Class="Chess.Player.MAUI.Features.Tournaments.TournamentView"
+             x:DataType="tournaments:TournamentViewModel"
              Title="{Binding TournamentName}">
     <ContentPage.Behaviors>
         <mct:EventToCommandBehavior Command="{Binding StartCommand}" EventName="Appearing" />
@@ -21,8 +20,8 @@
         <RefreshView IsRefreshing="{Binding IsLoading}" Command="{Binding LoadCommand}" RefreshColor="Orange">
             <CollectionView ItemsSource="{Binding PlayerScores}" SelectionMode="None">
                 <CollectionView.ItemTemplate>
-                    <DataTemplate x:DataType="vm:PlayerScoreViewModel">
-                        <views:PlayerScoreView BindingContext="{Binding .}" />
+                    <DataTemplate x:DataType="tournaments:PlayerScoreViewModel">
+                        <tournaments:PlayerScoreView BindingContext="{Binding .}" />
                     </DataTemplate>
                 </CollectionView.ItemTemplate>
             </CollectionView>

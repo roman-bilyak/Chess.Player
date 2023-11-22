@@ -1,14 +1,13 @@
 ﻿using Chess.Player.Data;
-using Chess.Player.MAUI.Features;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using System.Collections.ObjectModel;
 using System.Net;
 
-namespace Chess.Player.MAUI.ViewModels;
+namespace Chess.Player.MAUI.Features.Tournaments;
 
 [INotifyPropertyChanged]
-public partial class TournamentFullViewModel : BaseViewModel
+public partial class TournamentViewModel : BaseViewModel
 {
     private readonly IChessDataService _chessDataService;
     private readonly IServiceProvider _serviceProvider;
@@ -40,7 +39,7 @@ public partial class TournamentFullViewModel : BaseViewModel
 
     public bool HasError => !string.IsNullOrWhiteSpace(Error);
 
-    public TournamentFullViewModel
+    public TournamentViewModel
     (
         IChessDataService chessDataService,
         IServiceProvider serviceProvider
