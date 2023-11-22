@@ -2,7 +2,7 @@
 using Chess.Player.Data;
 using Chess.Player.MAUI.Features;
 using Chess.Player.MAUI.Features.Favorites;
-using Chess.Player.MAUI.Services;
+using Chess.Player.MAUI.Features.Home;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using System.ComponentModel;

@@ -2,7 +2,7 @@
 using Chess.Player.Data;
 using System.Diagnostics.CodeAnalysis;
 
-namespace Chess.Player.MAUI.Services;
+namespace Chess.Player.MAUI.Features.Home;
 
 internal class PlayerHistoryService : IPlayerHistoryService
 {

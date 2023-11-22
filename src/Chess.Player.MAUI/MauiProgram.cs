@@ -2,6 +2,7 @@
 using Chess.Player.Data;
 using Chess.Player.MAUI.Features;
 using Chess.Player.MAUI.Features.Favorites;
+using Chess.Player.MAUI.Features.Home;
 using Chess.Player.MAUI.Pages;
 using Chess.Player.MAUI.Services;
 using Chess.Player.MAUI.ViewModels;
