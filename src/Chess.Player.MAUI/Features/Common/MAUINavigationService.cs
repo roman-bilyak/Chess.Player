@@ -1,7 +1,6 @@
-﻿using Chess.Player.MAUI.Features.PlayerTournaments;
+﻿using Chess.Player.MAUI.Features.Players;
+using Chess.Player.MAUI.Features.PlayerTournaments;
 using Chess.Player.MAUI.Features.Tournaments;
-using Chess.Player.MAUI.Pages;
-using Chess.Player.MAUI.ViewModels;
 
 namespace Chess.Player.MAUI.Features;
 
@@ -21,7 +20,7 @@ internal class MAUINavigationService : INavigationService
 
     public async Task NavigateToPlayerAsync(string playerName)
     {
-        await NavigateToAsync<PlayerFullPage, PlayerFullViewModel>(x =>
+        await NavigateToAsync<PlayerView, PlayerViewModel>(x =>
         {
             x.Name = playerName;
         });

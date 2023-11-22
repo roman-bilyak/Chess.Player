@@ -2,10 +2,10 @@
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:mct="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
-             xmlns:vm="clr-namespace:Chess.Player.MAUI.ViewModels"
+             xmlns:players="clr-namespace:Chess.Player.MAUI.Features.Players"
              xmlns:playerTournaments="clr-namespace:Chess.Player.MAUI.Features.PlayerTournaments"
-             x:Class="Chess.Player.MAUI.Pages.PlayerFullPage"
-             x:DataType="vm:PlayerFullViewModel"
+             x:Class="Chess.Player.MAUI.Features.Players.PlayerView"
+             x:DataType="players:PlayerViewModel"
              Title="{Binding Name}">
     <ContentPage.Behaviors>
         <mct:EventToCommandBehavior Command="{Binding StartCommand}" EventName="Appearing" />
@@ -23,7 +23,7 @@
         <RefreshView IsRefreshing="{Binding IsLoading}" Command="{Binding LoadCommand}" RefreshColor="Orange">
             <CollectionView ItemsSource="{Binding Tournaments, Mode=OneWay}" Header="{Binding .}" SelectionMode="None">
                 <CollectionView.HeaderTemplate>
-                    <DataTemplate x:DataType="vm:PlayerFullViewModel">
+                    <DataTemplate x:DataType="players:PlayerViewModel">
                         <Grid RowSpacing="10">
                             <Grid.RowDefinitions>
                                 <RowDefinition Height="Auto" />
@@ -42,7 +42,7 @@
                             <Label Grid.Row="0" Grid.Column="0" Text="Name" FontSize="14" FontAttributes="Bold" IsVisible="{Binding HasNames}" />
                             <VerticalStackLayout Grid.Row="0" Grid.Column="1" Grid.ColumnSpan="3" BindableLayout.ItemsSource="{Binding Names}">
                                 <BindableLayout.ItemTemplate>
-                                    <DataTemplate x:DataType="vm:NameViewModel">
+                                    <DataTemplate x:DataType="players:NameViewModel">
                                         <Label Text="{Binding FullName}" FontSize="14" />
                                     </DataTemplate>
                                 </BindableLayout.ItemTemplate>
@@ -76,7 +76,7 @@
                                     <LinearItemsLayout Orientation="Horizontal" />
                                 </CollectionView.ItemsLayout>
                                 <CollectionView.ItemTemplate>
-                                    <DataTemplate x:DataType="vm:TournamentYearViewModel">
+                                    <DataTemplate x:DataType="playerTournaments:PlayerTournamentYearViewModel">
                                         <VerticalStackLayout Padding="15" Spacing="10">
                                             <Label Text="{Binding Year}" FontSize="14" FontAttributes="Bold" HorizontalOptions="Center" VerticalOptions="Center" />
                                             <HorizontalStackLayout Spacing="5" HorizontalOptions="Center" VerticalOptions="Center">

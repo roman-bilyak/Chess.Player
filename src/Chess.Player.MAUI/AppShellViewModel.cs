@@ -3,7 +3,7 @@ using Chess.Player.MAUI.Features.Settings;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 
-namespace Chess.Player.MAUI.ViewModels;
+namespace Chess.Player.MAUI;
 
 [INotifyPropertyChanged]
 public partial class AppShellViewModel : BaseViewModel

@@ -4,10 +4,10 @@ using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using System.Collections.ObjectModel;
 
-namespace Chess.Player.MAUI.ViewModels;
+namespace Chess.Player.MAUI.Features.Players;
 
 [INotifyPropertyChanged]
-public partial class PlayerViewModel : BaseViewModel
+public partial class PlayerShortViewModel : BaseViewModel
 {
     private readonly IDateTimeProvider _dateTimeProvider;
     private readonly INavigationService _navigationService;
@@ -44,7 +44,7 @@ public partial class PlayerViewModel : BaseViewModel
     [ObservableProperty]
     private bool _isSelected;
 
-    public PlayerViewModel
+    public PlayerShortViewModel
     (
         IDateTimeProvider dateTimeProvider,
         INavigationService navigationService

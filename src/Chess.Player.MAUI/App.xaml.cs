@@ -1,22 +1,21 @@
 ﻿using Chess.Player.MAUI.Features.Settings;
 
-namespace Chess.Player.MAUI
+namespace Chess.Player.MAUI;
+
+public partial class App : Application
 {
-    public partial class App : Application
+    public App
+    (
+        IServiceProvider serviceProvider
+    )
     {
-        public App
-        (
-            IServiceProvider serviceProvider
-        )
-        {
-            ArgumentNullException.ThrowIfNull(serviceProvider);
+        ArgumentNullException.ThrowIfNull(serviceProvider);
 
-            ISettingsService settingsService = serviceProvider.GetRequiredService<ISettingsService>();
-            settingsService.ThemeChanged += (sender, args) => { UserAppTheme = args.Theme; };
+        ISettingsService settingsService = serviceProvider.GetRequiredService<ISettingsService>();
+        settingsService.ThemeChanged += (sender, args) => { UserAppTheme = args.Theme; };
 
-            InitializeComponent();
+        InitializeComponent();
 
-            MainPage = serviceProvider.GetRequiredService<AppShell>();
-        }
+        MainPage = serviceProvider.GetRequiredService<AppShell>();
     }
 }

@@ -3,8 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:mct="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
              xmlns:favorites="clr-namespace:Chess.Player.MAUI.Features.Favorites"
-             xmlns:player="clr-namespace:Chess.Player.MAUI.Views"
-             xmlns:playervm="clr-namespace:Chess.Player.MAUI.ViewModels"
+             xmlns:player="clr-namespace:Chess.Player.MAUI.Features.Players"
              x:Class="Chess.Player.MAUI.Features.Favorites.FavoritesView"
              x:DataType="favorites:FavoritesViewModel"
              Title="Favorites">
@@ -22,8 +21,8 @@
         <RefreshView IsRefreshing="{Binding IsLoading}" Command="{Binding LoadCommand}" RefreshColor="Orange">
             <CollectionView ItemsSource="{Binding Players}" SelectionMode="None">
                 <CollectionView.ItemTemplate>
-                    <DataTemplate x:DataType="playervm:PlayerViewModel">
-                        <player:PlayerView BindingContext="{Binding .}" />
+                    <DataTemplate x:DataType="player:PlayerShortViewModel">
+                        <player:PlayerShortView BindingContext="{Binding .}" />
                     </DataTemplate>
                 </CollectionView.ItemTemplate>
             </CollectionView>

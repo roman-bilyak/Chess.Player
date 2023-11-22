@@ -1,14 +1,11 @@
-﻿using Chess.Player.MAUI.ViewModels;
+﻿namespace Chess.Player.MAUI;
 
-namespace Chess.Player.MAUI
+public partial class AppShell : Shell
 {
-    public partial class AppShell : Shell
+    public AppShell(AppShellViewModel viewModel)
     {
-        public AppShell(AppShellViewModel viewModel)
-        {
-            InitializeComponent();
+        InitializeComponent();
 
-            BindingContext = viewModel;
-        }
+        BindingContext = viewModel;
     }
 }

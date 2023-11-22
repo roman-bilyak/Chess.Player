@@ -3,8 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:mct="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
              xmlns:home="clr-namespace:Chess.Player.MAUI.Features.Home"
-             xmlns:player="clr-namespace:Chess.Player.MAUI.Views"
-             xmlns:playervm="clr-namespace:Chess.Player.MAUI.ViewModels"
+             xmlns:players="clr-namespace:Chess.Player.MAUI.Features.Players"
              x:Class="Chess.Player.MAUI.Features.Home.HomeView"
              x:DataType="home:HomeViewModel"
              Title="Search">
@@ -27,8 +26,8 @@
                     </DataTemplate>
                 </CollectionView.HeaderTemplate>
                 <CollectionView.ItemTemplate>
-                    <DataTemplate x:DataType="playervm:PlayerViewModel">
-                        <player:PlayerView BindingContext="{Binding .}" />
+                    <DataTemplate x:DataType="players:PlayerShortViewModel">
+                        <players:PlayerShortView BindingContext="{Binding .}" />
                     </DataTemplate>
                 </CollectionView.ItemTemplate>
             </CollectionView>

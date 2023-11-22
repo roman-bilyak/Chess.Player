@@ -2,9 +2,9 @@
 <ContentView xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:mct="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
-             xmlns:vm="clr-namespace:Chess.Player.MAUI.ViewModels"
-             x:Class="Chess.Player.MAUI.Views.PlayerView"
-             x:DataType="vm:PlayerViewModel">
+             xmlns:players="clr-namespace:Chess.Player.MAUI.Features.Players"
+             x:Class="Chess.Player.MAUI.Features.Players.PlayerShortView"
+             x:DataType="players:PlayerShortViewModel">
     <ContentView.Resources>
         <ResourceDictionary>
             <mct:InvertedBoolConverter x:Key="InvertedBoolConverter" />
@@ -54,7 +54,7 @@
                 <VerticalStackLayout Grid.Row="0" Grid.Column="0">
                     <VerticalStackLayout BindableLayout.ItemsSource="{Binding Names, Mode=OneWay}">
                         <BindableLayout.ItemTemplate>
-                            <DataTemplate x:DataType="vm:NameViewModel">
+                            <DataTemplate x:DataType="players:NameViewModel">
                                 <Label Text="{Binding FullName}" Style="{StaticResource CardHighlightStyle}"/>
                             </DataTemplate>
                         </BindableLayout.ItemTemplate>

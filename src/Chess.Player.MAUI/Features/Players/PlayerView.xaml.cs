@@ -1,10 +1,8 @@
-using Chess.Player.MAUI.ViewModels;
+namespace Chess.Player.MAUI.Features.Players;
 
-namespace Chess.Player.MAUI.Pages;
-
-public partial class PlayerFullPage : ContentPage
+public partial class PlayerView : ContentPage
 {
-	public PlayerFullPage(PlayerFullViewModel viewModel)
+	public PlayerView(PlayerViewModel viewModel)
 	{
 		InitializeComponent();
 

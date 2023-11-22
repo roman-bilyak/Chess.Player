@@ -1,5 +1,4 @@
 ﻿using Chess.Player.Data;
-using Chess.Player.MAUI.Features;
 using Chess.Player.MAUI.Features.Favorites;
 using Chess.Player.MAUI.Features.Home;
 using Chess.Player.MAUI.Features.PlayerTournaments;
@@ -8,10 +7,10 @@ using CommunityToolkit.Mvvm.Input;
 using System.Collections.ObjectModel;
 using System.Net;
 
-namespace Chess.Player.MAUI.ViewModels;
+namespace Chess.Player.MAUI.Features.Players;
 
 [INotifyPropertyChanged]
-public partial class PlayerFullViewModel : BaseViewModel, IDisposable
+public partial class PlayerViewModel : BaseViewModel, IDisposable
 {
     private readonly IChessDataService _chessDataService;
     private readonly IPlayerGroupService _playerGroupService;
@@ -56,15 +55,15 @@ public partial class PlayerFullViewModel : BaseViewModel, IDisposable
 
     public int Years => _dateTimeProvider.UtcNow.Year - YearOfBirth ?? 0;
 
-    private Dictionary<TournamentYearViewModel, List<PlayerTournamentShortViewModel>> _allTournaments = [];
+    private Dictionary<PlayerTournamentYearViewModel, List<PlayerTournamentShortViewModel>> _allTournaments = [];
 
     [ObservableProperty]
-    private ObservableCollection<TournamentYearViewModel> _tournamentYears = [];
+    private ObservableCollection<PlayerTournamentYearViewModel> _tournamentYears = [];
 
     public bool HasTournamentYears => TournamentYears?.Any() ?? false;
 
     [ObservableProperty]
-    private TournamentYearViewModel? _tournamentYear;
+    private PlayerTournamentYearViewModel? _tournamentYear;
 
     [ObservableProperty]
     private ObservableCollection<PlayerTournamentShortViewModel> _tournaments = [];
@@ -90,7 +89,7 @@ public partial class PlayerFullViewModel : BaseViewModel, IDisposable
 
     public bool HasError => !string.IsNullOrWhiteSpace(Error);
 
-    public PlayerFullViewModel
+    public PlayerViewModel
     (
         IChessDataService chessDataService,
         IPlayerGroupService playerGroupService,
@@ -174,7 +173,7 @@ public partial class PlayerFullViewModel : BaseViewModel, IDisposable
 
             int index = playerFullInfo.Tournaments.Count;
             _allTournaments = playerFullInfo.Tournaments.GroupBy(x => x.Tournament.EndDate?.Year)
-                .ToDictionary(x => new TournamentYearViewModel
+                .ToDictionary(x => new PlayerTournamentYearViewModel
                 {
                     Year = x.Key,
                     Years = x.Key - playerFullInfo.YearOfBirth ?? 0,
@@ -212,7 +211,7 @@ public partial class PlayerFullViewModel : BaseViewModel, IDisposable
             IsFavorite = isFavorite;
 
             TournamentYears.Clear();
-            foreach(TournamentYearViewModel tournamentYear in _allTournaments.Keys.ToList())
+            foreach(PlayerTournamentYearViewModel tournamentYear in _allTournaments.Keys.ToList())
             {
                 TournamentYears.Add(tournamentYear);
             }

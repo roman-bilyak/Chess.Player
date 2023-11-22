@@ -1,5 +1,5 @@
 ﻿using Chess.Player.Data;
-using Chess.Player.MAUI.ViewModels;
+using Chess.Player.MAUI.Features.Players;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using System.Collections.ObjectModel;
@@ -19,7 +19,7 @@ public partial class HomeViewModel : BaseViewModel
     private string? _searchText;
 
     [ObservableProperty]
-    private ObservableCollection<PlayerViewModel> _players = [];
+    private ObservableCollection<PlayerShortViewModel> _players = [];
 
     [ObservableProperty]
     private bool _useCache;
@@ -75,11 +75,11 @@ public partial class HomeViewModel : BaseViewModel
     {
         try
         {
-            List<PlayerViewModel> players = [];
+            List<PlayerShortViewModel> players = [];
             DateTime currentDate = _dateTimeProvider.UtcNow.Date;
             foreach (PlayerFullInfo player in await _playerHistoryService.GetAllAsync(UseCache, cancellationToken))
             {
-                PlayerViewModel playerViewModel = _serviceProvider.GetRequiredService<PlayerViewModel>();
+                PlayerShortViewModel playerViewModel = _serviceProvider.GetRequiredService<PlayerShortViewModel>();
 
                 playerViewModel.Names = new ObservableCollection<NameViewModel>(player.Names.Select(x => new NameViewModel { LastName = x.LastName, FirstName = x.FirstName }));
                 playerViewModel.Title = player.Title;
@@ -92,7 +92,7 @@ public partial class HomeViewModel : BaseViewModel
             }
 
             Players.Clear();
-            foreach(PlayerViewModel playerViewModel in players)
+            foreach(PlayerShortViewModel playerViewModel in players)
             {
                 Players.Add(playerViewModel);
             }

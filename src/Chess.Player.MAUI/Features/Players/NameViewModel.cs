@@ -1,7 +1,6 @@
-﻿using Chess.Player.MAUI.Features;
-using CommunityToolkit.Mvvm.ComponentModel;
+﻿using CommunityToolkit.Mvvm.ComponentModel;
 
-namespace Chess.Player.MAUI.ViewModels;
+namespace Chess.Player.MAUI.Features.Players;
 
 [INotifyPropertyChanged]
 public partial class NameViewModel: BaseViewModel
