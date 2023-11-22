@@ -1,8 +1,8 @@
 namespace Chess.Player.MAUI.Features.Home;
 
-public partial class HomePage : ContentPage
+public partial class HomeView : ContentPage
 {
-	public HomePage(HomeViewModel viewModel)
+	public HomeView(HomeViewModel viewModel)
 	{
 		InitializeComponent();
 

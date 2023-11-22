@@ -5,7 +5,7 @@
              xmlns:home="clr-namespace:Chess.Player.MAUI.Features.Home"
              xmlns:player="clr-namespace:Chess.Player.MAUI.Views"
              xmlns:playervm="clr-namespace:Chess.Player.MAUI.ViewModels"
-             x:Class="Chess.Player.MAUI.Pages.HomePage"
+             x:Class="Chess.Player.MAUI.Features.Home.HomeView"
              x:DataType="home:HomeViewModel"
              Title="Search">
     <ContentPage.Behaviors>

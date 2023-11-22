@@ -74,7 +74,7 @@ namespace Chess.Player.MAUI
             builder.Services.AddTransient<PlayerScoreViewModel>();
 
             builder.Services.AddTransient<AppShell>();
-            builder.Services.AddTransient<HomePage>();
+            builder.Services.AddTransient<HomeView>();
             builder.Services.AddTransient<PlayerFullPage>();
             builder.Services.AddTransient<PlayerTournamentFullPage>();
             builder.Services.AddTransient<TournamentFullPage>();
