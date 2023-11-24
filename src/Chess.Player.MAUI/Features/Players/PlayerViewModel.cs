@@ -6,6 +6,7 @@ using Chess.Player.MAUI.Navigation;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using System.Collections.ObjectModel;
+using System.ComponentModel;
 
 namespace Chess.Player.MAUI.Features.Players;
 
@@ -185,7 +186,9 @@ public partial class PlayerViewModel : BaseRefreshViewModel, IDisposable
         }
     }
 
-    [RelayCommand]
+    protected bool CanToggleFavorite => !IsLoading && IsSuccessfullyLoaded;
+
+    [RelayCommand(CanExecute = nameof(CanToggleFavorite))]
     private async Task ToggleFavoriteAsync(CancellationToken cancellationToken)
     {
         if (string.IsNullOrEmpty(Name))
@@ -196,7 +199,9 @@ public partial class PlayerViewModel : BaseRefreshViewModel, IDisposable
         IsFavorite = await _favoriteService.ToggleAsync(Name, cancellationToken);
     }
 
-    [RelayCommand]
+    protected bool CanAddName => !IsLoading && IsSuccessfullyLoaded;
+
+    [RelayCommand(CanExecute = nameof(CanAddName))]
     private async Task AddNameAsync(CancellationToken cancellationToken)
     {
         if (string.IsNullOrEmpty(Name))
@@ -216,18 +221,31 @@ public partial class PlayerViewModel : BaseRefreshViewModel, IDisposable
         await Launcher.OpenAsync(new Uri($"https://ratings.fide.com/profile/{fideId}"));
     }
 
-    private void OnProgressChanged(object sender, SearchProgressEventArgs e)
+    protected override void OnPropertyChanged(PropertyChangedEventArgs e)
     {
-        MainThread.BeginInvokeOnMainThread(() =>
+        base.OnPropertyChanged(e);
+
+        if (e.PropertyName == nameof(IsLoading) || e.PropertyName == nameof(IsSuccessfullyLoaded))
         {
-            Progress = (double)e.ProgressPercentage / 100;
-        });
+            ToggleFavoriteCommand.NotifyCanExecuteChanged();
+            AddNameCommand.NotifyCanExecuteChanged();
+        }
     }
 
     public void Dispose()
     {
         Dispose(true);
         GC.SuppressFinalize(this);
+    }
+
+    #region helper methods
+
+    private void OnProgressChanged(object sender, SearchProgressEventArgs e)
+    {
+        MainThread.BeginInvokeOnMainThread(() =>
+        {
+            Progress = (double)e.ProgressPercentage / 100;
+        });
     }
 
     protected virtual void Dispose(bool disposing)
@@ -237,4 +255,6 @@ public partial class PlayerViewModel : BaseRefreshViewModel, IDisposable
             _chessDataService.ProgressChanged -= OnProgressChanged;
         }
     }
+
+    #endregion
 }

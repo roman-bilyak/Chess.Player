@@ -10,7 +10,11 @@ public abstract partial class BaseRefreshViewModel : BaseViewModel
     private bool _useCache;
 
     [ObservableProperty]
+    [NotifyCanExecuteChangedFor(nameof(StartCommand), nameof(RefreshCommand), nameof(LoadCommand))]
     private bool _isLoading;
+
+    [ObservableProperty]
+    private bool _isSuccessfullyLoaded;
 
     [ObservableProperty]
     private double _progress;
@@ -21,7 +25,9 @@ public abstract partial class BaseRefreshViewModel : BaseViewModel
 
     public bool HasError => !string.IsNullOrWhiteSpace(Error);
 
-    [RelayCommand]
+    protected bool CanRefresh => !IsLoading;
+
+    [RelayCommand(CanExecute = nameof(CanRefresh))]
     private Task StartAsync(CancellationToken cancellationToken)
     {
         UseCache = true;
@@ -30,7 +36,7 @@ public abstract partial class BaseRefreshViewModel : BaseViewModel
         return Task.CompletedTask;
     }
 
-    [RelayCommand]
+    [RelayCommand(CanExecute = nameof(CanRefresh))]
     private Task RefreshAsync(CancellationToken cancellationToken)
     {
         UseCache = false;
@@ -39,7 +45,7 @@ public abstract partial class BaseRefreshViewModel : BaseViewModel
         return Task.CompletedTask;
     }
 
-    [RelayCommand(IncludeCancelCommand = true)]
+    [RelayCommand(CanExecute = nameof(CanRefresh), IncludeCancelCommand = true)]
     private async Task LoadAsync(CancellationToken cancellationToken)
     {
         try
@@ -49,6 +55,8 @@ public abstract partial class BaseRefreshViewModel : BaseViewModel
             await LoadDataAsync(cancellationToken);
 
             Progress = 100;
+
+            IsSuccessfullyLoaded = true;
             Error = null;
         }
         catch (OperationCanceledException)
