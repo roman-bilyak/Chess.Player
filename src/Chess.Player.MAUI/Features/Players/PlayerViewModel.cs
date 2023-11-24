@@ -6,11 +6,10 @@ using Chess.Player.MAUI.Navigation;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using System.Collections.ObjectModel;
-using System.Net;
 
 namespace Chess.Player.MAUI.Features.Players;
 
-public partial class PlayerViewModel : BaseViewModel, IDisposable
+public partial class PlayerViewModel : BaseRefreshViewModel, IDisposable
 {
     private readonly IChessDataService _chessDataService;
     private readonly IPlayerGroupService _playerGroupService;
@@ -74,21 +73,6 @@ public partial class PlayerViewModel : BaseViewModel, IDisposable
 
     public string ToggleFavoriteButtonName => !IsFavorite ? "Add To Favorites" : "Remove From Favorites";
 
-    [ObservableProperty]
-    private bool _useCache;
-
-    [ObservableProperty]
-    private bool _isLoading;
-
-    [ObservableProperty]
-    private double _progress;
-
-    [ObservableProperty]
-    [NotifyPropertyChangedFor(nameof(HasError))]
-    private string? _error;
-
-    public bool HasError => !string.IsNullOrWhiteSpace(Error);
-
     public PlayerViewModel
     (
         IChessDataService chessDataService,
@@ -119,125 +103,70 @@ public partial class PlayerViewModel : BaseViewModel, IDisposable
         _chessDataService.ProgressChanged += OnProgressChanged;
     }
 
-    [RelayCommand]
-    private Task StartAsync(CancellationToken cancellationToken)
-    {
-        UseCache = true;
-        IsLoading = true;
-
-        return Task.CompletedTask;
-    }
-
-    [RelayCommand]
-    private Task RefreshAsync(CancellationToken cancellationToken)
-    {
-        UseCache = false;
-        IsLoading = true;
-
-        return Task.CompletedTask;
-    }
-
-    [RelayCommand]
-    private async Task AddNameAsync(CancellationToken cancellationToken)
+    protected override async Task LoadDataAsync(CancellationToken cancellationToken)
     {
         if (string.IsNullOrEmpty(Name))
         {
             return;
         }
 
-        string name = await _popupService.DisplayPromptAsync("Add Name", placeholder: "Example: Smith John");
-        await _playerGroupService.AddToGroupAsync(Name, name, cancellationToken);
+        DateTime currentDate = _dateTimeProvider.UtcNow.Date;
 
-        IsLoading = true;
-    }
-
-    [RelayCommand(IncludeCancelCommand = true)]
-    private async Task LoadAsync(CancellationToken cancellationToken)
-    {
-        try
+        PlayerFullInfo playerFullInfo = await _chessDataService.GetPlayerFullInfoAsync(Name, UseCache, cancellationToken);
+        bool isFavorite = playerFullInfo.Name is not null
+            && await _favoriteService.ContainsAsync(playerFullInfo.Name, cancellationToken);
+        if (playerFullInfo.Tournaments.Count > 0 && !string.IsNullOrEmpty(playerFullInfo.Name))
         {
-            if (string.IsNullOrEmpty(Name))
+            await _historyService.AddAsync(playerFullInfo.Name, cancellationToken);
+        }
+
+        int index = playerFullInfo.Tournaments.Count;
+        _allTournaments = playerFullInfo.Tournaments.GroupBy(x => x.Tournament.EndDate?.Year)
+            .ToDictionary(x => new PlayerTournamentYearViewModel
             {
-                return;
-            }
-
-            DateTime currentDate = _dateTimeProvider.UtcNow.Date;
-
-            PlayerFullInfo playerFullInfo = await _chessDataService.GetPlayerFullInfoAsync(Name, UseCache, cancellationToken);
-            bool isFavorite = playerFullInfo.Name is not null 
-                && await _favoriteService.ContainsAsync(playerFullInfo.Name, cancellationToken);
-            if (playerFullInfo.Tournaments.Count > 0 && !string.IsNullOrEmpty(playerFullInfo.Name))
+                Year = x.Key,
+                Years = x.Key - playerFullInfo.YearOfBirth ?? 0,
+                Count = x.Count()
+            },
+            x => x.Select(y =>
             {
-                await _historyService.AddAsync(playerFullInfo.Name, cancellationToken);
-            }
+                PlayerTournamentShortViewModel viewModel = _serviceProvider.GetRequiredService<PlayerTournamentShortViewModel>();
 
-            int index = playerFullInfo.Tournaments.Count;
-            _allTournaments = playerFullInfo.Tournaments.GroupBy(x => x.Tournament.EndDate?.Year)
-                .ToDictionary(x => new PlayerTournamentYearViewModel
-                {
-                    Year = x.Key,
-                    Years = x.Key - playerFullInfo.YearOfBirth ?? 0,
-                    Count = x.Count()
-                },
-                x => x.Select(y =>
-                {
-                    PlayerTournamentShortViewModel viewModel = _serviceProvider.GetRequiredService<PlayerTournamentShortViewModel>();
+                viewModel.TournamentIndex = index--;
+                viewModel.TournamentId = y.Tournament.Id;
+                viewModel.TournamentName = y.Tournament.Name;
+                viewModel.TournamentLocation = y.Tournament.Location;
+                viewModel.TournamentStartDate = y.Tournament.StartDate;
+                viewModel.TournamentEndDate = y.Tournament.EndDate;
+                viewModel.IsOnline = y.Tournament.IsOnline(currentDate);
+                viewModel.IsFuture = y.Tournament.IsFuture(currentDate);
+                viewModel.NumberOfPlayers = y.Tournament.Players.Count;
+                viewModel.NumberOfRounds = y.Tournament.NumberOfRounds;
+                viewModel.Name = y.Player.Name;
+                viewModel.No = y.Player.No;
+                viewModel.Title = y.Player.Title;
+                viewModel.Rank = y.Player.Rank;
+                viewModel.Points = y.Player.Points;
 
-                    viewModel.TournamentIndex = index--;
-                    viewModel.TournamentId = y.Tournament.Id;
-                    viewModel.TournamentName = y.Tournament.Name;
-                    viewModel.TournamentLocation = y.Tournament.Location;
-                    viewModel.TournamentStartDate = y.Tournament.StartDate;
-                    viewModel.TournamentEndDate = y.Tournament.EndDate;
-                    viewModel.IsOnline = y.Tournament.IsOnline(currentDate);
-                    viewModel.IsFuture = y.Tournament.IsFuture(currentDate);
-                    viewModel.NumberOfPlayers = y.Tournament.Players.Count;
-                    viewModel.NumberOfRounds = y.Tournament.NumberOfRounds;
-                    viewModel.Name = y.Player.Name;
-                    viewModel.No = y.Player.No;
-                    viewModel.Title = y.Player.Title;
-                    viewModel.Rank = y.Player.Rank;
-                    viewModel.Points = y.Player.Points;
+                return viewModel;
+            }).ToList());
 
-                    return viewModel;
-                }).ToList());
+        Name = playerFullInfo.Name ?? Name;
+        Names = new ObservableCollection<PlayerNameViewModel>(playerFullInfo.Names.Select(x => new PlayerNameViewModel { LastName = x.LastName, FirstName = x.FirstName }));
+        Title = playerFullInfo.Title;
+        FideId = playerFullInfo.FideId;
+        ClubCity = playerFullInfo.ClubCity;
+        YearOfBirth = playerFullInfo.YearOfBirth;
+        IsFavorite = isFavorite;
 
-            Name = playerFullInfo.Name ?? Name;
-            Names = new ObservableCollection<PlayerNameViewModel>(playerFullInfo.Names.Select(x => new PlayerNameViewModel { LastName = x.LastName, FirstName = x.FirstName}));
-            Title = playerFullInfo.Title;
-            FideId = playerFullInfo.FideId;
-            ClubCity = playerFullInfo.ClubCity;
-            YearOfBirth = playerFullInfo.YearOfBirth;
-            IsFavorite = isFavorite;
-
-            TournamentYears.Clear();
-            foreach(PlayerTournamentYearViewModel tournamentYear in _allTournaments.Keys.ToList())
-            {
-                TournamentYears.Add(tournamentYear);
-            }
-            OnPropertyChanged(nameof(HasTournamentYears));
-
-            TournamentYear = TournamentYears.FirstOrDefault(x => TournamentYear is null || x.Year == TournamentYear.Year);
-
-            Error = null;
-        }
-        catch (OperationCanceledException)
+        TournamentYears.Clear();
+        foreach (PlayerTournamentYearViewModel tournamentYear in _allTournaments.Keys.ToList())
         {
+            TournamentYears.Add(tournamentYear);
+        }
+        OnPropertyChanged(nameof(HasTournamentYears));
 
-        }
-        catch (WebException)
-        {
-            Error = "No internet connection.";
-        }
-        catch
-        {
-            Error = "Oops! Something went wrong.";
-        }
-        finally
-        {
-            UseCache = false;
-            IsLoading = false;
-        }
+        TournamentYear = TournamentYears.FirstOrDefault(x => TournamentYear is null || x.Year == TournamentYear.Year);
     }
 
     [RelayCommand]
@@ -265,6 +194,20 @@ public partial class PlayerViewModel : BaseViewModel, IDisposable
         }
 
         IsFavorite = await _favoriteService.ToggleAsync(Name, cancellationToken);
+    }
+
+    [RelayCommand]
+    private async Task AddNameAsync(CancellationToken cancellationToken)
+    {
+        if (string.IsNullOrEmpty(Name))
+        {
+            return;
+        }
+
+        string name = await _popupService.DisplayPromptAsync("Add Name", placeholder: "Example: Smith John");
+        await _playerGroupService.AddToGroupAsync(Name, name, cancellationToken);
+
+        IsLoading = true;
     }
 
     [RelayCommand]

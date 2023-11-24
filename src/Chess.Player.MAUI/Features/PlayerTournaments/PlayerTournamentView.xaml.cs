@@ -1,10 +1,11 @@
 namespace Chess.Player.MAUI.Features.PlayerTournaments;
 
-public partial class PlayerTournamentView : ContentPage
+public partial class PlayerTournamentView : BaseRefreshView
 {
-	public PlayerTournamentView(PlayerTournamentViewModel viewModel)
+    public PlayerTournamentView(PlayerTournamentViewModel viewModel)
+        : base(viewModel)
     {
-		InitializeComponent();
+        InitializeComponent();
 
         BindingContext = viewModel;
     }

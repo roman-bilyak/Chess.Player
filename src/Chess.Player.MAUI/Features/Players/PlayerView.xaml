@@ -1,104 +1,93 @@
 <?xml version="1.0" encoding="utf-8" ?>
-<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
-             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             xmlns:mct="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
-             xmlns:players="clr-namespace:Chess.Player.MAUI.Features.Players"
-             xmlns:playerTournaments="clr-namespace:Chess.Player.MAUI.Features.PlayerTournaments"
-             x:Class="Chess.Player.MAUI.Features.Players.PlayerView"
-             x:DataType="players:PlayerViewModel"
-             Title="{Binding Name}">
-    <ContentPage.Behaviors>
-        <mct:EventToCommandBehavior Command="{Binding StartCommand}" EventName="Appearing" />
-        <mct:EventToCommandBehavior Command="{Binding LoadCancelCommand}" EventName="Disappearing" />
-    </ContentPage.Behaviors>
+<base:BaseRefreshView
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:mct="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
+    xmlns:base="clr-namespace:Chess.Player.MAUI.Features"
+    xmlns:players="clr-namespace:Chess.Player.MAUI.Features.Players"
+    xmlns:playerTournaments="clr-namespace:Chess.Player.MAUI.Features.PlayerTournaments"
+    x:Class="Chess.Player.MAUI.Features.Players.PlayerView"
+    x:DataType="players:PlayerViewModel"
+    Title="{Binding Name}">
     <ContentPage.ToolbarItems>
         <ToolbarItem Text="{Binding ToggleFavoriteButtonName}" Order="Secondary" Command="{Binding ToggleFavoriteCommand}" />
         <ToolbarItem Text="Add Name" Order="Secondary" Command="{Binding AddNameCommand}" />
-        <ToolbarItem Text="Refresh" Order="Secondary" Command="{Binding RefreshCommand}" />
     </ContentPage.ToolbarItems>
-    <StackLayout Padding="20" Spacing="5">
-        <Frame BorderColor="HotPink" BackgroundColor="LightPink" CornerRadius="10" IsVisible="{Binding HasError}">
-            <Label Text="{Binding Error}" HorizontalOptions="Center" VerticalOptions="Center" />
-        </Frame>
-        <RefreshView IsRefreshing="{Binding IsLoading}" Command="{Binding LoadCommand}" RefreshColor="Orange">
-            <CollectionView ItemsSource="{Binding Tournaments, Mode=OneWay}" Header="{Binding .}" SelectionMode="None">
-                <CollectionView.HeaderTemplate>
-                    <DataTemplate x:DataType="players:PlayerViewModel">
-                        <Grid RowSpacing="10">
-                            <Grid.RowDefinitions>
-                                <RowDefinition Height="Auto" />
-                                <RowDefinition Height="Auto" />
-                                <RowDefinition Height="Auto" />
-                                <RowDefinition Height="Auto" />
-                                <RowDefinition Height="Auto" />
-                            </Grid.RowDefinitions>
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="*" />
-                                <ColumnDefinition Width="*" />
-                                <ColumnDefinition Width="*" />
-                                <ColumnDefinition Width="*" />
-                            </Grid.ColumnDefinitions>
+    <CollectionView ItemsSource="{Binding Tournaments, Mode=OneWay}" Header="{Binding .}" SelectionMode="None">
+        <CollectionView.HeaderTemplate>
+            <DataTemplate x:DataType="players:PlayerViewModel">
+                <Grid RowSpacing="10">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
 
-                            <Label Grid.Row="0" Grid.Column="0" Text="Name" FontSize="14" FontAttributes="Bold" IsVisible="{Binding HasNames}" />
-                            <VerticalStackLayout Grid.Row="0" Grid.Column="1" Grid.ColumnSpan="3" BindableLayout.ItemsSource="{Binding Names}">
-                                <BindableLayout.ItemTemplate>
-                                    <DataTemplate x:DataType="players:PlayerNameViewModel">
-                                        <Label Text="{Binding FullName}" FontSize="14" />
-                                    </DataTemplate>
-                                </BindableLayout.ItemTemplate>
-                            </VerticalStackLayout>
+                    <Label Grid.Row="0" Grid.Column="0" Text="Name" FontSize="14" FontAttributes="Bold" IsVisible="{Binding HasNames}" />
+                    <VerticalStackLayout Grid.Row="0" Grid.Column="1" Grid.ColumnSpan="3" BindableLayout.ItemsSource="{Binding Names}">
+                        <BindableLayout.ItemTemplate>
+                            <DataTemplate x:DataType="players:PlayerNameViewModel">
+                                <Label Text="{Binding FullName}" FontSize="14" />
+                            </DataTemplate>
+                        </BindableLayout.ItemTemplate>
+                    </VerticalStackLayout>
 
-                            <Label Grid.Row="1" Grid.Column="0" Text="Title" FontSize="14" FontAttributes="Bold" IsVisible="{Binding HasTitle, Mode=OneWay}" />
-                            <Label Grid.Row="1" Grid.Column="1" Text="{Binding Title, Mode=OneWay}" FontSize="14" IsVisible="{Binding HasTitle, Mode=OneWay}" />
-                            <Label Grid.Row="1" Grid.Column="2" Text="Fide ID" FontSize="14" FontAttributes="Bold" IsVisible="{Binding HasFideId, Mode=OneWay}" />
-                            <Label Grid.Row="1" Grid.Column="3" Text="{Binding FideId, Mode=OneWay}" FontSize="14" TextDecorations="Underline" IsVisible="{Binding HasFideId, Mode=OneWay}">
-                                <Label.GestureRecognizers>
-                                    <TapGestureRecognizer Command="{Binding OpenFideProfileCommand}" CommandParameter="{Binding FideId, Mode=OneWay}"/>
-                                </Label.GestureRecognizers>
-                            </Label>
+                    <Label Grid.Row="1" Grid.Column="0" Text="Title" FontSize="14" FontAttributes="Bold" IsVisible="{Binding HasTitle, Mode=OneWay}" />
+                    <Label Grid.Row="1" Grid.Column="1" Text="{Binding Title, Mode=OneWay}" FontSize="14" IsVisible="{Binding HasTitle, Mode=OneWay}" />
+                    <Label Grid.Row="1" Grid.Column="2" Text="Fide ID" FontSize="14" FontAttributes="Bold" IsVisible="{Binding HasFideId, Mode=OneWay}" />
+                    <Label Grid.Row="1" Grid.Column="3" Text="{Binding FideId, Mode=OneWay}" FontSize="14" TextDecorations="Underline" IsVisible="{Binding HasFideId, Mode=OneWay}">
+                        <Label.GestureRecognizers>
+                            <TapGestureRecognizer Command="{Binding OpenFideProfileCommand}" CommandParameter="{Binding FideId, Mode=OneWay}"/>
+                        </Label.GestureRecognizers>
+                    </Label>
 
-                            <Label Grid.Row="2" Grid.Column="0" Text="Club/City" FontSize="14" FontAttributes="Bold" IsVisible="{Binding HasClubCity, Mode=OneWay}" />
-                            <Label Grid.Row="2" Grid.Column="1" Grid.ColumnSpan="3" Text="{Binding ClubCity, Mode=OneWay}" FontSize="14" IsVisible="{Binding HasClubCity, Mode=OneWay}" />
+                    <Label Grid.Row="2" Grid.Column="0" Text="Club/City" FontSize="14" FontAttributes="Bold" IsVisible="{Binding HasClubCity, Mode=OneWay}" />
+                    <Label Grid.Row="2" Grid.Column="1" Grid.ColumnSpan="3" Text="{Binding ClubCity, Mode=OneWay}" FontSize="14" IsVisible="{Binding HasClubCity, Mode=OneWay}" />
 
-                            <Label Grid.Row="3" Grid.Column="0" Text="YOB" FontSize="14" FontAttributes="Bold" IsVisible="{Binding HasYearOfBirth, Mode=OneWay}" />
-                            <Label Grid.Row="3" Grid.Column="1" Text="{Binding YearOfBirth, Mode=OneWay}" FontSize="14" IsVisible="{Binding HasYearOfBirth, Mode=OneWay}" />
-                            <Label Grid.Row="3" Grid.Column="2" Text="Years" FontSize="14" FontAttributes="Bold" IsVisible="{Binding HasYearOfBirth, Mode=OneWay}" />
-                            <Label Grid.Row="3" Grid.Column="3" Text="{Binding Years, Mode=OneWay}" FontSize="14" IsVisible="{Binding HasYearOfBirth, Mode=OneWay}" />
+                    <Label Grid.Row="3" Grid.Column="0" Text="YOB" FontSize="14" FontAttributes="Bold" IsVisible="{Binding HasYearOfBirth, Mode=OneWay}" />
+                    <Label Grid.Row="3" Grid.Column="1" Text="{Binding YearOfBirth, Mode=OneWay}" FontSize="14" IsVisible="{Binding HasYearOfBirth, Mode=OneWay}" />
+                    <Label Grid.Row="3" Grid.Column="2" Text="Years" FontSize="14" FontAttributes="Bold" IsVisible="{Binding HasYearOfBirth, Mode=OneWay}" />
+                    <Label Grid.Row="3" Grid.Column="3" Text="{Binding Years, Mode=OneWay}" FontSize="14" IsVisible="{Binding HasYearOfBirth, Mode=OneWay}" />
 
-                            <CollectionView ItemsSource="{Binding TournamentYears}"
+                    <CollectionView ItemsSource="{Binding TournamentYears}"
                                     SelectedItem="{Binding TournamentYear}"
                                     SelectionChangedCommand="{Binding ChangeTournamentYearCommand}"
                                     Grid.Row="4"
                                     Grid.Column="0"
                                     Grid.ColumnSpan="4"
                                     SelectionMode="Single">
-                                <CollectionView.ItemsLayout>
-                                    <LinearItemsLayout Orientation="Horizontal" />
-                                </CollectionView.ItemsLayout>
-                                <CollectionView.ItemTemplate>
-                                    <DataTemplate x:DataType="playerTournaments:PlayerTournamentYearViewModel">
-                                        <VerticalStackLayout Padding="15" Spacing="10">
-                                            <Label Text="{Binding Year}" FontSize="14" FontAttributes="Bold" HorizontalOptions="Center" VerticalOptions="Center" />
-                                            <HorizontalStackLayout Spacing="5" HorizontalOptions="Center" VerticalOptions="Center">
-                                                <Label Text="{Binding Years}" FontSize="12" />
-                                                <Label Text="yrs." FontSize="12" />
-                                            </HorizontalStackLayout>
-                                        </VerticalStackLayout>
-                                    </DataTemplate>
-                                </CollectionView.ItemTemplate>
-                            </CollectionView>
+                        <CollectionView.ItemsLayout>
+                            <LinearItemsLayout Orientation="Horizontal" />
+                        </CollectionView.ItemsLayout>
+                        <CollectionView.ItemTemplate>
+                            <DataTemplate x:DataType="playerTournaments:PlayerTournamentYearViewModel">
+                                <VerticalStackLayout Padding="15" Spacing="10">
+                                    <Label Text="{Binding Year}" FontSize="14" FontAttributes="Bold" HorizontalOptions="Center" VerticalOptions="Center" />
+                                    <HorizontalStackLayout Spacing="5" HorizontalOptions="Center" VerticalOptions="Center">
+                                        <Label Text="{Binding Years}" FontSize="12" />
+                                        <Label Text="yrs." FontSize="12" />
+                                    </HorizontalStackLayout>
+                                </VerticalStackLayout>
+                            </DataTemplate>
+                        </CollectionView.ItemTemplate>
+                    </CollectionView>
 
-                            <BoxView Grid.Row="4" Grid.Column="0" Grid.ColumnSpan="4" Color="#F17A00" HeightRequest="1" HorizontalOptions="Fill" VerticalOptions="Center" IsVisible="{Binding HasTournamentYears}" />
-                        </Grid>
-                    </DataTemplate>
-                </CollectionView.HeaderTemplate>
-                <CollectionView.ItemTemplate>
-                    <DataTemplate x:DataType="playerTournaments:PlayerTournamentShortViewModel">
-                        <playerTournaments:PlayerTournamentShortView BindingContext="{Binding .}" />
-                    </DataTemplate>
-                </CollectionView.ItemTemplate>
-            </CollectionView>
-        </RefreshView>
-        <ProgressBar Progress="{Binding Progress}" ProgressColor="Orange" IsVisible="{Binding IsLoading}" VerticalOptions="Center" />
-    </StackLayout>
-</ContentPage>
+                    <BoxView Grid.Row="4" Grid.Column="0" Grid.ColumnSpan="4" Color="#F17A00" HeightRequest="1" HorizontalOptions="Fill" VerticalOptions="Center" IsVisible="{Binding HasTournamentYears}" />
+                </Grid>
+            </DataTemplate>
+        </CollectionView.HeaderTemplate>
+        <CollectionView.ItemTemplate>
+            <DataTemplate x:DataType="playerTournaments:PlayerTournamentShortViewModel">
+                <playerTournaments:PlayerTournamentShortView BindingContext="{Binding .}" />
+            </DataTemplate>
+        </CollectionView.ItemTemplate>
+    </CollectionView>
+</base:BaseRefreshView>

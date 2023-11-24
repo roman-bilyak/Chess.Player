@@ -1,12 +1,10 @@
 ﻿using Chess.Player.Data;
 using CommunityToolkit.Mvvm.ComponentModel;
-using CommunityToolkit.Mvvm.Input;
 using System.Collections.ObjectModel;
-using System.Net;
 
 namespace Chess.Player.MAUI.Features.Tournaments;
 
-public partial class TournamentViewModel : BaseViewModel
+public partial class TournamentViewModel : BaseRefreshViewModel
 {
     private readonly IChessDataService _chessDataService;
     private readonly IServiceProvider _serviceProvider;
@@ -26,18 +24,6 @@ public partial class TournamentViewModel : BaseViewModel
     [ObservableProperty]
     private ObservableCollection<TournamentPlayerScoreViewModel> _playerScores = [];
 
-    [ObservableProperty]
-    private bool _useCache;
-
-    [ObservableProperty]
-    private bool _isLoading = false;
-
-    [ObservableProperty]
-    [NotifyPropertyChangedFor(nameof(HasError))]
-    private string? _error;
-
-    public bool HasError => !string.IsNullOrWhiteSpace(Error);
-
     public TournamentViewModel
     (
         IChessDataService chessDataService,
@@ -51,72 +37,31 @@ public partial class TournamentViewModel : BaseViewModel
         _serviceProvider = serviceProvider;
     }
 
-    [RelayCommand]
-    private Task StartAsync(CancellationToken cancellationToken)
+    protected override async Task LoadDataAsync(CancellationToken cancellationToken)
     {
-        UseCache = true;
-        IsLoading = true;
+        TournamentInfo tournamentInfo = await _chessDataService.GetTournamentInfoAsync(TournamentId, UseCache, cancellationToken);
 
-        return Task.CompletedTask;
-    }
+        TournamentName = tournamentInfo.Name;
+        TournamentEndDate = tournamentInfo.EndDate;
+        TournamentLocation = tournamentInfo.Location;
 
-    [RelayCommand]
-    private Task RefreshAsync(CancellationToken cancellationToken)
-    {
-        UseCache = false;
-        IsLoading = true;
-
-        return Task.CompletedTask;
-    }
-
-    [RelayCommand(IncludeCancelCommand = true)]
-    private async Task LoadAsync(CancellationToken cancellationToken)
-    {
-        try
+        PlayerScores.Clear();
+        foreach (PlayerScoreInfo playerScoreInfo in tournamentInfo.Players)
         {
-            TournamentInfo tournamentInfo = await _chessDataService.GetTournamentInfoAsync(TournamentId, UseCache, cancellationToken);
+            TournamentPlayerScoreViewModel playerScoreViewModel = _serviceProvider.GetRequiredService<TournamentPlayerScoreViewModel>();
 
-            TournamentName = tournamentInfo.Name;
-            TournamentEndDate = tournamentInfo.EndDate;
-            TournamentLocation = tournamentInfo.Location;
+            playerScoreViewModel.TournamentId = TournamentId;
+            playerScoreViewModel.TournamentName = TournamentName;
+            playerScoreViewModel.Rank = playerScoreInfo.Rank;
+            playerScoreViewModel.No = playerScoreInfo.No;
+            playerScoreViewModel.Name = playerScoreInfo.Name;
+            playerScoreViewModel.ClubCity = playerScoreInfo.ClubCity;
+            playerScoreViewModel.Points = playerScoreInfo.Points;
+            playerScoreViewModel.TB1 = playerScoreInfo.TB1;
+            playerScoreViewModel.TB2 = playerScoreInfo.TB2;
+            playerScoreViewModel.TB3 = playerScoreInfo.TB3;
 
-            PlayerScores.Clear();
-            foreach (PlayerScoreInfo playerScoreInfo in tournamentInfo.Players)
-            {
-                TournamentPlayerScoreViewModel playerScoreViewModel = _serviceProvider.GetRequiredService<TournamentPlayerScoreViewModel>();
-
-                playerScoreViewModel.TournamentId = TournamentId;
-                playerScoreViewModel.TournamentName = TournamentName;
-                playerScoreViewModel.Rank = playerScoreInfo.Rank;
-                playerScoreViewModel.No = playerScoreInfo.No;
-                playerScoreViewModel.Name = playerScoreInfo.Name;
-                playerScoreViewModel.ClubCity = playerScoreInfo.ClubCity;
-                playerScoreViewModel.Points = playerScoreInfo.Points;
-                playerScoreViewModel.TB1 = playerScoreInfo.TB1;
-                playerScoreViewModel.TB2 = playerScoreInfo.TB2;
-                playerScoreViewModel.TB3 = playerScoreInfo.TB3;
-
-                PlayerScores.Add(playerScoreViewModel);
-            }
-
-            Error = null;
-        }
-        catch (OperationCanceledException)
-        {
-
-        }
-        catch (WebException)
-        {
-            Error = "No internet connection.";
-        }
-        catch
-        {
-            Error = "Oops! Something went wrong.";
-        }
-        finally
-        {
-            UseCache = false;
-            IsLoading = false;
+            PlayerScores.Add(playerScoreViewModel);
         }
     }
 }
