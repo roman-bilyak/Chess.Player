@@ -5,7 +5,6 @@ using System.ComponentModel;
 
 namespace Chess.Player.MAUI.Features.Settings;
 
-[INotifyPropertyChanged]
 public partial class SettingsViewModel : BaseViewModel
 {
     private readonly ISettingsService _settingsService;

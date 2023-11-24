@@ -2,8 +2,7 @@
 
 namespace Chess.Player.MAUI.Features.Players;
 
-[INotifyPropertyChanged]
-public partial class PlayerNameViewModel: BaseViewModel
+public partial class PlayerNameViewModel : BaseViewModel
 {
     [ObservableProperty]
     [NotifyPropertyChangedFor(nameof(FullName))]

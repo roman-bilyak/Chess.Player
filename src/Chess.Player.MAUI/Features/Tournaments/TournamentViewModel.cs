@@ -6,7 +6,6 @@ using System.Net;
 
 namespace Chess.Player.MAUI.Features.Tournaments;
 
-[INotifyPropertyChanged]
 public partial class TournamentViewModel : BaseViewModel
 {
     private readonly IChessDataService _chessDataService;

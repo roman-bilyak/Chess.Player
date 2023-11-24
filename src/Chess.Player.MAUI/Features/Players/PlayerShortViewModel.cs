@@ -6,7 +6,6 @@ using System.Collections.ObjectModel;
 
 namespace Chess.Player.MAUI.Features.Players;
 
-[INotifyPropertyChanged]
 public partial class PlayerShortViewModel : BaseViewModel
 {
     private readonly IDateTimeProvider _dateTimeProvider;

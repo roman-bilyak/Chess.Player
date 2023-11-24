@@ -10,7 +10,6 @@ using System.Net;
 
 namespace Chess.Player.MAUI.Features.Players;
 
-[INotifyPropertyChanged]
 public partial class PlayerViewModel : BaseViewModel, IDisposable
 {
     private readonly IChessDataService _chessDataService;

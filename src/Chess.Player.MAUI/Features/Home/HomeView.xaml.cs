@@ -1,11 +1,12 @@
 namespace Chess.Player.MAUI.Features.Home;
 
-public partial class HomeView : ContentPage
+public partial class HomeView : BaseRefreshView
 {
-	public HomeView(HomeViewModel viewModel)
-	{
-		InitializeComponent();
+    public HomeView(HomeViewModel viewModel)
+        : base(viewModel)
+    {
+        InitializeComponent();
 
-		BindingContext = viewModel;
-	}
+        BindingContext = viewModel;
+    }
 }

@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:mct="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
+             xmlns:base="clr-namespace:Chess.Player.MAUI.Features"
+             x:Class="Chess.Player.MAUI.Features.BaseRefreshView"
+             x:DataType="base:BaseRefreshViewModel">
+    <ContentPage.Behaviors>
+        <mct:EventToCommandBehavior Command="{Binding StartCommand}" EventName="Appearing" />
+        <mct:EventToCommandBehavior Command="{Binding LoadCancelCommand}" EventName="Disappearing" />
+    </ContentPage.Behaviors>
+    <ContentPage.ToolbarItems>
+        <ToolbarItem Text="Refresh" Order="Secondary" Command="{Binding RefreshCommand}" />
+    </ContentPage.ToolbarItems>
+    <ContentPage.ControlTemplate>
+        <ControlTemplate>
+            <StackLayout Padding="20" Spacing="5" BindingContext="{Binding BindingContext, Source={RelativeSource TemplatedParent}}">
+                <Frame BorderColor="HotPink" BackgroundColor="LightPink" CornerRadius="10" IsVisible="{Binding HasError}">
+                    <Label Text="{Binding Error}" HorizontalOptions="Center" VerticalOptions="Center" />
+                </Frame>
+                <RefreshView IsRefreshing="{Binding IsLoading}" Command="{Binding LoadCommand}" RefreshColor="Orange">
+                    <ContentPresenter />
+                </RefreshView>
+            </StackLayout>
+        </ControlTemplate>
+    </ContentPage.ControlTemplate>
+</ContentPage>

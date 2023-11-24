@@ -5,7 +5,6 @@ using System.ComponentModel;
 
 namespace Chess.Player.MAUI.Features.PlayerTournaments;
 
-[INotifyPropertyChanged]
 public partial class PlayerTournamentGameViewModel : BaseViewModel
 {
     private readonly INavigationService _navigationService;

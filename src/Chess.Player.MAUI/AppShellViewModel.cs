@@ -4,8 +4,7 @@ using CommunityToolkit.Mvvm.Input;
 
 namespace Chess.Player.MAUI;
 
-[INotifyPropertyChanged]
-public partial class AppShellViewModel : BaseViewModel
+public partial class AppShellViewModel : ObservableObject
 {
     private readonly ISettingsService _settingsService;
 

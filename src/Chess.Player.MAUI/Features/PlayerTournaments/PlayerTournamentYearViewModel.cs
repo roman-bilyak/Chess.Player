@@ -2,7 +2,6 @@
 
 namespace Chess.Player.MAUI.Features.PlayerTournaments;
 
-[INotifyPropertyChanged]
 public partial class PlayerTournamentYearViewModel : BaseViewModel
 {
     [ObservableProperty]

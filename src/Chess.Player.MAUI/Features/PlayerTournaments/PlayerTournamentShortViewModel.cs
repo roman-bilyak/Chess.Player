@@ -4,7 +4,6 @@ using CommunityToolkit.Mvvm.Input;
 
 namespace Chess.Player.MAUI.Features.PlayerTournaments;
 
-[INotifyPropertyChanged]
 public partial class PlayerTournamentShortViewModel : BaseViewModel
 {
     private readonly INavigationService _navigationService;

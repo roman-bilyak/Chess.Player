@@ -1,14 +1,11 @@
 ﻿using Chess.Player.Data;
 using Chess.Player.MAUI.Features.Players;
 using CommunityToolkit.Mvvm.ComponentModel;
-using CommunityToolkit.Mvvm.Input;
 using System.Collections.ObjectModel;
-using System.Net;
 
 namespace Chess.Player.MAUI.Features.Favorites;
 
-[INotifyPropertyChanged]
-public partial class FavoritesViewModel : BaseViewModel
+public partial class FavoritesViewModel : BaseRefreshViewModel
 {
     private readonly IFavoriteService _favoriteService;
     private readonly IDateTimeProvider _dateTimeProvider;
@@ -16,18 +13,6 @@ public partial class FavoritesViewModel : BaseViewModel
 
     [ObservableProperty]
     private ObservableCollection<PlayerShortViewModel> _players = [];
-
-    [ObservableProperty]
-    private bool _useCache;
-
-    [ObservableProperty]
-    private bool _isLoading;
-
-    [ObservableProperty]
-    [NotifyPropertyChangedFor(nameof(HasError))]
-    private string? _error;
-
-    public bool HasError => !string.IsNullOrWhiteSpace(Error);
 
     public FavoritesViewModel
     (
@@ -45,69 +30,28 @@ public partial class FavoritesViewModel : BaseViewModel
         _serviceProvider = serviceProvider;
     }
 
-    [RelayCommand]
-    private Task StartAsync(CancellationToken cancellationToken)
+    protected override async Task LoadDataAsync(CancellationToken cancellationToken)
     {
-        UseCache = true;
-        IsLoading = true;
-
-        return Task.CompletedTask;
-    }
-
-    [RelayCommand]
-    private Task RefreshAsync(CancellationToken cancellationToken)
-    {
-        UseCache = false;
-        IsLoading = true;
-
-        return Task.CompletedTask;
-    }
-
-    [RelayCommand(IncludeCancelCommand = true)]
-    private async Task LoadAsync(CancellationToken cancellationToken)
-    {
-        try
+        List<PlayerShortViewModel> players = [];
+        DateTime currentDate = _dateTimeProvider.UtcNow.Date;
+        foreach (PlayerFullInfo playerInfo in await _favoriteService.GetAllAsync(UseCache, cancellationToken))
         {
-            List<PlayerShortViewModel> players = [];
-            DateTime currentDate = _dateTimeProvider.UtcNow.Date;
-            foreach (PlayerFullInfo player in await _favoriteService.GetAllAsync(UseCache, cancellationToken))
-            {
-                PlayerShortViewModel playerViewModel = _serviceProvider.GetRequiredService<PlayerShortViewModel>();
+            PlayerShortViewModel player = _serviceProvider.GetRequiredService<PlayerShortViewModel>();
 
-                playerViewModel.Names = new ObservableCollection<PlayerNameViewModel>(player.Names.Select(x => new PlayerNameViewModel { LastName = x.LastName, FirstName = x.FirstName }));
-                playerViewModel.Title = player.Title;
-                playerViewModel.ClubCity = player.ClubCity;
-                playerViewModel.YearOfBirth = player.YearOfBirth;
-                playerViewModel.HasOnlineTournaments = player.HasOnlineTournaments(currentDate);
-                playerViewModel.HasFutureTournaments = player.HasFutureTournaments(currentDate);
+            player.Names = new ObservableCollection<PlayerNameViewModel>(playerInfo.Names.Select(x => new PlayerNameViewModel { LastName = x.LastName, FirstName = x.FirstName }));
+            player.Title = playerInfo.Title;
+            player.ClubCity = playerInfo.ClubCity;
+            player.YearOfBirth = playerInfo.YearOfBirth;
+            player.HasOnlineTournaments = playerInfo.HasOnlineTournaments(currentDate);
+            player.HasFutureTournaments = playerInfo.HasFutureTournaments(currentDate);
 
-                players.Add(playerViewModel);
-            }
-
-            Players.Clear();
-            foreach (PlayerShortViewModel playerViewModel in players)
-            {
-                Players.Add(playerViewModel);
-            }
-
-            Error = null;
+            players.Add(player);
         }
-        catch (OperationCanceledException)
-        {
 
-        }
-        catch (WebException)
+        Players.Clear();
+        foreach (PlayerShortViewModel player in players)
         {
-            Error = "No internet connection.";
-        }
-        catch
-        {
-            Error = "Oops! Something went wrong.";
-        }
-        finally
-        {
-            UseCache = false;
-            IsLoading = false;
+            Players.Add(player);
         }
     }
 }

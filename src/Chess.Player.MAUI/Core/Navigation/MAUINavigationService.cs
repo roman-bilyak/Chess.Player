@@ -1,4 +1,5 @@
-﻿using Chess.Player.MAUI.Features.Players;
+﻿using Chess.Player.MAUI.Features;
+using Chess.Player.MAUI.Features.Players;
 using Chess.Player.MAUI.Features.PlayerTournaments;
 using Chess.Player.MAUI.Features.Tournaments;
 

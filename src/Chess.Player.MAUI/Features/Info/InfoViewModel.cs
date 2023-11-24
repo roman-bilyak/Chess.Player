@@ -3,8 +3,6 @@ using CommunityToolkit.Mvvm.Input;
 
 namespace Chess.Player.MAUI.Features.Info;
 
-[INotifyPropertyChanged]
-
 public partial class InfoViewModel : BaseViewModel
 {
     [ObservableProperty]

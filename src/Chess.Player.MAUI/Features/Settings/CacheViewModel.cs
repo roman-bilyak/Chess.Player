@@ -8,7 +8,6 @@ using System.ComponentModel;
 
 namespace Chess.Player.MAUI.Features.Settings;
 
-[INotifyPropertyChanged]
 public partial class CacheViewModel : BaseViewModel
 {
     private readonly IFavoriteService _favoriteService;
