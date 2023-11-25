@@ -209,10 +209,14 @@ public partial class PlayerViewModel : BaseRefreshViewModel, IDisposable
             return;
         }
 
-        string name = await _popupService.DisplayPromptAsync("Add Name", placeholder: "Example: Smith John");
-        await _playerGroupService.AddToGroupAsync(Name, name, cancellationToken);
+        string name = await _popupService.DisplayPromptAsync("Add Name", placeholder: "Example: Carlsen Magnus");
 
-        IsLoading = true;
+        if (!string.IsNullOrEmpty(name))
+        {
+            await _playerGroupService.AddToGroupAsync(Name, name, cancellationToken);
+
+            IsLoading = true;
+        }
     }
 
     [RelayCommand]

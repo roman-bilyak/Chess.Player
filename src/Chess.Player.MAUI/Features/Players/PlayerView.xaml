@@ -16,7 +16,7 @@
     <CollectionView ItemsSource="{Binding Tournaments, Mode=OneWay}" Header="{Binding .}" SelectionMode="None">
         <CollectionView.HeaderTemplate>
             <DataTemplate x:DataType="players:PlayerViewModel">
-                <Grid RowSpacing="10">
+                <Grid RowSpacing="10" Margin="0,0,0,5">
                     <Grid.RowDefinitions>
                         <RowDefinition Height="Auto" />
                         <RowDefinition Height="Auto" />

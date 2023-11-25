@@ -10,7 +10,7 @@
             <mct:InvertedBoolConverter x:Key="InvertedBoolConverter" />
         </ResourceDictionary>
     </ContentView.Resources>
-    <SwipeView Threshold="200">
+    <SwipeView>
         <SwipeView.RightItems>
             <SwipeItems>
                 <SwipeItem Text="Info" BackgroundColor="{AppThemeBinding Light={StaticResource Secondary}, Dark={StaticResource Gray600}}" Command="{Binding ShowInfoCommand}" />

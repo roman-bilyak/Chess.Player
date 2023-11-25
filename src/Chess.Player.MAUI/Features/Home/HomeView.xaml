@@ -12,7 +12,9 @@
     <CollectionView ItemsSource="{Binding Players}" Header="{Binding .}" SelectionMode="None">
         <CollectionView.HeaderTemplate>
             <DataTemplate x:DataType="home:HomeViewModel">
-                <SearchBar Text="{Binding SearchText}" SearchCommand="{Binding SearchCommand}" Placeholder="Example: Carlsen Magnus" HorizontalOptions="StartAndExpand" />
+                <StackLayout Padding="0,0,0,10" >
+                    <SearchBar Text="{Binding SearchText}" SearchCommand="{Binding SearchCommand}" Placeholder="Example: Carlsen Magnus" HorizontalOptions="StartAndExpand" />
+                </StackLayout>
             </DataTemplate>
         </CollectionView.HeaderTemplate>
         <CollectionView.ItemTemplate>
