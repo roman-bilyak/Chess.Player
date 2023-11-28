@@ -8,6 +8,10 @@
     x:Class="Chess.Player.MAUI.Features.PlayerTournaments.PlayerTournamentView"
     x:DataType="playerTournaments:PlayerTournamentViewModel"
     Title="{Binding Title}">
+    <ContentPage.ToolbarItems>
+        <ToolbarItem Text="Go To Player" Order="Secondary" Command="{Binding ShowPlayerInfoCommand}" />
+        <ToolbarItem Text="Go To Tournament" Order="Secondary" Command="{Binding ShowTournamentInfoCommand}" />
+    </ContentPage.ToolbarItems>
     <CollectionView ItemsSource="{Binding Games}" Header="{Binding .}" SelectionMode="None">
         <CollectionView.HeaderTemplate>
             <DataTemplate x:DataType="playerTournaments:PlayerTournamentViewModel">

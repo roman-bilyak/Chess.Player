@@ -70,19 +70,4 @@ public partial class PlayerTournamentGameViewModel : BaseViewModel
 
         IsSelected = false;
     }
-
-    [RelayCommand]
-    private async Task ShowPlayerInfoAsync(CancellationToken cancellationToken)
-    {
-        if (string.IsNullOrEmpty(Name))
-        {
-            return;
-        }
-
-        IsSelected = true;
-
-        await _navigationService.NavigateToPlayerAsync(Name);
-
-        IsSelected = false;
-    }
 }

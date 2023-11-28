@@ -1,5 +1,7 @@
 ﻿using Chess.Player.Data;
+using Chess.Player.MAUI.Navigation;
 using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.Input;
 using System.Collections.ObjectModel;
 
 namespace Chess.Player.MAUI.Features.PlayerTournaments;
@@ -8,6 +10,7 @@ public partial class PlayerTournamentViewModel : BaseRefreshViewModel
 {
     private readonly IChessDataService _chessDataService;
     private readonly IDateTimeProvider _dateTimeProvider;
+    private readonly INavigationService _navigationService;
     private readonly IServiceProvider _serviceProvider;
 
     [ObservableProperty]
@@ -39,17 +42,19 @@ public partial class PlayerTournamentViewModel : BaseRefreshViewModel
     (
         IChessDataService chessDataService,
         IDateTimeProvider dateTimeProvider,
+        INavigationService navigationService,
         IServiceProvider serviceProvider
     )
     {
         ArgumentNullException.ThrowIfNull(chessDataService);
         ArgumentNullException.ThrowIfNull(dateTimeProvider);
+        ArgumentNullException.ThrowIfNull(navigationService);
         ArgumentNullException.ThrowIfNull(serviceProvider);
 
         _chessDataService = chessDataService;
         _dateTimeProvider = dateTimeProvider;
+        _navigationService = navigationService;
         _serviceProvider = serviceProvider;
-
         _playerTournament = serviceProvider.GetRequiredService<PlayerTournamentShortViewModel>();
     }
 
@@ -73,7 +78,6 @@ public partial class PlayerTournamentViewModel : BaseRefreshViewModel
         PlayerTournament.Title = playerTournamentInfo.Player.Title;
         PlayerTournament.Rank = playerTournamentInfo.Player.Rank;
         PlayerTournament.Points = playerTournamentInfo.Player.Points;
-        PlayerTournament.ShowFullInfo = true;
 
         Games.Clear();
         foreach (GameInfo gameInfo in playerTournamentInfo.Player.Games.OrderByDescending(x => x.Round))
@@ -93,5 +97,22 @@ public partial class PlayerTournamentViewModel : BaseRefreshViewModel
             Games.Add(gameViewModel);
         }
         OnPropertyChanged(nameof(HasGames));
+    }
+
+    [RelayCommand]
+    private async Task ShowPlayerInfoAsync(CancellationToken cancellationToken)
+    {
+        if (string.IsNullOrEmpty(PlayerName))
+        {
+            return;
+        }
+
+        await _navigationService.NavigateToPlayerAsync(PlayerName);
+    }
+
+    [RelayCommand]
+    private async Task ShowTournamentInfoAsync(CancellationToken cancellationToken)
+    {
+        await _navigationService.NavigateToTournamentAsync(TournamentId, TournamentName);
     }
 }

@@ -69,8 +69,6 @@ public partial class PlayerTournamentShortViewModel : BaseViewModel
 
     public bool IsPodium => !IsActive && Rank.HasValue && Rank >= 1 && Rank <= 3;
 
-    public bool ShowFullInfo { get; set; }
-
     [ObservableProperty]
     private bool _isSelected;
 
@@ -94,29 +92,8 @@ public partial class PlayerTournamentShortViewModel : BaseViewModel
 
         IsSelected = true;
 
-        if (ShowFullInfo)
-        {
-            await _navigationService.NavigateToTournamentAsync(TournamentId.Value, TournamentName);
-        }
-        else
-        {
-            await _navigationService.NavigateToPlayerTournamentAsync(TournamentId.Value, TournamentName, No.Value, Name);
-        }
 
-        IsSelected = false;
-    }
-
-    [RelayCommand]
-    private async Task ShowTournamentInfoAsync(CancellationToken cancellationToken)
-    {
-        if (!TournamentId.HasValue)
-        {
-            return;
-        }
-
-        IsSelected = true;
-
-        await _navigationService.NavigateToTournamentAsync(TournamentId.Value, TournamentName);
+        await _navigationService.NavigateToPlayerTournamentAsync(TournamentId.Value, TournamentName, No.Value, Name);
 
         IsSelected = false;
     }
