@@ -8,7 +8,57 @@
     x:Class="Chess.Player.MAUI.Features.Tournaments.TournamentView"
     x:DataType="tournaments:TournamentViewModel"
     Title="{Binding TournamentName}">
-    <CollectionView ItemsSource="{Binding PlayerScores}" SelectionMode="None">
+    <CollectionView ItemsSource="{Binding PlayerScores}" Header="{Binding .}" SelectionMode="None">
+        <CollectionView.HeaderTemplate>
+            <DataTemplate x:DataType="tournaments:TournamentViewModel">
+                <VerticalStackLayout Margin="0,0,0,10">
+                    <Grid RowSpacing="10" ColumnSpacing="10">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                        </Grid.RowDefinitions>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="30" />
+                        </Grid.ColumnDefinitions>
+
+                        <Label Grid.Row="0" Grid.Column="0" Text="Name" FontAttributes="Bold" />
+                        <Label Grid.Row="0" Grid.Column="1" Grid.ColumnSpan="3" Text="{Binding TournamentName, Mode=OneWay}" />
+
+                        <Image Grid.Row="0" Grid.Column="4" Source="online.svg" VerticalOptions="Start" HorizontalOptions="Center" WidthRequest="25" HeightRequest="25" IsVisible="{Binding TournamentIsOnline, Mode=OneWay}">
+                            <Image.Behaviors>
+                                <mct:IconTintColorBehavior TintColor="#F17A00" />
+                            </Image.Behaviors>
+                        </Image>
+                        <Image Grid.Row="0" Grid.Column="4" Source="online.svg" VerticalOptions="Start" HorizontalOptions="Center" WidthRequest="25" HeightRequest="25" IsVisible="{Binding TournamentIsFuture, Mode=OneWay}">
+                            <Image.Behaviors>
+                                <mct:IconTintColorBehavior TintColor="#888888" />
+                            </Image.Behaviors>
+                        </Image>
+
+                        <Label Grid.Row="1" Grid.Column="0" Text="Location" FontAttributes="Bold" />
+                        <Label Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="4" Text="{Binding TournamentLocation, Mode=OneWay}" />
+
+                        <Label Grid.Row="2" Grid.Column="0" Text="Start" FontAttributes="Bold" />
+                        <Label Grid.Row="2" Grid.Column="1" Text="{Binding TournamentStartDateStr, Mode=OneWay}" />
+
+                        <Label Grid.Row="2" Grid.Column="2" Text="End" FontAttributes="Bold" />
+                        <Label Grid.Row="2" Grid.Column="3" Text="{Binding TournamentEndDateStr, Mode=OneWay}" />
+
+                        <Label Grid.Row="3" Grid.Column="0" Text="Players" FontAttributes="Bold" />
+                        <Label Grid.Row="3" Grid.Column="1" Text="{Binding TournamentNumberOfPlayers, Mode=OneWay}" />
+
+                        <Label Grid.Row="3" Grid.Column="2" Text="Rounds" FontAttributes="Bold" />
+                        <Label Grid.Row="3" Grid.Column="3" Text="{Binding TournamentNumberOfRounds, Mode=OneWay}" />
+                    </Grid>
+                </VerticalStackLayout>
+            </DataTemplate>
+        </CollectionView.HeaderTemplate>
         <CollectionView.ItemTemplate>
             <DataTemplate x:DataType="tournaments:TournamentPlayerScoreViewModel">
                 <tournaments:TournamentPlayerScoreView BindingContext="{Binding .}" />

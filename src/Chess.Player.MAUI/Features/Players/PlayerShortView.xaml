@@ -42,7 +42,7 @@
             </Grid.RowDefinitions>
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*" />
-                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="30" />
             </Grid.ColumnDefinitions>
 
             <VerticalStackLayout Grid.Row="0" Grid.Column="0">

@@ -13,6 +13,8 @@ public partial class PlayerTournamentViewModel : BaseRefreshViewModel
     private readonly INavigationService _navigationService;
     private readonly IServiceProvider _serviceProvider;
 
+    public string Title => $"{PlayerName} - {TournamentName}";
+
     [ObservableProperty]
     private int _tournamentId;
 
@@ -21,16 +23,48 @@ public partial class PlayerTournamentViewModel : BaseRefreshViewModel
     private string? _tournamentName;
 
     [ObservableProperty]
+    [NotifyPropertyChangedFor(nameof(TournamentDateAndLocation))]
+    private DateTime? _tournamentStartDate;
+
+    [ObservableProperty]
+    [NotifyPropertyChangedFor(nameof(TournamentDateAndLocation))]
+    private DateTime? _tournamentEndDate;
+
+    [ObservableProperty]
+    [NotifyPropertyChangedFor(nameof(TournamentDateAndLocation))]
+    private string? _tournamentLocation;
+
+    public string TournamentDateAndLocation => TournamentStartDate == TournamentEndDate
+        ? $"{TournamentEndDate:dd.MM} - {TournamentLocation}"
+        : $"{TournamentStartDate:dd.MM} - {TournamentEndDate:dd.MM} - {TournamentLocation}";
+
+    [ObservableProperty]
+    private int? _tournamentNumberOfPlayers;
+
+    [ObservableProperty]
+    private int? _tournamentNumberOfRounds;
+
+    [ObservableProperty]
+    private bool _tournamentIsOnline;
+
+    [ObservableProperty]
+    private bool _tournamentIsFuture;
+
+    [ObservableProperty]
     private int _playerNo;
 
     [ObservableProperty]
     [NotifyPropertyChangedFor(nameof(Title))]
     private string? _playerName;
 
-    public string Title => $"{PlayerName} - {TournamentName}";
+    [ObservableProperty]
+    private string? _playerTitle;
 
     [ObservableProperty]
-    private PlayerTournamentShortViewModel _playerTournament;
+    private int? _playerRank;
+
+    [ObservableProperty]
+    private double? _playerPoints;
 
     public bool HasGames => Games?.Any() ?? false;
 
@@ -55,7 +89,6 @@ public partial class PlayerTournamentViewModel : BaseRefreshViewModel
         _dateTimeProvider = dateTimeProvider;
         _navigationService = navigationService;
         _serviceProvider = serviceProvider;
-        _playerTournament = serviceProvider.GetRequiredService<PlayerTournamentShortViewModel>();
     }
 
     protected override async Task LoadDataAsync(CancellationToken cancellationToken)
@@ -64,20 +97,19 @@ public partial class PlayerTournamentViewModel : BaseRefreshViewModel
 
         PlayerTournamentInfo playerTournamentInfo = await _chessDataService.GetPlayerTournamentInfoAsync(TournamentId, PlayerNo, UseCache, cancellationToken);
 
-        PlayerTournament.TournamentId = playerTournamentInfo.Tournament.Id;
-        PlayerTournament.TournamentName = playerTournamentInfo.Tournament.Name;
-        PlayerTournament.TournamentLocation = playerTournamentInfo.Tournament.Location;
-        PlayerTournament.TournamentStartDate = playerTournamentInfo.Tournament.StartDate;
-        PlayerTournament.TournamentEndDate = playerTournamentInfo.Tournament.EndDate;
-        PlayerTournament.IsOnline = playerTournamentInfo.Tournament.IsOnline(currentDate);
-        PlayerTournament.IsFuture = playerTournamentInfo.Tournament.IsFuture(currentDate);
-        PlayerTournament.NumberOfPlayers = playerTournamentInfo.Tournament.Players.Count;
-        PlayerTournament.NumberOfRounds = playerTournamentInfo.Tournament.NumberOfRounds;
-        PlayerTournament.Name = playerTournamentInfo.Player.Name;
-        PlayerTournament.No = playerTournamentInfo.Player.No;
-        PlayerTournament.Title = playerTournamentInfo.Player.Title;
-        PlayerTournament.Rank = playerTournamentInfo.Player.Rank;
-        PlayerTournament.Points = playerTournamentInfo.Player.Points;
+        TournamentName = playerTournamentInfo.Tournament.Name;
+        TournamentStartDate = playerTournamentInfo.Tournament.StartDate;
+        TournamentEndDate = playerTournamentInfo.Tournament.EndDate;
+        TournamentLocation = playerTournamentInfo.Tournament.Location;
+        TournamentNumberOfPlayers = playerTournamentInfo.Tournament.Players.Count;
+        TournamentNumberOfRounds = playerTournamentInfo.Tournament.NumberOfRounds;
+        TournamentIsOnline = playerTournamentInfo.Tournament.IsOnline(currentDate);
+        TournamentIsFuture = playerTournamentInfo.Tournament.IsFuture(currentDate);
+
+        PlayerName = playerTournamentInfo.Player.Name;
+        PlayerTitle = playerTournamentInfo.Player.Title;
+        PlayerRank = playerTournamentInfo.Player.Rank;
+        PlayerPoints = playerTournamentInfo.Player.Points;
 
         Games.Clear();
         foreach (GameInfo gameInfo in playerTournamentInfo.Player.Games.OrderByDescending(x => x.Round))
