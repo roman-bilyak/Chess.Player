@@ -7,7 +7,7 @@ using System.Collections.ObjectModel;
 
 namespace Chess.Player.MAUI.Features.Home;
 
-public partial class HomeViewModel : BaseRefreshViewModel
+public partial class HomeViewModel : BaseRefreshViewModel, IDisposable
 {
     private readonly IHistoryService _historyService;
     private readonly INavigationService _navigationService;
@@ -37,6 +37,8 @@ public partial class HomeViewModel : BaseRefreshViewModel
         _navigationService = navigationService;
         _dateTimeProvider = dateTimeProvider;
         _serviceProvider = serviceProvider;
+
+        _historyService.ProgressChanged += OnProgressChanged;
     }
 
     protected override async Task LoadDataAsync(CancellationToken cancellationToken)
@@ -76,4 +78,40 @@ public partial class HomeViewModel : BaseRefreshViewModel
 
         SearchText = null;
     }
+
+    private bool _disposed = false;
+    protected virtual void Dispose(bool disposing)
+    {
+        if (!_disposed)
+        {
+            if (disposing)
+            {
+                _historyService.ProgressChanged -= OnProgressChanged;
+            }
+            _disposed = true;
+        }
+    }
+
+    public void Dispose()
+    {
+        Dispose(true);
+        GC.SuppressFinalize(this);
+    }
+
+    ~HomeViewModel()
+    {
+        Dispose(false);
+    }
+
+    #region helper methods
+
+    private void OnProgressChanged(object sender, ProgressEventArgs e)
+    {
+        MainThread.BeginInvokeOnMainThread(() =>
+        {
+            Progress += (double)e.Percentage / 100;
+        });
+    }
+
+    #endregion
 }

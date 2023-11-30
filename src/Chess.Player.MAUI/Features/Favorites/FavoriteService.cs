@@ -11,6 +11,8 @@ internal class FavoriteService : IFavoriteService
 
     private FavoriteList? _favoriteList;
 
+    public event ProgressEventHandler? ProgressChanged;
+
     public FavoriteService
     (
         IChessDataService chessDataService,
@@ -63,14 +65,22 @@ internal class FavoriteService : IFavoriteService
 
     public async Task<IReadOnlyList<PlayerFullInfo>> GetAllAsync(bool useCache, CancellationToken cancellationToken)
     {
+        OnProgressChanged(ProgressHelper.Start);
+
         await EnsureLoadedAsync(cancellationToken);
 
+        int index = 1;
         List<PlayerFullInfo> result = [];
         foreach (var player in _favoriteList)
         {
             PlayerFullInfo playerInfo = await _chessDataService.GetPlayerFullInfoAsync(player, useCache, cancellationToken);
             result.Add(playerInfo);
+
+            int progressPercentage = ProgressHelper.GetProgress(index++, _favoriteList.Count);
+            OnProgressChanged(progressPercentage);
         }
+
+        OnProgressChanged(ProgressHelper.Finish);
 
         return result.OrderBy(x => x.Names.FirstOrDefault()?.FullName).ToList();
     }
@@ -88,6 +98,11 @@ internal class FavoriteService : IFavoriteService
     private async Task EnsureLoadedAsync(CancellationToken cancellationToken)
     {
         _favoriteList ??= await _cacheManager.GetAsync<FavoriteList>(includeExpired: false, cancellationToken) ?? [];
+    }
+
+    protected virtual void OnProgressChanged(int percentage)
+    {
+        ProgressChanged?.Invoke(this, new ProgressEventArgs(percentage));
     }
 
     private async Task SaveAsync(CancellationToken cancellationToken)

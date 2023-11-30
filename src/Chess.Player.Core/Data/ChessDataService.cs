@@ -9,7 +9,7 @@ internal class ChessDataService : IChessDataService
     private readonly IDateTimeProvider _dateTimeProvider;
     private readonly ICacheManager _cacheManager;
 
-    public event SearchProgressEventHandler? ProgressChanged
+    public event ProgressEventHandler? ProgressChanged
     {
         add
         {

@@ -13,6 +13,8 @@ internal class HistoryService : IHistoryService
 
     private HistoryList? _playerHistoryList;
 
+    public event ProgressEventHandler? ProgressChanged;
+
     public HistoryService
     (
         IChessDataService chessDataService,
@@ -43,14 +45,22 @@ internal class HistoryService : IHistoryService
 
     public async Task<IReadOnlyList<PlayerFullInfo>> GetAllAsync(bool useCache, CancellationToken cancellationToken)
     {
+        OnProgressChanged(ProgressHelper.Start);
+
         await EnsureLoadedAsync(cancellationToken);
 
+        int index = 1;
         List<PlayerFullInfo> result = [];
         foreach (var player in _playerHistoryList)
         {
             PlayerFullInfo playerInfo = await _chessDataService.GetPlayerFullInfoAsync(player, useCache, cancellationToken);
             result.Add(playerInfo);
+
+            int progressPercentage = ProgressHelper.GetProgress(index++, _playerHistoryList.Count);
+            OnProgressChanged(progressPercentage);
         }
+
+        OnProgressChanged(ProgressHelper.Finish);
 
         return result;
     }
@@ -68,6 +78,11 @@ internal class HistoryService : IHistoryService
     private async Task EnsureLoadedAsync(CancellationToken cancellationToken)
     {
         _playerHistoryList ??= await _cacheManager.GetAsync<HistoryList>(includeExpired: false, cancellationToken) ?? [];
+    }
+
+    protected virtual void OnProgressChanged(int percentage)
+    {
+        ProgressChanged?.Invoke(this, new ProgressEventArgs(percentage));
     }
 
     private async Task SaveAsync(CancellationToken cancellationToken)

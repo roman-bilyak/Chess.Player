@@ -236,28 +236,39 @@ public partial class PlayerViewModel : BaseRefreshViewModel, IDisposable
         }
     }
 
+    private bool _disposed = false;
+
+    protected virtual void Dispose(bool disposing)
+    {
+        if (!_disposed)
+        {
+            if (disposing)
+            {
+                _chessDataService.ProgressChanged -= OnProgressChanged;
+            }
+            _disposed = true;
+        }
+    }
+
     public void Dispose()
     {
         Dispose(true);
         GC.SuppressFinalize(this);
     }
 
+    ~PlayerViewModel()
+    {
+        Dispose(false);
+    }
+
     #region helper methods
 
-    private void OnProgressChanged(object sender, SearchProgressEventArgs e)
+    private void OnProgressChanged(object sender, ProgressEventArgs e)
     {
         MainThread.BeginInvokeOnMainThread(() =>
         {
-            Progress = (double)e.ProgressPercentage / 100;
+            Progress = (double)e.Percentage / 100;
         });
-    }
-
-    protected virtual void Dispose(bool disposing)
-    {
-        if (disposing)
-        {
-            _chessDataService.ProgressChanged -= OnProgressChanged;
-        }
     }
 
     #endregion

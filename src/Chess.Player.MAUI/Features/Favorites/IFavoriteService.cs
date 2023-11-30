@@ -4,6 +4,8 @@ namespace Chess.Player.MAUI.Features.Favorites;
 
 public interface IFavoriteService
 {
+    event ProgressEventHandler? ProgressChanged;
+
     Task AddAsync(string name, CancellationToken cancellationToken);
 
     Task RemoveAsync(string name, CancellationToken cancellationToken);

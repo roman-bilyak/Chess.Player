@@ -4,14 +4,11 @@ namespace Chess.Player.Data;
 
 internal class ChessDataManager : IChessDataManager
 {
-    private const int PercentageStart = 1;
-    private const int PercentageFinish = 100;
-
     private readonly IChessDataFetcher _chessDataFetcher;
     private readonly IDateTimeProvider _dateTimeProvider;
     private readonly ICacheManager _cacheManager;
 
-    public event SearchProgressEventHandler? ProgressChanged;
+    public event ProgressEventHandler? ProgressChanged;
 
     public ChessDataManager
     (
@@ -31,7 +28,7 @@ internal class ChessDataManager : IChessDataManager
 
     public async Task<PlayerFullInfo> GetPlayerFullInfoAsync(SearchCriteria[] searchCriterias, bool useCache, CancellationToken cancellationToken)
     {
-        OnProgressChanged(PercentageStart);
+        OnProgressChanged(ProgressHelper.Start);
 
         PlayerFullInfo playerFullInfo = new();
 
@@ -53,23 +50,21 @@ internal class ChessDataManager : IChessDataManager
             playerTournaments.AddRange(playerTournamentList.Items);
         }
 
-        int index = 0;
+        int index = 1;
         List<PlayerTournamentInfo> playerTournamentInfos = new();
         foreach (PlayerTournament playerTournament in playerTournaments)
         {
-            index++;
-
             PlayerTournamentInfo playerTournamentInfo = await GetPlayerTournamentInfoAsync(playerTournament.TournamentId, playerTournament.PlayerNo, useCache, cancellationToken);
             playerTournamentInfos.Add(playerTournamentInfo);
 
-            int progressPercentage = index * (PercentageFinish - PercentageStart) / playerTournaments.Count + PercentageStart;
+            int progressPercentage = ProgressHelper.GetProgress(index++, playerTournaments.Count);
             OnProgressChanged(progressPercentage);
         }
 
         playerTournamentInfos = playerTournamentInfos.OrderByDescending(x => x.Tournament.EndDate).ThenByDescending(x => x.Tournament.StartDate).ToList();
         playerFullInfo.Tournaments.AddRange(playerTournamentInfos);
 
-        OnProgressChanged(PercentageFinish);
+        OnProgressChanged(ProgressHelper.Finish);
         return playerFullInfo;
     }
 
@@ -97,9 +92,9 @@ internal class ChessDataManager : IChessDataManager
 
     #region helper methods
 
-    protected virtual void OnProgressChanged(int progressPercentage)
+    protected virtual void OnProgressChanged(int percentage)
     {
-        ProgressChanged?.Invoke(this, new SearchProgressEventArgs(progressPercentage));
+        ProgressChanged?.Invoke(this, new ProgressEventArgs(percentage));
     }
 
     private DateTime? GetExpirationDate(TournamentInfo tournamentInfo)

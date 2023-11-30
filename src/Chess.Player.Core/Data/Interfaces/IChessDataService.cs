@@ -2,7 +2,7 @@
 
 public interface IChessDataService
 {
-    event SearchProgressEventHandler? ProgressChanged;
+    event ProgressEventHandler? ProgressChanged;
 
     Task<PlayerFullInfo> GetPlayerFullInfoAsync(string name, bool useCache, CancellationToken cancellationToken);
 

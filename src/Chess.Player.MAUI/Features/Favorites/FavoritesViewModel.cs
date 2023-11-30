@@ -5,7 +5,7 @@ using System.Collections.ObjectModel;
 
 namespace Chess.Player.MAUI.Features.Favorites;
 
-public partial class FavoritesViewModel : BaseRefreshViewModel
+public partial class FavoritesViewModel : BaseRefreshViewModel, IDisposable
 {
     private readonly IFavoriteService _favoriteService;
     private readonly IDateTimeProvider _dateTimeProvider;
@@ -28,6 +28,8 @@ public partial class FavoritesViewModel : BaseRefreshViewModel
         _favoriteService = favoriteService;
         _dateTimeProvider = dateTimeProvider;
         _serviceProvider = serviceProvider;
+
+        _favoriteService.ProgressChanged += OnProgressChanged;
     }
 
     protected override async Task LoadDataAsync(CancellationToken cancellationToken)
@@ -54,4 +56,41 @@ public partial class FavoritesViewModel : BaseRefreshViewModel
             Players.Add(player);
         }
     }
+
+    private bool _disposed = false;
+
+    protected virtual void Dispose(bool disposing)
+    {
+        if (!_disposed)
+        {
+            if (disposing)
+            {
+                _favoriteService.ProgressChanged -= OnProgressChanged;
+            }
+            _disposed = true;
+        }
+    }
+
+    public void Dispose()
+    {
+        Dispose(true);
+        GC.SuppressFinalize(this);
+    }
+
+    ~FavoritesViewModel()
+    {
+        Dispose(false);
+    }
+
+    #region helper methods
+
+    private void OnProgressChanged(object sender, ProgressEventArgs e)
+    {
+        MainThread.BeginInvokeOnMainThread(() =>
+        {
+            Progress += (double)e.Percentage / 100;
+        });
+    }
+
+    #endregion
 }
