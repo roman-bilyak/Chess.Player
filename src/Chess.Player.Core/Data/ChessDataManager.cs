@@ -57,7 +57,7 @@ internal class ChessDataManager : IChessDataManager
             PlayerTournamentInfo playerTournamentInfo = await GetPlayerTournamentInfoAsync(playerTournament.TournamentId, playerTournament.PlayerNo, useCache, cancellationToken);
             playerTournamentInfos.Add(playerTournamentInfo);
 
-            int progressPercentage = ProgressHelper.GetProgress(index++, playerTournaments.Count);
+            double progressPercentage = ProgressHelper.GetProgress(index++, playerTournaments.Count);
             OnProgressChanged(progressPercentage);
         }
 
@@ -92,7 +92,7 @@ internal class ChessDataManager : IChessDataManager
 
     #region helper methods
 
-    protected virtual void OnProgressChanged(int percentage)
+    protected virtual void OnProgressChanged(double percentage)
     {
         ProgressChanged?.Invoke(this, new ProgressEventArgs(percentage));
     }

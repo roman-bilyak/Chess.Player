@@ -56,7 +56,7 @@ internal class HistoryService : IHistoryService
             PlayerFullInfo playerInfo = await _chessDataService.GetPlayerFullInfoAsync(player, useCache, cancellationToken);
             result.Add(playerInfo);
 
-            int progressPercentage = ProgressHelper.GetProgress(index++, _playerHistoryList.Count);
+            double progressPercentage = ProgressHelper.GetProgress(index++, _playerHistoryList.Count);
             OnProgressChanged(progressPercentage);
         }
 
@@ -80,7 +80,7 @@ internal class HistoryService : IHistoryService
         _playerHistoryList ??= await _cacheManager.GetAsync<HistoryList>(includeExpired: false, cancellationToken) ?? [];
     }
 
-    protected virtual void OnProgressChanged(int percentage)
+    protected virtual void OnProgressChanged(double percentage)
     {
         ProgressChanged?.Invoke(this, new ProgressEventArgs(percentage));
     }

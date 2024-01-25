@@ -76,7 +76,7 @@ internal class FavoriteService : IFavoriteService
             PlayerFullInfo playerInfo = await _chessDataService.GetPlayerFullInfoAsync(player, useCache, cancellationToken);
             result.Add(playerInfo);
 
-            int progressPercentage = ProgressHelper.GetProgress(index++, _favoriteList.Count);
+            double progressPercentage = ProgressHelper.GetProgress(index++, _favoriteList.Count);
             OnProgressChanged(progressPercentage);
         }
 
@@ -100,7 +100,7 @@ internal class FavoriteService : IFavoriteService
         _favoriteList ??= await _cacheManager.GetAsync<FavoriteList>(includeExpired: false, cancellationToken) ?? [];
     }
 
-    protected virtual void OnProgressChanged(int percentage)
+    protected virtual void OnProgressChanged(double percentage)
     {
         ProgressChanged?.Invoke(this, new ProgressEventArgs(percentage));
     }

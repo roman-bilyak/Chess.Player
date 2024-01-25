@@ -4,9 +4,9 @@ public delegate void ProgressEventHandler(object sender, ProgressEventArgs e);
 
 public class ProgressEventArgs : EventArgs
 {
-    public int Percentage { get; private set; }
+    public double Percentage { get; private set; }
 
-    public ProgressEventArgs(int percentage)
+    public ProgressEventArgs(double percentage)
     {
         Percentage = percentage;
     }

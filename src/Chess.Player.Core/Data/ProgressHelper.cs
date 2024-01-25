@@ -2,10 +2,10 @@
 
 public static class ProgressHelper
 {
-    public const int Start = 1;
-    public const int Finish = 100;
+    public const double Start = 1;
+    public const double Finish = 99;
 
-    public static int GetProgress(int index, int count)
+    public static double GetProgress(int index, int count)
     {
         return index * (Finish - Start) / count + Start;
     }

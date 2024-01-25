@@ -260,16 +260,4 @@ public partial class PlayerViewModel : BaseRefreshViewModel, IDisposable
     {
         Dispose(false);
     }
-
-    #region helper methods
-
-    private void OnProgressChanged(object sender, ProgressEventArgs e)
-    {
-        MainThread.BeginInvokeOnMainThread(() =>
-        {
-            Progress = (double)e.Percentage / 100;
-        });
-    }
-
-    #endregion
 }

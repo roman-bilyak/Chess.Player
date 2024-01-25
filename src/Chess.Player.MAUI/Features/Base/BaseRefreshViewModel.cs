@@ -1,4 +1,5 @@
-﻿using CommunityToolkit.Mvvm.ComponentModel;
+﻿using Chess.Player.Data;
+using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using System.Net;
 
@@ -50,11 +51,11 @@ public abstract partial class BaseRefreshViewModel : BaseViewModel
     {
         try
         {
-            Progress = 0;
+            OnProgressChanged(this, new ProgressEventArgs(0));
 
             await LoadDataAsync(cancellationToken);
 
-            Progress = 100;
+            OnProgressChanged(this, new ProgressEventArgs(100));
 
             IsSuccessfullyLoaded = true;
             Error = null;
@@ -79,4 +80,12 @@ public abstract partial class BaseRefreshViewModel : BaseViewModel
     }
 
     protected abstract Task LoadDataAsync(CancellationToken cancellationToken);
+
+    protected void OnProgressChanged(object sender, ProgressEventArgs e)
+    {
+        MainThread.BeginInvokeOnMainThread(() =>
+        {
+            Progress = (double)e.Percentage / 100;
+        });
+    }
 }
