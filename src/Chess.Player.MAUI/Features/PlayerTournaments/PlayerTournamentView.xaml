@@ -32,11 +32,13 @@
                         </Grid.ColumnDefinitions>
 
                         <Label Grid.Row="0" Grid.Column="0" Text="Player" FontAttributes="Bold" />
-                        <Label Grid.Row="0" Grid.Column="1" Grid.ColumnSpan="3" Text="{Binding PlayerName, Mode=OneWay}" TextDecorations="Underline">
-                            <Label.GestureRecognizers>
+                        <HorizontalStackLayout Grid.Row="0" Grid.Column="1" Grid.ColumnSpan="3" Spacing="5">
+                            <HorizontalStackLayout.GestureRecognizers>
                                 <TapGestureRecognizer Command="{Binding ShowPlayerInfoCommand, Mode=OneWay}" />
-                            </Label.GestureRecognizers>
-                        </Label>
+                            </HorizontalStackLayout.GestureRecognizers>
+                            <Label Text="{Binding PlayerName, Mode=OneWay}" TextDecorations="Underline" />
+                            <Label Text="{Binding PlayerRating, Mode=OneWay}" />
+                        </HorizontalStackLayout>
 
                         <Image Grid.Row="0" Grid.Column="4" Source="online.svg" VerticalOptions="Start" HorizontalOptions="Center" WidthRequest="25" HeightRequest="25" IsVisible="{Binding TournamentIsOnline, Mode=OneWay}">
                             <Image.Behaviors>

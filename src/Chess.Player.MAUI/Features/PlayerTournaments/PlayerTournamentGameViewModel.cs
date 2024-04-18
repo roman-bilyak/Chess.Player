@@ -31,6 +31,9 @@ public partial class PlayerTournamentGameViewModel : BaseViewModel
     private string? _name;
 
     [ObservableProperty]
+    private int? _rating;
+
+    [ObservableProperty]
     private string? _clubCity;
 
     [ObservableProperty]

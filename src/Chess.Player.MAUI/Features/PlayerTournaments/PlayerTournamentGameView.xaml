@@ -63,7 +63,10 @@
             </Image>
             <Label Grid.Row="1" Grid.Column="0" Text="{Binding Board}" VerticalOptions="Center" HorizontalOptions="Center" TextColor="White" FontSize="12" IsVisible="{Binding IsBlack}" />
 
-            <Label Grid.Row="0" Grid.Column="1" Text="{Binding Name}" VerticalOptions="Start" HorizontalOptions="Start" Style="{StaticResource CardHighlightStyle}" />
+            <HorizontalStackLayout Grid.Row="0" Grid.Column="1" VerticalOptions="Start" HorizontalOptions="Start" Spacing="5">
+                <Label Text="{Binding Name}" Style="{StaticResource CardHighlightStyle}" />
+                <Label Text="{Binding Rating}" Style="{StaticResource CardDetailsStyle}" />
+            </HorizontalStackLayout>
 
             <Label Grid.Row="1" Grid.Column="1" Text="{Binding ClubCity}" VerticalOptions="Center" HorizontalOptions="Start" Style="{StaticResource CardDetailsStyle}" />
 

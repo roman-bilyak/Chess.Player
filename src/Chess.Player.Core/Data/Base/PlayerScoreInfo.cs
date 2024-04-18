@@ -8,6 +8,8 @@ public class PlayerScoreInfo
 
     public string? Name { get; set; }
 
+    public int? Rating { get; set; }
+
     public string? ClubCity { get; set; }
 
     public double? Points { get; set; }

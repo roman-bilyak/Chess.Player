@@ -58,6 +58,9 @@ public partial class PlayerTournamentViewModel : BaseRefreshViewModel
     private string? _playerName;
 
     [ObservableProperty]
+    private int? _playerRating;
+
+    [ObservableProperty]
     private string? _playerTitle;
 
     [ObservableProperty]
@@ -107,6 +110,7 @@ public partial class PlayerTournamentViewModel : BaseRefreshViewModel
         TournamentIsFuture = playerTournamentInfo.Tournament.IsFuture(currentDate);
 
         PlayerName = playerTournamentInfo.Player.Name;
+        PlayerRating = playerTournamentInfo.Player.Rating;
         PlayerTitle = playerTournamentInfo.Player.Title;
         PlayerRank = playerTournamentInfo.Player.Rank;
         PlayerPoints = playerTournamentInfo.Player.Points;
@@ -122,6 +126,7 @@ public partial class PlayerTournamentViewModel : BaseRefreshViewModel
             gameViewModel.Board = gameInfo.Board;
             gameViewModel.No = gameInfo.No;
             gameViewModel.Name = gameInfo.Name;
+            gameViewModel.Rating = gameInfo.Rating;
             gameViewModel.ClubCity = gameInfo.ClubCity;
             gameViewModel.IsWhiteBlack = gameInfo.IsWhite;
             gameViewModel.Result = gameInfo.Result;

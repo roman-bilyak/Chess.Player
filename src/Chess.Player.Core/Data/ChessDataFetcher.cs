@@ -224,6 +224,7 @@ internal class ChessResultsDataFetcher : IChessDataFetcher, IDisposable
         int rankIndex = playerHeaders.IndexOf("Rk.");
         int noIndex = playerHeaders.IndexOf("SNo");
         int nameIndex = playerHeaders.IndexOf("Name");
+        int ratingIndex = playerHeaders.IndexOf("Rtg");
         int clubCityIndex = playerHeaders.IndexOf("Club/City");
         int pointsIndex = playerHeaders.IndexOf("Pts.");
         int tb1Index = playerHeaders.IndexOf("TB1");
@@ -237,6 +238,7 @@ internal class ChessResultsDataFetcher : IChessDataFetcher, IDisposable
                 Rank = int.TryParse(playerRow.SelectSingleNode($"td[{rankIndex + 1}]")?.InnerText?.Trim(), out int round) ? round : null,
                 No = int.TryParse(playerRow.SelectSingleNode($"td[{noIndex + 1}]")?.InnerText?.Trim(), out int no) ? no : null,
                 Name = _chessDataNormalizer.NormalizeName(playerRow.SelectSingleNode($"td[{nameIndex + 1}]/a")?.InnerText?.Trim() ?? playerRow.SelectSingleNode($"td[{nameIndex + 1}]")?.InnerText?.Trim()),
+                Rating = int.TryParse(playerRow.SelectSingleNode($"td[{ratingIndex + 1}]")?.InnerText?.Trim(), out int rating) ? rating : null,
                 ClubCity = playerRow.SelectSingleNode($"td[{clubCityIndex + 1}]")?.InnerText?.Trim(),
                 Points = double.TryParse(playerRow.SelectSingleNode($"td[{pointsIndex + 1}]")?.InnerText?.Trim(), NumberStyles.Number, new CultureInfo("de-DE"), out double points) ? points : null,
                 TB1 = double.TryParse(playerRow.SelectSingleNode($"td[{tb1Index + 1}]")?.InnerText?.Trim(), NumberStyles.Number, new CultureInfo("de-DE"), out double tb1) ? tb1 : null,
@@ -326,6 +328,7 @@ internal class ChessResultsDataFetcher : IChessDataFetcher, IDisposable
         int boardIndex = gameHeaders.IndexOf("Bo.");
         int noIndex = gameHeaders.IndexOf("SNo");
         int nameIndex = gameHeaders.IndexOf("Name");
+        int ratingIndex = gameHeaders.IndexOf("Rtg");
         int clubCityIndex = gameHeaders.IndexOf("Club/City");
         int resultIndex = gameHeaders.IndexOf("Res.");
 
@@ -339,6 +342,7 @@ internal class ChessResultsDataFetcher : IChessDataFetcher, IDisposable
                 Board = int.TryParse(gameRow.SelectSingleNode($"td[{boardIndex + 1}]")?.InnerText?.Trim(), out int board) ? board : null,
                 No = int.TryParse(gameRow.SelectSingleNode($"td[{noIndex + 1}]")?.InnerText?.Trim(), out int no) ? no : null,
                 Name = _chessDataNormalizer.NormalizeName(gameRow.SelectSingleNode($"td[{nameIndex + 1}]/a")?.InnerText?.Trim() ?? gameRow.SelectSingleNode($"td[{nameIndex + 1}]")?.InnerText),
+                Rating = int.TryParse(gameRow.SelectSingleNode($"td[{ratingIndex + 1}]")?.InnerText?.Trim(), out int rating) ? rating : null,
                 ClubCity = gameRow.SelectSingleNode($"td[{clubCityIndex + 1}]")?.InnerText,
                 IsWhite = resultNode?.SelectSingleNode("td[1]/div[@class='FarbewT']") is not null,
                 Result = GetResult(resultNode?.SelectSingleNode("td[2]")?.InnerText?.Trim())

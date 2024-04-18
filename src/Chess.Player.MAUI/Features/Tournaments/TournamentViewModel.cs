@@ -86,6 +86,7 @@ public partial class TournamentViewModel : BaseRefreshViewModel
             playerScoreViewModel.Rank = playerScoreInfo.Rank;
             playerScoreViewModel.No = playerScoreInfo.No;
             playerScoreViewModel.Name = playerScoreInfo.Name;
+            playerScoreViewModel.Rating = playerScoreInfo.Rating;
             playerScoreViewModel.ClubCity = playerScoreInfo.ClubCity;
             playerScoreViewModel.Points = playerScoreInfo.Points;
             playerScoreViewModel.TB1 = playerScoreInfo.TB1;

@@ -10,6 +10,8 @@ public class GameInfo
 
     public string? Name { get; set; }
 
+    public int? Rating { get; set; }
+
     public string? ClubCity { get; set; }
 
     public bool? IsWhite { get; set; }

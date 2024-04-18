@@ -48,7 +48,11 @@
                 <ColumnDefinition Width="30" />
             </Grid.ColumnDefinitions>
             <Label Grid.Row="0" Grid.Column="0" Text="{Binding Rank, Mode=OneWay}" VerticalOptions="Start" HorizontalOptions="Center" Style="{StaticResource CardHighlightStyle}" />
-            <Label Grid.Row="0" Grid.Column="1" Text="{Binding Name, Mode=OneWay}" HorizontalOptions="StartAndExpand" Style="{StaticResource CardHighlightStyle}" />
+
+            <HorizontalStackLayout Grid.Row="0" Grid.Column="1" HorizontalOptions="StartAndExpand" Spacing="5">
+                <Label Text="{Binding Name, Mode=OneWay}" Style="{StaticResource CardHighlightStyle}" />
+                <Label Text="{Binding Rating, Mode=OneWay}" Style="{StaticResource CardDetailsStyle}" />
+            </HorizontalStackLayout>
             <Label Grid.Row="1" Grid.Column="1" Text="{Binding ClubCity, Mode=OneWay}" HorizontalOptions="StartAndExpand" LineBreakMode="NoWrap" Style="{StaticResource CardDetails12Style}" />
             <VerticalStackLayout  Grid.Row="0" Grid.Column="2" Grid.RowSpan="2" >
                 <Label Grid.Row="1" Grid.Column="1" Text="{Binding TB1Format, Mode=OneWay}" HorizontalOptions="Start" Style="{StaticResource CardDetails12Style}" />
