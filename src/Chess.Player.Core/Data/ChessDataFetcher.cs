@@ -106,7 +106,7 @@ internal class ChessResultsDataFetcher : IChessDataFetcher, IDisposable
 
     public async Task<TournamentInfo> GetTournamentInfoAsync(int tournamentId, CancellationToken cancellationToken)
     {
-        string tournamentInfoUrl = $"{BaseUrl}/tnr{tournamentId}.aspx?lan=1&art=1&turdet=YES";
+        string tournamentInfoUrl = $"{BaseUrl}/tnr{tournamentId}.aspx?lan=1&art=1&turdet=YES&zeilen=99999";
         HttpResponseMessage response = await _httpClient.GetAsync(tournamentInfoUrl, cancellationToken);
         response.EnsureSuccessStatusCode();
 
