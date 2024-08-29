@@ -4,7 +4,7 @@ namespace Chess.Player.Data;
 
 internal class ConsoleOutput
 {
-    public void DisplayProgress(int progressPercentage)
+    public void DisplayProgress(double progressPercentage)
     {
         Console.Write("\r");
         if (progressPercentage < 100)

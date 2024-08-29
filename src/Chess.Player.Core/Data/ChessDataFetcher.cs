@@ -361,21 +361,21 @@ internal class ChessResultsDataFetcher : IChessDataFetcher, IDisposable
 
     private static string? NormalizeTitle(string? title)
     {
-        return title switch
+        return title?.ToUpperInvariant() switch
         {
             "МС" => "NM",
             "КМС" => "CM",
-            "1" or "1р." or "І" or "I" or "1900" => "I",
-            "2" or "2р." or "II" or "ІІ" or "1800" => "II",
-            "3" or "3р." or "III" or "ІІІ" or "1700" => "III",
-            "4" or "4р." or "IV" or "ІV" or "1600" => "IV",
-            "БР" or "Б/Р" or "поч" or "1500" => null,
+            "1" or "1Р." or "І" or "I" or "1900" => "I",
+            "2" or "2Р." or "II" or "ІІ" or "1800" => "II",
+            "3" or "3Р." or "III" or "ІІІ" or "1700" => "III",
+            "4" or "4Р." or "IV" or "ІV" or "1600" => "IV",
+            "БР" or "Б/Р" or "ПОЧ" or "1500" => null,
             _ => title,
         };
     }
     private static string? GetTitle(string? name)
     {
-        string? title = name?.Split(" ").Skip(2).LastOrDefault()?.ToUpperInvariant();
+        string? title = name?.Split(" ").Skip(2).LastOrDefault();
         return NormalizeTitle(title);
     }
 
