@@ -365,10 +365,10 @@ internal class ChessResultsDataFetcher : IChessDataFetcher, IDisposable
         {
             "МС" => "NM",
             "КМС" => "CM",
-            "1" or "І" or "I" or "1900" => "I",
-            "2" or "II" or "ІІ" or "1800" => "II",
-            "3" or "III" or "ІІІ" or "1700" => "III",
-            "4" or "IV" or "ІV" or "1600" => "IV",
+            "1" or "1р." or "І" or "I" or "1900" => "I",
+            "2" or "2р." or "II" or "ІІ" or "1800" => "II",
+            "3" or "3р." or "III" or "ІІІ" or "1700" => "III",
+            "4" or "4р." or "IV" or "ІV" or "1600" => "IV",
             "БР" or "Б/Р" or "поч" or "1500" => null,
             _ => title,
         };
