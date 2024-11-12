@@ -11,6 +11,8 @@ internal class ChessResultsDataFetcher : IChessDataFetcher, IDisposable
     private readonly HttpClient _httpClient = new();
     private readonly IChessDataNormalizer _chessDataNormalizer;
 
+    private static readonly char[] ApostropheCharacters = { '\'', '’', '`', '"', '*' };
+
     public ChessResultsDataFetcher
     (
         IChessDataNormalizer chessDataNormalizer
@@ -48,10 +50,10 @@ internal class ChessResultsDataFetcher : IChessDataFetcher, IDisposable
                 { "ctl00$P1$txt_fideID", "" },
                 { "ctl00$P1$txt_ident", "" },
                 { "ctl00$P1$txt_min_elo", "" },
-                { "ctl00$P1$txt_nachname", lastName},
+                { "ctl00$P1$txt_nachname", lastName.Split(ApostropheCharacters).FirstOrDefault() ?? string.Empty},
                 { "ctl00$P1$txt_verein", "" },
                 { "ctl00$P1$txt_von_tag", "" },
-                { "ctl00$P1$txt_vorname", firstName},
+                { "ctl00$P1$txt_vorname", firstName.Split(ApostropheCharacters).FirstOrDefault() ?? string.Empty},
             };
         response = await _httpClient.PostAsync(searchUrl, new FormUrlEncodedContent(postData), cancellationToken);
         response.EnsureSuccessStatusCode();
@@ -64,8 +66,8 @@ internal class ChessResultsDataFetcher : IChessDataFetcher, IDisposable
         var searchResultNodes = htmlDocument.DocumentNode.SelectNodes("//table[@class='CRs2']/tr")?.Skip(1) ?? new HtmlNodeCollection(null);
         foreach (HtmlNode node in searchResultNodes)
         {
-            string? name = node.SelectSingleNode("td[1]/a")?.InnerText?.Trim();
-            if (!name?.StartsWith(lastName, StringComparison.InvariantCultureIgnoreCase) ?? false)
+            string? name = node.SelectSingleNode("td[1]/a")?.InnerText?.Trim()?.Replace(ApostropheCharacters);
+            if (!name?.StartsWith($"{lastName}, {firstName}".Replace(ApostropheCharacters), StringComparison.InvariantCultureIgnoreCase) ?? false)
             {
                 continue;
             }
