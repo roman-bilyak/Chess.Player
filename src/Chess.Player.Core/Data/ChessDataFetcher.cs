@@ -11,7 +11,7 @@ internal class ChessResultsDataFetcher : IChessDataFetcher, IDisposable
     private readonly HttpClient _httpClient = new();
     private readonly IChessDataNormalizer _chessDataNormalizer;
 
-    private static readonly char[] ApostropheCharacters = { '\'', '’', '`', '"', '*' };
+    private static readonly char[] ApostropheCharacters = { '\'', '‘', '’', '`', '"', '*' };
 
     public ChessResultsDataFetcher
     (
@@ -43,6 +43,7 @@ internal class ChessResultsDataFetcher : IChessDataFetcher, IDisposable
                 { "__VIEWSTATEGENERATOR", htmlDocument.DocumentNode.SelectSingleNode("//input[@name='__VIEWSTATEGENERATOR']")?.GetAttributeValue("value", "") },
 
                 { "ctl00$P1$cb_suchen", "Search" },
+                { "ctl00$P1$combo_anzahl_zeilen", "5" },
                 { "ctl00$P1$combo_Sort", "2" },
                 { "ctl00$P1$txt_FED", "" },
                 { "ctl00$P1$txt_GJahr", "" },
@@ -63,11 +64,17 @@ internal class ChessResultsDataFetcher : IChessDataFetcher, IDisposable
 
         PlayerTournamentList playerTournamentList = new();
 
+        string expectedName = $"{lastName}, {firstName}".Replace(ApostropheCharacters);
+
         var searchResultNodes = htmlDocument.DocumentNode.SelectNodes("//table[@class='CRs2']/tr")?.Skip(1) ?? new HtmlNodeCollection(null);
         foreach (HtmlNode node in searchResultNodes)
         {
-            string? name = node.SelectSingleNode("td[1]/a")?.InnerText?.Trim()?.Replace(ApostropheCharacters);
-            if (!name?.StartsWith($"{lastName}, {firstName}".Replace(ApostropheCharacters), StringComparison.InvariantCultureIgnoreCase) ?? false)
+            string? rawName = node.SelectSingleNode("td[1]/a")?.InnerText?.Trim();
+            string? normalizedName = rawName is not null
+                ? string.Join(", ", rawName.Split(new[] { ',' }, StringSplitOptions.RemoveEmptyEntries).Select(x => x.Trim())).Replace(ApostropheCharacters)
+                : null;
+
+            if (!normalizedName?.StartsWith(expectedName, StringComparison.InvariantCultureIgnoreCase) ?? false)
             {
                 continue;
             }
