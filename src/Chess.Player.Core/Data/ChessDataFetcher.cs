@@ -135,7 +135,7 @@ internal class ChessResultsDataFetcher : IChessDataFetcher, IDisposable
                 { "cb_alleDetails", "Show tournament details" }
         };
 
-        response = await _httpClient.PostAsync(tournamentInfoUrl, new FormUrlEncodedContent(postData), cancellationToken);
+        response = await _httpClient.PostAsync(response.RequestMessage?.RequestUri?.AbsoluteUri ?? tournamentInfoUrl, new FormUrlEncodedContent(postData), cancellationToken);
         response.EnsureSuccessStatusCode();
 
         htmlContent = HttpUtility.HtmlDecode(await response.Content.ReadAsStringAsync(cancellationToken));
