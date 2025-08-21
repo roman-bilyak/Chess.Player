@@ -56,7 +56,7 @@ internal class ChessResultsDataFetcher : IChessDataFetcher, IDisposable
                 { "ctl00$P1$txt_von_tag", "" },
                 { "ctl00$P1$txt_vorname", firstName.Split(ApostropheCharacters).FirstOrDefault() ?? string.Empty},
             };
-        response = await _httpClient.PostAsync(searchUrl, new FormUrlEncodedContent(postData), cancellationToken);
+        response = await _httpClient.PostAsync(response.RequestMessage?.RequestUri?.AbsoluteUri ?? searchUrl, new FormUrlEncodedContent(postData), cancellationToken);
         response.EnsureSuccessStatusCode();
 
         htmlContent = HttpUtility.HtmlDecode(await response.Content.ReadAsStringAsync(cancellationToken));
